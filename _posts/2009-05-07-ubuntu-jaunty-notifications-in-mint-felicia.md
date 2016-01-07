@@ -6,13 +6,10 @@ layout: post
 guid: http://www.cuvedev.net/?p=89
 permalink: /2009/05/ubuntu-jaunty-notifications-in-mint-felicia/
 categories:
-  - Linux
-  - Mint
 tags:
-  - console
   - felicia
-  - Linux
-  - Mint
+  - linux
+  - mint
   - notification
   - notify-osd
   - popup

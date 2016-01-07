@@ -6,9 +6,7 @@ layout: post
 guid: http://www.cuvedev.net/?p=156
 permalink: /2010/04/boxee-python-dev/
 categories:
-  - Boxee
-  - Cuvedev
-  - Python
+  - development
 tags:
   - Boxee
   - development
