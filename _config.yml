@@ -2,11 +2,10 @@
 url: http://www.klaascuvelier.be
 name: Klaas Cuvelier
 email: cuvelierklaas@gmail.com
-description: Things I find worth sharing
+title: Klaas C.
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Home page of Klaas Cuvelier. Full stack developer, runner and geek.
+  This is where I share stuff I consider worth sharing.
 baseurl: "" # the subpath of your site, e.g. /blog/
 twitter_username: klaascuvelier
 github_username:  klaascuvelier
