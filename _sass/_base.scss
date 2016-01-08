@@ -10,6 +10,13 @@ dl, dd, ol, ul, figure {
 
 
 
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 /**
  * Basic styling
  */
@@ -21,6 +28,11 @@ body {
     color: $text-color;
     background-color: $background-color;
     -webkit-text-size-adjust: 100%;
+    min-height: 100%;
+
+    @include media-query($on-palm) {
+        font-size: $small-font-size;
+    }
 }
 
 
