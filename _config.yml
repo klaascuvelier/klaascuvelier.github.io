@@ -1,5 +1,5 @@
 # Site settings
-url: http://www.klaascuvelier.be
+url: http://www.klaascuvelier.io
 name: Klaas Cuvelier
 email: cuvelierklaas@gmail.com
 title: Klaas C.
@@ -9,8 +9,7 @@ description: > # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog/
 twitter_username: klaascuvelier
 github_username:  klaascuvelier
-url: "http://blog.klaascuvelier.be/"
-google_analytics: "UA-2458471-3"
+url: "http://klaascuvelier.io/"
 animated: false
 show_related_posts: false
 paginate: 10
