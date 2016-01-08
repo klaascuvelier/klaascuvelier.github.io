@@ -105,7 +105,7 @@ code on production.
 
 The second problem I ran into when I tried doing an ajax call for the user information&hellip;
 
-![Screenshot console CORS errors](/public/2016/01/cors.png){: .image-center }
+[![Screenshot console CORS errors](/public/2016/01/cors.png){: .image-center }](/public/2016/01/cors.png)
 
 Ow god&hellip; All frontend developers have ran into CORS problems, right? 
 
@@ -275,8 +275,8 @@ functionality (order statuses, payment statuses,&hellip;) and some quick wins fo
 
 This is what it looked like in the end:
 
-![Screenshot app about page](/public/2016/01/finish-about.png){: .image-center }
-![Screenshot app order page admin options](/public/2016/01/finish-order.png){: .image-center }
+[![Screenshot app about page](/public/2016/01/finish-about.png){: .image-center }](/public/2016/01/finish-about.png)
+[![Screenshot app order page admin options](/public/2016/01/finish-order.png){: .image-center }](/public/2016/01/finish-order.png)
 
 Definitely not a masterpiece of UX, but surely good enough to ship and try out on the meet-up.
 
@@ -295,7 +295,7 @@ were manageable this time.
 I used the SocratesBe meetup to give a lightning talk about this challenge, it turned out explaining everything in 10 
 minutes was even harder than finished the project in time.
 
-![Picture of me presenting the challenge](/public/2016/01/lightning-talk.jpeg){: .image-center }
+[![Picture of me presenting the challenge](/public/2016/01/lightning-talk.jpeg){: .image-center }](/public/2016/01/lightning-talk.jpeg)
 
 
 ## Looking back on the challenge
@@ -316,7 +316,7 @@ credentials&hellip;
 I probably could have easily solved the Meetup redirect issue locally by setting up a host in nginx with 
 `proxy_pass`, which I've actually done before, but I did not think about it at the time.
 
-The code is available on Github [ng2-grouporder](https://github.com/klaascuvelier/ng2-group-order), but I keep 
+The code is available on Github [ng2-group-order](https://github.com/klaascuvelier/ng2-group-order), but I keep 
 in mind the purpose of this challenge&hellip; 
 This is not the sort of code I wrote in my day job.
 
