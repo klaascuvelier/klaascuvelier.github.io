@@ -16,7 +16,7 @@ tags:
 ## TL;DR
 Online ordering of food for a group of people can be cumbersome. 
 I took on the challenge of building a prototype of a tool to improve the ordering of food for groups, in 
-a limited amount of time, with all unfamiliar technologies.
+a limited amount of time, with unfamiliar technologies.
 
 ## The problem
 
@@ -29,24 +29,23 @@ personally what food they want, placing the order, collecting the money.
  
 As the SocratesBe group became more popular, more people started coming to the meet-ups, which is a good thing, 
 obviously. Though, the ordering of the food became a hassle. Ever ordered food for 20 individuals and collected the 
-money? It's drag!
+money? It's a drag!
 
 Two days before the meetup, I expressed my concerns about this issue on the Slack channel of SocratesBe.
 A clever man suggested to start my own pizza chain or maybe write some software to ease the task.
  
-Starting my own pizza chain was not high too on my priorities list and I doubt if I'd ever be free to join the actual 
+Starting my own pizza chain was not high on my priorities list and I doubt if I'd ever be free to join the actual 
 meet-ups again in that case.
 
-I remembered that I once tried to contact the food delivery service we use on Twitter, and asked if they had a solution
-for this problem. I assumed we weren't the only ones with this issue.
+I had already tweeted the food delivery service we use to ask if they had a solution
+to this problem. I assumed we weren't the only ones with this issue.
 Sadly they did not reply. [The actual tweets (in Dutch)](https://twitter.com/klaascuvelier/statuses/659094884368912384)
 
 So if I wanted to improve the order process, I'd had to go with "write your own software"&hellip;. 
 
 ## The challenge
 
-The goal of this challenge was to make it easier for a person to manage orders from a group 
-(order input, payments, status,&hellip;).
+Make it easier for a person to manage food orders for a group (order input, payments, status,&hellip;).
  
 ### The requirements
 
@@ -103,7 +102,7 @@ I did not think about how I'd host my frontend, luckily Firebase provided some h
 they have a great CLI tool. After some configuration I only had to run `npm run build && firebase deploy` to get my 
 code on production.
 
-The second problem I ran into when I tried doing an ajax call for the user information&hellip;
+The second problem I ran into when I tried doing an AJAX call for the user information&hellip;
 
 [![Screenshot console CORS errors](/public/2016/01/cors.png){: .image-center }](/public/2016/01/cors.png)
 
@@ -118,7 +117,7 @@ created [angular2-firebase](https://www.npmjs.com/package/angular2-firebase). Th
 [Kyle](https://twitter.com/kylecordes)
 
 I was not familiar with observables yet, still I was able to create some sort of `DataStorage` service.
-(This great blog came just too late: [Taking advantage of Observables in Angular 2](http://blog.thoughtram.io/angular/2016/01/06/taking-advantage-of-observables-in-angular2.html))
+(This great blog post came just too late: [Taking advantage of Observables in Angular 2](http://blog.thoughtram.io/angular/2016/01/06/taking-advantage-of-observables-in-angular2.html))
 
 {% highlight ts %}
 {% raw %}
@@ -288,21 +287,21 @@ their order during the day.
 It was still hard to copy over the orders to the actual food order service, but at least it the orders and the payments 
 were manageable this time. 
 
-**Goal accomplished!** The tool did it's job!
+**Goal accomplished!** The tool did its job!
  
-(Totally honest; 1 order was wrong, but that was totally a human error, not the tools fault)
+(To be honest: 1 order was wrong but that was totally a human error, not the tool's fault).
 
-I used the SocratesBe meetup to give a lightning talk about this challenge, it turned out explaining everything in 10 
-minutes was even harder than finished the project in time.
+I used the SocratesBe meet-up to give a lightning talk about this challenge. It turned out explaining everything in 10 
+minutes was even harder than finishing the project in time.
 
 [![Picture of me presenting the challenge](/public/2016/01/lightning-talk.jpeg){: .image-center }](/public/2016/01/lightning-talk.jpeg)
 
 
 ## Looking back on the challenge
 
-I was able to pull this of this in under 8 hours, which I am still pretty impressed about myself. 
-Shortcuts have been taken, but this challenge was not about building a perfect app, only to proving 
-I was able to create a tool in a short amount of time with services/tools I was not familiar with.
+I was able to pull this off in under 8 hours, which I am still pretty impressed with myself. 
+Shortcuts have been taken but the challenge was not to build a perfect app. The challenge was to create a
+tool in a short amount of time with services/tools I was not familiar with.
 
 The security of the app is not great; I did not configure Firebase correctly, now everybody can read and write to my 
 instance (people could mark their order as paid without paying). Authorization itself isn't very secure either, before 
@@ -316,27 +315,23 @@ credentials&hellip;
 I probably could have easily solved the Meetup redirect issue locally by setting up a host in nginx with 
 `proxy_pass`, which I've actually done before, but I did not think about it at the time.
 
-The code is available on Github [ng2-group-order](https://github.com/klaascuvelier/ng2-group-order), but I keep 
+The code is available on Github [ng2-group-order](https://github.com/klaascuvelier/ng2-group-order), but keep 
 in mind the purpose of this challenge&hellip; 
 This is not the sort of code I wrote in my day job.
 
 I was quite hesitant about TypeScript in the beginning, but I really loved writing typed code and taking advantage of 
 the decorators!
 
-It's too soon to make a decision on my stand point on Angular 2, but I definitely liked writing this app using it.
+It's too soon to form an opinion on Angular 2, but I definitely liked writing this app using it.
 
-
-
-Hope you enjoyed my write up. Don't hesitate to contact my when you have any questions or remarks!
-
-
+Hope you enjoyed my write-up. Don't hesitate to contact me if you have any questions or remarks!
 
 ## Also want to get started with Angular 2? 
 
 There are already quite some tutorials available, but definitely check out the ones by 
 [Thoughtram](http://blog.thoughtram.io/categories/angular-2/), they are great!
 
-I've used webpack myself to build my little app, there are more options, but this proofs you're not tight to JSPM.
+I've used webpack myself to build my little app, there are more options, but this proves you're not tight to JSPM.
 I used [ng2-webpack](https://github.com/ocombe/ng2-webpack) and I was very happy how easy it was to get started (and 
 keep using it when adding extra functionality).
 
