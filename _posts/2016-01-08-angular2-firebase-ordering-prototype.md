@@ -14,7 +14,7 @@ tags:
 ---
 
 ## TL;DR
-Online ordering of food for a group of people can be cumbersome. 
+Online ordering of food for a group of people can be cumbersome.
 I took on the challenge of building a prototype of a tool to improve the ordering of food for groups, in 
 a limited amount of time, with unfamiliar technologies.
 
@@ -106,7 +106,7 @@ The second problem I ran into when I tried doing an AJAX call for the user infor
 
 [![Screenshot console CORS errors](/public/2016/01/cors.png){: .image-center }](/public/2016/01/cors.png)
 
-Ow god&hellip; All frontend developers have ran into CORS problems, right? 
+Oh god&hellip; All frontend developers have ran into CORS problems, right?
 
 The quickest solution I thought of, was creating a proxy script and running that on my VPS (kind of stupid hosting my 
 frontend on Firebase but still having to use my VPS in the end). Not the greatest solution, but I was able to solve 
