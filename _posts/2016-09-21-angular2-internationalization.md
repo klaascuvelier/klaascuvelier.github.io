@@ -155,3 +155,5 @@ I don't think the `i18n` directive is going to change (a lot), so it is definite
 one locale (or if you want to go through the pain of building and serving multiple bundles).
 
 If your application needs support for multiple locales already, I'd suggest you use [ng2-translate](https://github.com/ocombe/ng2-translate) by [Olivier Combe](https://twitter.com/ocombe)
+
+The code I used in my examples is available at [ng2-i18n on Github](https://github.com/klaascuvelier/ng2-i18n) and while doing some research I stumbled upon [this example](https://github.com/StephenFluin/i18n-sample) as well.
