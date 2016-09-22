@@ -29,8 +29,7 @@ The `i18n` attribute can be used without a value, or you can add a description a
 Everything you'd expect from i18n is available. The parser won't translate your HTML tags, but will replace them by placeholders in the 
 translation dictionary (so if the syntax of a language is different and the HTML tag needs to be in a different place for a certain language, that's possible). 
 It is possible to translate element attributes as well, by adding `i18n-[the attribute]` to your element, 
-you can mark a whole group of elements to be translated by wrapping them in a i18n-comment or using the `ng-container` component and there is also 
-support for pluralization.
+you can mark a whole group of elements to be translated by wrapping them in a i18n-comment or using the `ng-container` construct and there is also support for pluralization.
 Angular uses the standardized [ICU format](http://userguide.icu-project.org/formatparse/messages) for that.
 
 Have a look at some of the syntax:
