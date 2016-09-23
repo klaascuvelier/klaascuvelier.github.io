@@ -3,6 +3,7 @@ title: Group Ordering app with Angular2 & Firebase
 author: Klaas Cuvelier
 layout: post
 permalink: /2016/01/angular2-firebase-ordering-prototype/
+comments: true
 categories:
   - development
 tags:
