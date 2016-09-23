@@ -3,6 +3,7 @@ title: Internationalization in Angular 2
 author: Klaas Cuvelier
 layout: post
 permalink: /2016/09/internationalization-in-angular2/
+comments: true
 categories:
   - development
 tags:
