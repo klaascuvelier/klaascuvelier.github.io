@@ -22,7 +22,7 @@ from your linked package. It's related to the `node_modules` directory.
 
 `npm link` makes it easy to use a package you are actively working on in an other project without having to
 `npm publish` and `npm update` with every change. The [npm documentation](https://docs.npmjs.com/cli/link) on it is very
- clear, basically it just comes done to sym-linking your plugin package into the node_modules folder from the other
+ clear, basically it just comes down to sym-linking your plugin package into the node_modules folder from the other
  project.
 
 ## The problem when developing Angular modules
