@@ -268,3 +268,68 @@
         }
     }
 }
+
+
+/**
+ * LANDING
+ */
+
+.landing-intro {
+    margin: 50px 35% 100px 50px;
+
+    .about-me {
+        line-height: 1.1;
+        margin-bottom: 50px;
+    }
+
+    .name {
+        font-weight: 400;
+    }
+
+    .title {
+        color: $grey-color;
+        font-size: 90%;
+    }
+
+    .intro {
+        font-size: 150%;
+    }
+}
+
+.landing-content {
+    position: relative;
+    background: #fff;
+    min-height: 100%;
+    z-index: 1000;
+    margin-bottom: 752px;
+}
+
+.projects {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .project {
+        width: 50%;
+        text-align: center;
+        height: 300px;
+        opacity: 0.5;
+
+        &:first-child { background: hotpink; }
+        &:nth-child(n+2) { background: limegreen; }
+        &:nth-child(n+3) { background: red; }
+        &:last-child { background: blue; }
+    }
+
+}
+
+.landing-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 752px;
+    background: #3274FF;
+    background-attachment: fixed;
+    z-index: 0;
+}

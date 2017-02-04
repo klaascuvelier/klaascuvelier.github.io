@@ -1,23 +1,40 @@
 ---
-layout: default
+layout: empty
 ---
 
-<div class="home">
+<div class="landing-content">
 
-  <h1 class="page-heading">Posts</h1>
+  <section class="landing-intro">
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+    <div class="about-me">
+      <span class="name">Klaas Cuvelier</span><br />
+      <span class="title">Software Engineer</span>
+    </div>
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
+    <p class="intro">
+      Currently hand crafting design
+      for digital products - exclusively for
+      founders and startups. Also speak
+      HTML, CSS & Ruby. Hungry 80%
+      of times. But 100% foolish.
+    </p>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+  </section>
+
+  <section class="projects">
+    <div class="project">Beautiful places to run</div>
+    <div class="project">Instagram Inspiration</div>
+    <div class="project">Wunderlist-inbox</div>
+    <div class="project">Something Else</div>
+  </section>
 
 </div>
+
+
+<div class="landing-footer">
+skjdf;d <br />
+  skjdf;d <br />
+  skjdf;d <br />
+  skjdf;d <br />
+</div>
+
