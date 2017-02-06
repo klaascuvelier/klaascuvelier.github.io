@@ -16,39 +16,25 @@ layout: empty
     </p>
 
     <p>
-      I'm Klaas Cuvelier, a software developer from
-      <a href="http://stad.gent/" target="_blank" rel="noopener" title="City of trust and love">Ghent &#x1F1E7;&#x1F1EA;</a>,
+      A software developer from Ghent &#x1F1E7;&#x1F1EA,
       living in San Francisco &#x1F1FA;&#x1F1F8;.<br />
-      Some bla bla, bladie bla bla&hellip;
     </p>
-
-    <p> Below you can find some of the open-source projects I've done.</p>
 
   </section>
 
-  <section class="projects">
-    <div class="project bptr">
-      <a href="/projects/beautiful-places-to-run.html"></a>
-    </div>
-    <div class="project insta-inspi">
-      <a href="/projects/instagram-inspiration">Instagram Inspiration</a>
-    </div>
-    <div class="project sublime-cos">
-      <a href="/projects/sublime-command-on-save">Sublime CommandOnSave</a>
-    </div>
-    <div class="project wunderlist-inbox">
-      <a href="/projects/wunderlist-inbox">Wunderlist-inbox</a>
-    </div>
+  <section class="landing-blog">
+    <h3>My most recent writings</h3>
+
+    <ul>
+      {% for post in site.posts limit: 3 %}
+        <li>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <a href="/blog">See more&hellip;</a>
   </section>
 
 </div>
-
-
-<!--<div class="landing-footer">-->
-  <!--I'm working as a Front-end Developer at <a href="https://www.showpad.com/" target="_blank" rel="noopener">Showpad</a>.-->
-<!--skjdf;d <br />n
-  <!--skjdf;d <br />-->
-  <!--skjdf;d <br />-->
-  <!--skjdf;d <br />-->
-<!--</div>-->
-

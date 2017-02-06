@@ -275,7 +275,7 @@
  */
 
 .landing-intro {
-    margin: 50px 35% 100px 50px;
+    margin: 50px 35% 50px 50px;
 
     .about-me {
         line-height: 1.1;
@@ -293,6 +293,35 @@
 
     .intro {
         font-size: 150%;
+
+        & + p {
+            margin-top: -10px;
+        }
+    }
+}
+
+.landing-blog {
+    margin: 50px 50px;
+    padding-top: 50px;
+    border-top: 1px solid #f0f0f0;
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        list-style-type: none;
+        margin: 0 0 10px 0;
+        padding: 0;
+    }
+
+    .post-link {
+        font-size: 120%;
+    }
+
+    .post-meta {
+        margin: 0;
     }
 }
 
