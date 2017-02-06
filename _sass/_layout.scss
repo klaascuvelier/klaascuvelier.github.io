@@ -313,12 +313,26 @@
         width: 50%;
         text-align: center;
         height: 300px;
-        opacity: 0.5;
 
-        &:first-child { background: hotpink; }
-        &:nth-child(n+2) { background: limegreen; }
-        &:nth-child(n+3) { background: red; }
-        &:last-child { background: blue; }
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
+
+            background: transparent center center no-repeat;
+            background-size: cover;
+
+            transition: transform 0.350s ease-in-out;
+
+            &:hover {
+                transform: scale(1.01);
+            }
+        }
+
+        &.bptr { a { background-image: url(/public/images/bptr.jpg) } }
+        &.insta-inspi { a { background-image: url(/public/images/bptr.jpg) } }
+        &.sublime-cos { a { background-image: url(/public/images/bptr.jpg) } }
+        &.wunderlist-inbox { a { background-image: url(/public/images/bptr.jpg) } }
     }
 
 }
