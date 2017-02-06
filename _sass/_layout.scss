@@ -276,6 +276,10 @@
 
 .landing-intro {
     margin: 50px 35% 50px 50px;
+    
+    @include media-query($on-palm) {
+        margin-right: 50px;
+    }
 
     .about-me {
         line-height: 1.1;
