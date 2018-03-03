@@ -247,7 +247,8 @@
  * Posts
  */
 .post-header {
-    margin-bottom: $spacing-unit;
+    margin-bottom: $spacing-unit * 2.5;
+    margin-top: $spacing-unit;
 }
 
 .post-title {
