@@ -8,6 +8,38 @@
 
     // Positioning context for the mobile navigation icon
     position: relative;
+
+    .wrapper {
+        position: relative;
+    }
+
+    .avatar {
+        position: absolute;
+        top: 50%;
+        right: calc(100% - 20px);
+        transform: translateY(-50%);
+
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+    }
+
+    @include media-query($on-laptop) {
+        .wrapper {
+            padding-left: 70px;
+        }
+
+        .avatar {
+            right: auto;
+            left: 10px;
+        }
+    }
+
+    @include media-query($on-palm) {
+        .site-title-alt {
+            display: none;
+        }
+    }
 }
 
 .site-title {
@@ -21,6 +53,15 @@
     &:visited {
         color: $grey-color-dark;
     }
+}
+
+.site-title-alt {
+    font-size: 26px;
+    line-height: 56px;
+    margin-bottom: 0;
+    margin-left: 35px;
+    float: left;
+    color: $grey-color;
 }
 
 .site-nav {
@@ -194,6 +235,12 @@
     font-size: 75%;
 }
 
+.post-footer {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: $grey-color;
+}
 
 
 /**
