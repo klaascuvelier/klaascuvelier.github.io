@@ -1,5 +1,5 @@
 ---
-title: Lerna monorepo with build step 
+title: Setting up a Lerna monorepo with build step 
 author: Klaas Cuvelier
 layout: post
 permalink: /2018/03/lerna-with-build-step/
@@ -25,9 +25,13 @@ to share our set up.
 
 ## Creating the monorepo
 
-We considered some different monorepo tools and eventually dediced to use [Lerna](https://github.com/lerna/lerna). We created a new repo 
-and initialized lerna in it (without the `--independent` flag):
+We considered some different monorepo tools and eventually dediced to use [Lerna](https://github.com/lerna/lerna). 
+Lerna is a tool that optimizes the workflow around managing multi-package repositories with git an npm. It's created an used by the people
+behind the [Babel](https://github.com/babel/babel) project. 
 
+Getting started with Lerna is pretty straight forward; for basic set-ups, the documentation on the website is sufficient. That's also how
+we started our monorepo:
+ 
 ```bash
 $ git clone https://github.com/showpad/angular-packages
 $ cd angular-packages
@@ -40,7 +44,7 @@ Most of the repositories we wanted to add to the monorepo had a build step; inli
 thus only publishing the 
 generated files. 
 
-Importing those repositories into Lerna like that was a bit of a problem; Lerna does not really have a build step, you can't specify 
+Importing those repositories into Lerna like that was a bit of a problem; Lerna does not have a build step, you can't specify 
 a subfolder to be published and there would be quite some duplicated build code.
   
 The problem could be solved by just copying over the `src` folder and `package.json` file from the original repos 
@@ -48,14 +52,14 @@ The problem could be solved by just copying over the `src` folder and `package.j
 and then publishing the whole folder (with source files instead of compiled files).  
 
 ```js
-// index.js
+// index.js and index.d.ts
 export * from './src';
 ```
 
 Publishing TypeScript source files was no problem while using Angular <= 4.x, but when Angular version 5 was released, a stricter 
 version of tsconfig was introduced, which basically 
 [disallowed having uncompiled files in your node modules](https://github.com/angular/angular-cli/issues/8284#issuecomment-341417325).
-This Typescript config change forced us to add a build step again. 
+This Typescript configuration change forced us to add a build step again. 
  
 ## Adding a build step
 
@@ -155,7 +159,7 @@ You can do this by specifying the `files` in the `package.json`. This is how a `
 Of course we also had to update the `index.js` file to point to the `dist` folder.
 
 ```js
-// index.js
+// index.js and index.d.ts
 export * from './dist';
 ```
 
@@ -164,3 +168,10 @@ While it was not very obvious how to move multiple existing repositories includi
 out with some digging in the code and quite some trial and error. 
 
 Hopefully it might help you out as well and feel free to point out any improvements to our set up.   
+
+
+## Special thanks
+
+A special thanks to the people reviewing this post:
+- Brecht Billiet [@brechtbilliet](https://twitter.com/brechtbilliet)
+- Thibaut Nguyen [@teebot](https://twitter.com/teebot)
