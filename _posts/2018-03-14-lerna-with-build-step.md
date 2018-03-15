@@ -163,4 +163,4 @@ export * from './dist';
 While it was not very obvious how to move multiple existing repositories including a build step into a monorepo, we were able to figure it 
 out with some digging in the code and quite some trial and error. 
 
-Hopefully it might help you out as well and feel free to point out any improvements to our set up.   
+Hopefully it might help you out as well and feel free to point out any improvements to our set-up.   
