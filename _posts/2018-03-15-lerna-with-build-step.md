@@ -151,7 +151,7 @@ You can do this by specifying the `files` in the `package.json`. This is how a `
     // required deps for development
   },
   "publishConfig": {
-    "registry": "showpad npm package"
+    "registry": "url to showpad npm repository"
   }
 }
 ``` 
