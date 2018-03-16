@@ -98,7 +98,6 @@ function prePublish(packageAlias, packagePath) {
 
     try {
         const result = require('child_process').execSync(buildCommand, {timeout, cwd: packagePath});
-        // result.toString();
     } catch (error) {
         spinner.fail(`Could not finish building "${packageAlias}" library`);
         console.log(error.stdout.toString());
