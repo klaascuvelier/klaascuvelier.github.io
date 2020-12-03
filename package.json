@@ -4,6 +4,7 @@
   "description": "Personal website of Klaas Cuvelier",
   "main": "index.js",
   "scripts": {
+    "build": "npx @11ty/eleventy ",
     "start": "npx @11ty/eleventy --serve",
     "format": "prettier --write **/*.{html,njk,js,css,yml,json}"
   },
