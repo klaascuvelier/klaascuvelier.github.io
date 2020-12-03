@@ -2,13 +2,14 @@
 id: 165
 title: Vrt Internetradio Boxee plugin
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=165
 permalink: /2010/04/vrt-internetradio-boxee-plugin/
 categories:
   - Boxee
   - Development
 tags:
+  - posts
   - Boxee
   - plugin
   - python
@@ -21,7 +22,8 @@ tags:
   - stubru
   - vrt
 ---
-So, I finally finished my second Boxee plugin. This time I can call it a *real* plugin, there are options, lists and dialogs. Hooray!
+
+So, I finally finished my second Boxee plugin. This time I can call it a _real_ plugin, there are options, lists and dialogs. Hooray!
 
 The plugin is called &#8220;Vrt Internetradio&#8221;, and it basicly plays internet streams from the VRT (Vlaamse Radio- en Televisieomroeporganisatie).  
 The VRT ¬†owns several radio stations and they provide streams to listen to them via the internet. I took the opportunity to use those to make a Boxee plugin so we all can play them with our beloved Boxee.
@@ -33,8 +35,7 @@ Screenshots and download link are below , don&#8217;t hesitate to comment ¬†a
 **The main screen**  
 ![The main screen](/public/2010/04/vrt_boxee_main.png)
 
-
-**Info about a particular station and substations to play** 
+**Info about a particular station and substations to play**
 ![Station info](/public/2010/04/vrt_boxee_station.png)
 
 **Starting a radio station:**

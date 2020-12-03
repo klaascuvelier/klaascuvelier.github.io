@@ -2,12 +2,13 @@
 id: 156
 title: Boxee python dev
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=156
 permalink: /2010/04/boxee-python-dev/
 categories:
   - development
 tags:
+  - posts
   - Boxee
   - development
   - dialog
@@ -19,7 +20,8 @@ tags:
   - setlabel
   - textbox
 ---
-Boxee may be *&#8220;the best way to enjoy entertainment from the Internet and computer on your TV&#8221;* (according tor <a href="http://www.boxee.tv" target="_blank">their website</a>), the developers documentation isn&#8217;t all that great. Not everything is well-documented and the (python) API doesn&#8217;t always do what&#8217;s expected, which makes developing own plugins not that easy.  
+
+Boxee may be _&#8220;the best way to enjoy entertainment from the Internet and computer on your TV&#8221;_ (according tor <a href="http://www.boxee.tv" target="_blank">their website</a>), the developers documentation isn&#8217;t all that great. Not everything is well-documented and the (python) API doesn&#8217;t always do what&#8217;s expected, which makes developing own plugins not that easy.  
 It isn&#8217;t also always possible to find the right solution with Google. Maybe because not all that much people are developing plugins for Boxee (or the don&#8217;t care to share) or because Google doesn&#8217;t index it well.
 
 So I decided to share the things I found. Let&#8217;s hope google indexes them well and I&#8217;m able to help some fellow developers.
@@ -45,7 +47,7 @@ Setting the label can be done this way:
 and you&#8217;ll have to replace every comma (,) with $COMMA
 
 **Onload-tag with a dialog**  
-I&#8217;ve experienced some troubles with the onload-tag in windows with type=&#8221;dialog&#8221;. If you have a *normal* window, and load a dialog-window in a onclick method with this code, the onload of the dialog won&#8217;t work until you close the dialog:
+I&#8217;ve experienced some troubles with the onload-tag in windows with type=&#8221;dialog&#8221;. If you have a _normal_ window, and load a dialog-window in a onclick method with this code, the onload of the dialog won&#8217;t work until you close the dialog:
 
 <pre lang="xml"> mc.ActivateWindow(14001) </pre>
 
@@ -78,4 +80,4 @@ Instead you have to do this:
 
 You can also add the &#8220;force&#8221; option (True/False), adding this option will skip all animations.
 
- [1]: http://developer.boxee.tv/Textbox_Control
+[1]: http://developer.boxee.tv/Textbox_Control

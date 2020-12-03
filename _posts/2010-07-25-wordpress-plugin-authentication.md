@@ -1,18 +1,20 @@
 ---
 id: 901
-title: 'WordPress plugin: Authentication'
+title: "WordPress plugin: Authentication"
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=901
 permalink: /2010/07/wordpress-plugin-authentication/
 categories:
   - development
   - Wordpress
 tags:
+  - posts
   - authentication
   - plugin
   - wordpress
 ---
+
 **Update:** This plugin is no longer maintained, as I don't use Wordpress anymore myself.
 
 ---
@@ -33,4 +35,4 @@ Screenshot:
 
 Now compatible with WordPress 3.3
 
- [1]: http://wordpress.org/extend/plugins/basic-authentication/
+[1]: http://wordpress.org/extend/plugins/basic-authentication/

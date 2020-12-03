@@ -2,14 +2,17 @@
 id: 5014
 title: Sublime Command-on-Save
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5014
 permalink: /2013/06/sublime-command-on-save/
 categories:
   - Development
   - plugin
   - SublimeText
+tags:
+  - posts
 ---
+
 I just finished my Sublime Text 3 plugin: Command on Save.  
 It executes given commands when you save files. From rsyncing to an other machine, pushing to GIT or generating documentation, everything is possible.
 
@@ -45,6 +48,6 @@ Here are some examples:
 
 Feel free to fork and improve, or contact me if you need any help
 
-*Note*: this version is not compatible with Sublime Text 2, I do have an older version of this plugin available here: [ST2-CommandOnSave][1]. But that plugin is not longer maintained.
+_Note_: this version is not compatible with Sublime Text 2, I do have an older version of this plugin available here: [ST2-CommandOnSave][1]. But that plugin is not longer maintained.
 
- [1]: https://github.com/klaascuvelier/ST2-CommandOnSave
+[1]: https://github.com/klaascuvelier/ST2-CommandOnSave

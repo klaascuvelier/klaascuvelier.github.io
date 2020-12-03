@@ -2,7 +2,7 @@
 id: 224
 title: Boxee on Ubuntu Lucid Minimal on Asrock ION 330
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=224
 permalink: /2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/
 categories:
@@ -12,8 +12,7 @@ categories:
   - Linux
   - Ubuntu
 tags:
-  - 10.4
-  - 330
+  - posts
   - asrock
   - Boxee
   - ion
@@ -25,6 +24,7 @@ tags:
   - restricted
   - ubuntu
 ---
+
 <div>
   <p>
     Yesterday I performed a clean install from <a href="http://archive.ubuntu.com/ubuntu/dists/lucid/main/installer-i386/current/images/netboot/mini.iso">Ubuntu Lucid Lynx Minimal</a> on my Asrock Ion 330.<br /> I followed <a href="http://forums.boxee.tv/showthread.php?t=5644">this guide</a> like I did last time (for an earlier version of Ubuntu Minimal) but I encountered some problems.
