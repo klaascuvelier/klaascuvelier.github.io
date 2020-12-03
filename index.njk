@@ -1,0 +1,42 @@
+---
+layout: layouts/empty.njk
+---
+
+<div class="landing-content">
+
+  <section class="landing-intro">
+
+    <div class="about-me">
+      <span class="name">Klaas Cuvelier</span><br />
+      <span class="title">Software Engineer</span>
+    </div>
+
+    <p class="intro">
+      A software developer from Ghent &#x1F1E7;&#x1F1EA.
+      
+    </p>
+
+    <p>
+      Passionate about the web, data, and trails.<br />
+      Sharing my experiences, thoughts and opinions I deem worth sharing&hellip;
+    </p>
+
+  </section>
+
+  <section class="landing-blog">
+    <h3>My most recent writings</h3>
+
+    <ul>    
+      {% for post in collections.posts | head(-3) | reverse %}
+      <li>
+
+          <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
+          <span class="post-meta">{{ post.date | readableDate }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <a href="{{ 'blog' | url }}">See more&hellip;</a>
+  </section>
+
+</div>

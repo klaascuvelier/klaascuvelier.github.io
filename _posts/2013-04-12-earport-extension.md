@@ -1,13 +1,16 @@
 ---
 id: 4954
-title: 'Earport.fm drag &#8216;n drop extension'
+title: "Earport.fm drag &#8216;n drop extension"
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=4954
 permalink: /2013/04/earport-extension/
 categories:
   - Cuvedev
+tags:
+  - posts
 ---
+
 For people who don&#8217;t know <a href="http://www.earport.fm" target="_blank">Earport</a>, it is a service to listen to music together.
 
 **Short**: Members can create their own &#8220;music room&#8221; and create a playlist. All people joining (other members, friends, colleagues, &#8230;) will be hearing the same music at the same time.

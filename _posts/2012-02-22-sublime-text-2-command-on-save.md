@@ -1,12 +1,15 @@
 ---
 id: 4771
-title: 'Sublime Text 2 &#8211; Command on Save'
+title: "Sublime Text 2 &#8211; Command on Save"
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 permalink: /2012/02/sublime-text-2-command-on-save/
 categories:
   - Cuvedev
+tags:
+  - posts
 ---
+
 This is a plugin based on the one I wrote here: [sublime-text2-rsync-on-save][1]  
 The problem with the rsync-on-save plugin, is that it doesn&#8217;t support project specific rsync commands, mainly because Sublime Text doesn&#8217;t support project specific settings for packages.
 
@@ -28,5 +31,5 @@ There are some examples of path-command mapping in the settings file, and FYI, t
 }</pre>
 </div>
 
- [1]: /2011/12/sublime-text-2-rsync-on-save/
- [2]: https://github.com/klaascuvelier/ST2-CommandOnSave
+[1]: /2011/12/sublime-text-2-rsync-on-save/
+[2]: https://github.com/klaascuvelier/ST2-CommandOnSave

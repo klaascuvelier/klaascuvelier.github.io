@@ -2,11 +2,12 @@
 id: 89
 title: Ubuntu Jaunty notifications in Mint (Felicia)
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=89
 permalink: /2009/05/ubuntu-jaunty-notifications-in-mint-felicia/
 categories:
 tags:
+  - posts
   - felicia
   - linux
   - mint
@@ -14,6 +15,7 @@ tags:
   - notify-osd
   - popup
 ---
+
 As some of you might already have seen, Ubuntu Jaunty Jackalope has a new popup notifier, called &#8216;notify osd&#8217;.  
 It looks, in my opinion, much like Mac OS X&#8217;s Growl which I like very much (I&#8217;ve been using OS X for over 3 months now at Netlog NV) so I decided to try and install it on my Mint desktop and laptop at home.  
 Apparently some people already managed to install it in Ubuntu Intrepid and because Mint Felicia is based on Intrepid, I thought it would be a peace of cake following their instructions. Turned out it wasn&#8217;t. I had to install much more stuff to get it working and that&#8217;s why I&#8217;d like to share it.

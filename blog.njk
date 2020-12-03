@@ -1,0 +1,27 @@
+---
+layout: layouts/default.njk
+---
+
+<div class="home">
+
+    <h1 class="page-heading">Posts</h1>
+    <p style="font-size: 80%">Things I find worth sharing.<br />
+        Feel free to reply through the comments form below each post or through Twitter.
+    </p>
+
+    <ul class="post-list">
+      {% for post in collections.posts | reverse %}
+         <li>
+            <span class="post-meta">{{ post.date | readableDate }}</span>
+
+            <h2>
+                <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
+            </h2>
+        </li>
+      {% endfor %}
+
+    </ul>
+
+    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | url }}">via RSS</a></p>
+
+</div>

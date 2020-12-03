@@ -2,7 +2,7 @@
 id: 181
 title: Gowalla API Class (php)
 author: Klaas Cuvelier
-layout: post
+layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=181
 permalink: /2010/04/gowalla-api-class/
 categories:
@@ -12,6 +12,7 @@ categories:
   - gowalla
   - php
 tags:
+  - posts
   - api
   - class
   - gowalla
