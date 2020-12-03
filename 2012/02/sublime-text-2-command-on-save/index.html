@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Trail runner
+    </title>
+    <meta name="description" content="" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2012/02/sublime-text-2-command-on-save/" />
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            (i[r] =
+                i[r] ||
+                function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }),
+                (i[r].l = 1 * new Date());
+            (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-2458471-3', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+
+
+    <body>
+        
+<header class="site-header">
+    <div class="wrapper">
+        <a href="/">
+            <img class="avatar" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84" />
+        </a>
+
+        <a class="site-title" href="/"></a>
+        <span class="site-title-alt">Software Engineer</span>
+    </div>
+</header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>This is a plugin based on the one I wrote here: <a href="/2011/12/sublime-text-2-rsync-on-save/">sublime-text2-rsync-on-save</a><br>
+The problem with the rsync-on-save plugin, is that it doesn’t support project specific rsync commands, mainly because Sublime Text doesn’t support project specific settings for packages.</p>
+<p>In this plugin I worked around it in a certain way. I created a  plugin which executes a command based on the folder path.<br>
+The path-command mapping is stored in a settings file, so it can be edited from  within Sublime Text 2.</p>
+<p>I put the project on GitHub, so to install it, <a href="https://github.com/klaascuvelier/ST2-CommandOnSave">clone this repository</a> into your packages folder.</p>
+<p>There are some examples of path-command mapping in the settings file, and FYI, this is how my settings file looks:</p>
+<div style="width: 90%; overflow: auto">
+  <pre>{
+  "commands": [
+    "/Users/klaascuvelier/Projects/showpad/cms/::/Users/klaascuvelier/Projects/showpad/cms/commandonsave.sh &",
+    "/Users/klaascuvelier/Projects/showpad/presentation/::/Users/klaascuvelier/Projects/showpad/presentation/commandonsave.sh &",
+    "/Users/klaascuvelier/Projects/showpad/dashboard/::/Users/klaascuvelier/Projects/showpad/dashboard/commandonsave.sh &",
+    "/Users/klaascuvelier/Projects/showpad/support/::/Users/klaascuvelier/Projects/showpad/support/commandonsave.sh &"
+  ]
+}</pre>
+</div>
+
+</div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>Klaas Cuvelier</li>
+                    <li><a href="mailto:"></a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                     
+                </ul>
+            </div>
+
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </body>
+
+</html>
