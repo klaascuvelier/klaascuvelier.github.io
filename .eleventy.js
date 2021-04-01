@@ -1,7 +1,7 @@
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const pluginRss = require('@11ty/eleventy-plugin-rss');
 const { DateTime } = require('luxon');
-const htmlmin = require('html-minifier')
+const htmlmin = require('html-minifier');
 
 const now = String(Date.now());
 
@@ -25,11 +25,7 @@ module.exports = function (eleventyConfig) {
     });
 
     eleventyConfig.addTransform('htmlmin', function (content, outputPath) {
-        if (
-            process.env.ELEVENTY_PRODUCTION &&
-            outputPath &&
-            outputPath.endsWith('.html')
-        ) {
+        if (process.env.ELEVENTY_PRODUCTION && outputPath && outputPath.endsWith('.html')) {
             return htmlmin.minify(content, {
                 useShortDoctype: true,
                 removeComments: true,
@@ -37,12 +33,12 @@ module.exports = function (eleventyConfig) {
             });
         }
 
-        return content
-    })
+        return content;
+    });
 
     eleventyConfig.addWatchTarget('./_tmp/style.css');
     eleventyConfig.addPassthroughCopy({ './_tmp/style.css': './style.css' });
-    //eleventyConfig.addPassthroughCopy('css');
+    eleventyConfig.addPassthroughCopy('css');
     eleventyConfig.addPassthroughCopy('public');
     eleventyConfig.addPassthroughCopy('CNAME');
 
