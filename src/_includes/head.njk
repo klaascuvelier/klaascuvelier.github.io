@@ -1,10 +1,11 @@
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <title>
-        {% if page.title %}{{ page.title }} | Klaas C.{% else %}Klaas Cuvelier | Software developer & Trail runner{%
+        {% if page.title %}{{ page.title }} | Klaas C.{% else %}Klaas Cuvelier | Software developer & Runner{%
         endif %}
     </title>
     <meta name="description" content="{{ site.description | replace(`\n`, '') }}" />
@@ -13,7 +14,7 @@
     {%endif %}
 
     <link rel="stylesheet" href="{{ '/css/main.css' | url }}" />
-    <link rel="stylesheet" href="/style.css?v={% version %}"/>
+
     <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
     <link rel="canonical" href="{{ page.url | replace('index.html','') | url }}" />
 
