@@ -23,16 +23,18 @@
   },
   "homepage": "https://github.com/klaascuvelier/klaascuvelier.github.io#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.0-beta.2",
-    "@11ty/eleventy-plugin-rss": "^1.1.1",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.0",
-    "autoprefixer": "^10.2.5",
-    "clean-css-cli": "^5.2.2",
+    "@11ty/eleventy": "^1.0.0-beta.9",
+    "@11ty/eleventy-plugin-rss": "^1.1.2",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.3",
+    "autoprefixer": "^10.4.1",
+    "clean-css-cli": "^5.5.0",
     "html-minifier": "^4.0.0",
-    "luxon": "^1.26.0",
-    "postcss-cli": "^8.3.1",
-    "prettier": "^2.2.1",
+    "luxon": "^2.2.0",
+    "postcss-cli": "^9.1.0",
+    "prettier": "^2.5.1",
     "tailwindcss": "^2.0.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "tailwind": "^4.0.0"
+  }
 }
