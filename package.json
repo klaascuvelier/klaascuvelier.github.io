@@ -6,11 +6,10 @@
   "scripts": {
     "clean": "rimraf _site src/_includes/css _tmp",
     "start": "NODE_ENV=development npm-run-all clean --parallel dev:*",
-    "build": "NODE_ENV=production npm-run-all clean postcss-build --parallel prod:*",
-    "postcss-build": "postcss src/assets/css/main.css -o src/_includes/css/main.css --config ./postcss.config.js",
+    "build": "NODE_ENV=production npm-run-all clean --parallel prod:*",
     "dev:postcss": "postcss src/assets/css/main.css -o _site/css/main.css --config ./postcss.config.js -w",
     "dev:eleventy": "ELEVENTY_ENV=development npx @11ty/eleventy --watch --quiet --serve",
-    "prod:postcss": "postcss src/assets/css/main.css -o src/_includes/css/main.css --config ./postcss.config.js",
+    "prod:postcss": "postcss src/assets/css/main.css -o _site/css/main.css --config ./postcss.config.js",
     "prod:eleventy": "ELEVENTY_ENV=production npx @11ty/eleventy",
     "format": "prettier --write **/*.{html,njk,js,css,yml,json}"
   },
@@ -35,6 +34,7 @@
     "@fullhuman/postcss-purgecss": "^4.1.3",
     "autoprefixer": "^10.4.1",
     "clean-css-cli": "^5.5.0",
+    "cssnano": "^5.0.14",
     "html-minifier": "^4.0.0",
     "luxon": "^2.2.0",
     "npm-run-all": "^4.1.5",
