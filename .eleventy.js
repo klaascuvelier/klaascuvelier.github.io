@@ -6,6 +6,7 @@ const htmlmin = require('html-minifier');
 const now = String(Date.now());
 
 module.exports = function (eleventyConfig) {
+
     eleventyConfig.addPlugin(syntaxHighlight);
     eleventyConfig.addPlugin(pluginRss);
 
@@ -42,5 +43,10 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('public');
     eleventyConfig.addPassthroughCopy('CNAME');
 
-    return {};
+    return {
+        dir: {
+            input: "src",
+            output: "_site"
+        }
+    };
 };

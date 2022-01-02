@@ -27,4 +27,4 @@ Download and enjoy!
 Tested on Boxee Beta for OSX and Ubuntu.
 
 [1]: http://www.stubru.be
-[2]: public/2010/04/stubru.zip
+[2]: ../../public/2010/04/stubru.zip

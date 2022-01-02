@@ -3,4 +3,4 @@ _tmp
 .idea
 .DS_Store
 node_modules
-
+src/_includes/css/main.css
