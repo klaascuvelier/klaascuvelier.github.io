@@ -23,6 +23,7 @@ layout: layouts/empty.njk
 
   </section>
 
+  {% if homepage.showRecents %}
   <section class="landing-blog">
     <h3>My most recent writings</h3>
 
@@ -38,5 +39,6 @@ layout: layouts/empty.njk
 
     <a href="{{ 'blog' | url }}">See more&hellip;</a>
   </section>
+  {% endif %}
 
 </div>
