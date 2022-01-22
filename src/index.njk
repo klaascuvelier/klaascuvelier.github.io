@@ -2,41 +2,49 @@
 layout: layouts/empty.njk
 ---
 
-<div class="landing-content">
+<div class="h-screen flex flex-row items-center justify-center px-4">
 
-  <section class="landing-intro">
+    <main class="mx-auto">
 
-    <div class="about-me">
-      <span class="name">Klaas Cuvelier</span><br />
-      <span class="title">Software Engineer</span>
-    </div>
+        <div class="flex flex-row items-center justify-start">
+            <img src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc" al="picture of Klaas Cuvelier"
+                 class="rounded-full"/>
 
-    <p class="intro">
-      A software developer from Ghent &#x1F1E7;&#x1F1EA.
-      
-    </p>
+            <div class="ml-4 text-xl">
+                <div class="text-2xl font-semibold">Klaas Cuvelier</div>
+                <div class="text-gray-600">Web Developer &amp; Runner</div>
+            </div>
+        </div>
 
-    <p>
-      Passionate about the web, data, and trails.<br />
-      Sharing my experiences, thoughts and opinions I deem worth sharing&hellip;
-    </p>
+        <div class="mt-10 px-4 leading-relaxed text-lg">
+            <p class="my-1">
+                Hi, I am Klaas.<br/>
+                I'm a Principal Engineer at <a href="https://showpad.com" rel="noopener" target="_blank">Showpad</a>,
+                a (trail) runner and a dad of 2.<br/>
+                I ran <a href="https://everysinglestreet.gent" rel="noopener" target="_blank">every single street of
+                    Ghent</a>.<br>
+            </p>
+        </div>
 
-  </section>
 
-  <section class="landing-blog">
-    <h3>My most recent writings</h3>
+    </main>
 
-    <ul>    
-      {% for post in collections.posts | head(-3) | reverse %}
-      <li>
+    {% if homepage.showRecents %}
+        <section class="landing-blog">
+            <h3>My most recent writings</h3>
 
-          <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
-          <span class="post-meta">{{ post.date | readableDate }}</span>
-      </li>
-      {% endfor %}
-    </ul>
+            <ul>
+                {% for post in collections.posts | head(-3) | reverse %}
+                    <li>
 
-    <a href="{{ 'blog' | url }}">See more&hellip;</a>
-  </section>
+                        <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
+                        <span class="post-meta">{{ post.date | readableDate }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <a href="{{ 'blog' | url }}">See more&hellip;</a>
+        </section>
+    {% endif %}
 
 </div>
