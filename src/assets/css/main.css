@@ -8,6 +8,11 @@
     }
 }
 
+// fix for safari 100vh issue
+.h-screen {
+  height: 100vh;
+  height: -webkit-fill-available;
+}
 
 
 body {
