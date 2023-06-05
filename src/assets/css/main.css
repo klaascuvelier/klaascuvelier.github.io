@@ -8,6 +8,11 @@
     }
 }
 
+html {
+    height: 100%;
+    width: 100%;
+}
+
 /* fix for safari 100vh issue */
 .h-screen {
     height: 100vh;
@@ -33,6 +38,7 @@
 .at-1 {animation-delay: 2s; }
 .at-2 {animation-delay: 4s; animation-duration: 1s }
 .at-3 {animation-delay: 5s; animation-duration: 1s }
+.at-4 {animation-delay: 6s; animation-duration: 1s }
 
 @keyframes animatedText {
     from {
