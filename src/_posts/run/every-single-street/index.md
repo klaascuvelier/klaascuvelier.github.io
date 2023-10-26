@@ -7,22 +7,31 @@ permalink: /run/every-single-street/
 
 # Every Single Street
 
-In November 2018 Rickey Gates had the crazy idea to [run all the streets of San Francisco, California](http://www.rickeygates.com/everysinglestreet). About 2,000km of pavement with quite some elevation.
-I had been following Rickey for a longer time already as he's a great ultra-runner and inspiring person overall. Given that I lived in San Francisco from 2016 to 2018 myself I was very interested in his journey.
-
-Only 40 days after the start, he finished running all of San Francisco's streets. Incredible!
-
-## Every Single Street &middot; Ghent
-
-Rickey has inspired many more people to start running every single street of the cities they live in, even in San Francisco: [Fifty Shades of Pavement](https://pathprojects.com/blogs/news/running-san-francisco-block-by-block).
-
-<br />
-
 > To walk across a place is to truly know a place.
+> <br/> <small>Ricky Gates</small>
 
-I've been living in Ghent for the most part since 2009 (from 2016 until 2018 I lived in San-Francisco myself) and I realized that I definitely not truly know Ghent. I haven't visited every single neighbourhood.
+<br/>
 
-This inspired me to take on the same adventure Ricky did, but in Ghent.
+In November 2018, Rickey Gates embarked on an ambitious mission to [run all the streets of San Francisco, California](http://www.rickeygates.com/everysinglestreet), covering approximately 2000 kilometers with significant elevation.
+Remarkably, he accomplished this feat in just 45 days!
+
+Rickey's remarkable achievement has served as [a powerful inspiration for countless individuals](https://www.everysinglestreet.com/), including myself.
+
+Having primarily resided in Ghent since 2009 (with a brief period in San Francisco from 2016 to 2018), I realized that I had yet to truly explore the breadth of my own city. <br >
+Motivated by Rickey's example, I decided to undertake the same challenge: to run each and every street of Ghent, immersing myself in a quest to forge a deeper connection with the city I call home and discover unexplored neighbourhoods.
+
+
+## Running every street
+
+I am not a professional or sponsored runner so my progress is constrained by family, work and social life.
+
+Originally I put out some deliberate boundaries around the city center, limiting the streets I wanted to run.
+All of my runs were 
+
+
+I finished my last run on ..sfjej;weklw
+
+Later on I was introduced to [CityStrides](https://citystrides.com) and realized I was not the only person running the streets of Ghent and that I definitely did not run _all_ of the streets.
 
 ### Planning
 

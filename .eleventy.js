@@ -1,5 +1,8 @@
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const pluginRss = require('@11ty/eleventy-plugin-rss');
+const markdownIt = require('markdown-it');
+const markdownItAnchor = require('markdown-it-anchor');
+const markdownItAttrs = require('markdown-it-attrs');
 const { DateTime } = require('luxon');
 const htmlmin = require('html-minifier');
 
@@ -42,6 +45,18 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('css');
     eleventyConfig.addPassthroughCopy('public');
     eleventyConfig.addPassthroughCopy('CNAME');
+    // eleventyConfig.setLibrary("md", markdownIt().use(markdownItAnchor)).use(markdownItAttrs)
+
+    let markdownItOptions = {
+        html: true // you can include HTML tags
+    }
+
+    let markdownItAnchorOptions = {
+        level: 2 // minimum level header -- anchors will only be applied to h2 level headers and below but not h1
+    }
+
+    eleventyConfig.setLibrary("md", markdownIt(markdownItOptions).use(markdownItAnchor, markdownItAnchorOptions))
+
 
     return {
         dir: {

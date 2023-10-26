@@ -2,26 +2,28 @@
 layout: layouts/default.njk
 ---
 
-<div class="home">
-
-    <h1 class="page-heading">Posts</h1>
-    <p style="font-size: 80%">Things I find worth sharing.<br />
-        Feel free to reply through the comments form below each post or through Twitter.
+<section>
+    <h1>Writing</h1>
+    <p>I'm very bad at writing and sharing consistently. But from time to time I do write down some words, things that I find
+    worth sharing, mostly tech related.</p>
+    <p>
+    There is no commenting system on this blog, but I'm always happy to hear your thoughts.
+    Feel free to reach out to me on any of the <a href="/about#social-platforms">social platforms I am on</a>.
     </p>
+</section>
 
+<section class="mt-20">
     <ul class="post-list">
       {% for post in collections.posts | reverse %}
-         <li>
-            <span class="post-meta">{{ post.date | readableDate }}</span>
+         <li class="my-1">
+             <h2 class="my-0 text-lg">
+                 <a href="{{ post.url | url }}">{{ post.data.title }}</a>
+             </h2>
 
-            <h2>
-                <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
-            </h2>
+            <span class="text-sm text-slate-500">{{ post.date | readableDate }}</span>
         </li>
       {% endfor %}
-
     </ul>
+</section>
 
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | url }}">via RSS</a></p>
-
-</div>
+<p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | url }}">via RSS</a></p>
