@@ -1,23 +1,12 @@
-{% if header === "running" %}
-    <header class="site-header bg-gradient-to-r from-indigo-800 to-indigo-700">
-        <div class="max-w-4xl mx-auto h-14 lg:px-0 px-10 flex flex-row justify-start items-center">
-            <a href="/" class="mr-10">
-                <img
-                    class="rounded-full border-2 border-solid border-white w-10 h-10"
-                    src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
-            </a>
-            <a class="text-2xl text-white visited:text-white mr-2" href="/">Klaas</a>
-            <span class="text-2xl text-gray-100">runs
-            </span>
-        </div>
-    </header>
-{% else %}
+
     <header class="site-header mb-5">
         <div class="pl-2 py-2 flex flex-row justify-start items-center">
             <a href="/" class="mr-3">
                 <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
             </a>
             <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            {% if headerSuffix %}
+                <span class="text-l text-gray-700 mr-2">{{ headerSuffix }}</span>
+            {% endif %}
         </div>
     </header>
-{% endif %}
