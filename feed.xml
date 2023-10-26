@@ -1,0 +1,1187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Klaas C.</title>
+  <subtitle>Home page of Klaas Cuvelier. Full stack developer, runner and geek. This is where I share stuff I consider worth sharing.</subtitle>
+  <link href="https://klaascuvelier.io/feed.xml" rel="self"/>
+  <link href="https://klaascuvelier.io/"/>
+  <updated>2018-03-15T00:00:00Z</updated>
+  <id>https://klaascuvelier.io/</id>
+  <author>
+    <name>Klaas Cuvelier</name>
+    <email>cuvelierklaas@gmail.com</email>
+  </author>
+  
+  <entry>
+    <title>Ubuntu Jaunty notifications in Mint (Felicia)</title>
+    <link href="https://klaascuvelier.io/2009/05/ubuntu-jaunty-notifications-in-mint-felicia/"/>
+    <updated>2009-05-07T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2009/05/ubuntu-jaunty-notifications-in-mint-felicia/</id>
+    <content type="html">&lt;p&gt;As some of you might already have seen, Ubuntu Jaunty Jackalope has a new popup notifier, called ‘notify osd’.&lt;br /&gt;
+It looks, in my opinion, much like Mac OS X’s Growl which I like very much (I’ve been using OS X for over 3 months now at Netlog NV) so I decided to try and install it on my Mint desktop and laptop at home.&lt;br /&gt;
+Apparently some people already managed to install it in Ubuntu Intrepid and because Mint Felicia is based on Intrepid, I thought it would be a peace of cake following their instructions. Turned out it wasn’t. I had to install much more stuff to get it working and that’s why I’d like to share it.&lt;/p&gt;
+&lt;p&gt;First of all, these instructions below are based on two tutorials I found using Google, namely http://www.stefanoforenza.com/how-to-get-the-new-notifications-on-intrepid/ and http://blog.alexrybicki.com/2009/02/how-to-install-notify-osd-in-intrepid.html. Also, this is what I had to do to get it working, it is possible this won’t work for you.&lt;/p&gt;
+&lt;p&gt;So, let’s get started.&lt;br /&gt;
+First of all, you’ll have to install a bunch of needed files:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ sudo apt-get install bzr gnome-common automake gconf2 libgconf2-4 libgconf2-dev libdbus-glib-1-dev libwnck-dev mono-gmcs libnotify-dev
+&lt;/p&gt;
+&lt;p&gt;The package bzr (short for ‘bazaar’) is needed to get the source from launchpad.&lt;br /&gt;
+Next step is actually getting the source:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ bzr branch lp:notify-osd
+&lt;/p&gt;
+&lt;p&gt;Just to make sure you have it right, LP, first char is an ‘L’ ;-)&lt;br /&gt;
+Before we can start compiling, we’ll have to fix something (I had to do it, not sure you’ll need to):&lt;br /&gt;
+To successfully complete the build, the command ‘gmcs’ is needed. As you might have noticed, we installed the packet above, but for me that wasn’t enough. Apparently installing that package creates a file in /usr/bin named ‘gmcs2′ instead of just ‘gmcs’.&lt;br /&gt;
+I fixed this by making a softlink:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ sudo ln -s /usr/bin/gmcs2 /usr/bin/gmcs
+&lt;/p&gt;
+&lt;p&gt;So, we can start compiling now, as always, first run the ‘autogen’ script followed by the ‘make’ command:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ cd ~/notify-osd&lt;br /&gt; $ ./autogen.sh&lt;br /&gt; $ ./make
+&lt;/p&gt;
+&lt;p&gt;If you have errors, it’s probably a dependencies problem, on both of the mentioned sites above they advised to make install some more packes:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ sudo apt-get install libc6 libcairo2 libdbus-1-3 libdbus-glib-1-2 libgconf2-4 libglib2.0-0 libgtk2.0-0 libpango1.0-0 libpixman-1-0 libx11-6
+&lt;/p&gt;
+&lt;p&gt;Installing above packets wasn’t necessary for my, but it might be for you.&lt;br /&gt;
+So, when you don’t have any errors (anymore) it means your build was successful, and so you can start using the new notification pop-ups.&lt;br /&gt;
+First of all, you’ll have to end the current notifier and then you’ll be able to start notify-osd like this:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ killall notification-daemon&lt;br /&gt; $ cd src&lt;br /&gt; $ ./notify-osd
+&lt;/p&gt;
+&lt;p&gt;Now to the check out your new notifier, you can run the test script in the same directory (you’ll have to open a new tab because notify-osd is still running):&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ ./send-test-notification.sh
+&lt;/p&gt;
+&lt;p&gt;This show a whole bunch of nice pop-ups, demonstrating the possibilities of notify-osd.&lt;/p&gt;
+&lt;p&gt;Just like me, you might like this notifier very much, and you’d like to have this running the next time you start up you’re machine.&lt;br /&gt;
+As we didn’t make any permanent changes to the system, and the default notifier will be started when you restarted your system, we’ll have to write a little script to fix this:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ touch ~/notify-osd/startup.sh&lt;br /&gt; $ nano ~/notify-osd/startup.sh
+&lt;/p&gt;
+&lt;p&gt;Using the editor (nano) add these lines to the file:&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  #!/bin/bash&lt;br /&gt; killall notification-daemon&lt;br /&gt; sleep 1&lt;br /&gt; ~/notify-osd/src/notify-osd
+&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  Now all you have to do is make the script runnable and add the script to you&amp;#8217;re startup scripts in ~/.config/startup:
+&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  $ sudo chmod a+x ~/notify-osd/startup.sh&lt;br /&gt; $ touch ~/.config/startup/notify-osd.desktop&lt;br /&gt; $ nano ~/.config/startup/notify-osd.desktop
+&lt;/p&gt;
+&lt;p&gt;This what you should put in the file (replace [USER] with your username):&lt;/p&gt;
+&lt;p style=&quot;font-family: monospace; font-size: 11px&quot;&gt;
+  Type=Application&lt;br /&gt; Name=notify-osd&lt;br /&gt; Exec=/home/[USER]/.config/autostart/notify-osd.sh&lt;br /&gt; Icon=system-run&lt;br /&gt; Comment=&lt;br /&gt; X-GNOME-Autostart-enabled=tru
+&lt;/p&gt;
+&lt;p&gt;This worked out for me, I hope it does for you too!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Updates</title>
+    <link href="https://klaascuvelier.io/2010/03/updates/"/>
+    <updated>2010-03-10T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/03/updates/</id>
+    <content type="html">&lt;p&gt;It’s been a while I shared something useful with the rest of the world. So for the few people who might read this, here’s why:&lt;/p&gt;
+&lt;p&gt;I’ve been rather busy with my job. Since August ’09 I’m a full time web developer at Netlog NV (in Ghent, Belgium). It’s a very cool job and I’m in an awesome team. I learn from them everyday. New approaches, techniques, …&lt;/p&gt;
+&lt;p&gt;Also, In November I’ve won a price together with Cliff Ophalvens, my partner at Netlog during my internship (Now also a colleague at Netlog). Our school nominated our work, so we had to go to Brussel to give a presentation about it.&lt;br /&gt;
+Out of almost 18.000 graduated ‘Bachelors’, our work won in the category Informatics. Worth mentioning, not?&lt;/p&gt;
+&lt;p&gt;In my spare time I’m currently working on several little projects, which will probably be shared on the site when I finished them.¬†Of course¬†after a whole day of work, I most of the time don’t go right back to my computer screen… So they’re not quite finished yet.&lt;br /&gt;
+But here’s a little list of stuff I’m working on (not in real detail):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Boxee plugins (I’ve so much ideas at this moment)&lt;/li&gt;
+&lt;li&gt;Netbeans plugins&lt;/li&gt;
+&lt;li&gt;Little PHP Framework&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, that’s about it. Hope to see you soon again.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Boxee StuBru Plugin</title>
+    <link href="https://klaascuvelier.io/2010/04/boxee-stubru-plugin/"/>
+    <updated>2010-04-05T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/04/boxee-stubru-plugin/</id>
+    <content type="html">&lt;p&gt;So … I finally finished my first Boxee plugin. Funny tough, it’s non of my previously planned plugins.&lt;br /&gt;
+Today I got the inspiration to make ¬†a small but handy plugin. &lt;a href=&quot;http://www.stubru.be/&quot;&gt;Studio Brussel&lt;/a&gt; was airing “De zwaarste lijst”, a list of hard rock and metal music tonight, and I thought it would nice to listen to it with Boxee because it uses my Logitech Z-5500. ‘Nuff said right?&lt;/p&gt;
+&lt;p&gt;So here it is. It’s extremely basic, but it does what it was supposed to do, play stubru music.&lt;br /&gt;
+Download and enjoy!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/2010/public/2010/04/stubru.zip&quot;&gt;Download my stubru boxee plugin&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Tested on Boxee Beta for OSX and Ubuntu.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Boxee python dev</title>
+    <link href="https://klaascuvelier.io/2010/04/boxee-python-dev/"/>
+    <updated>2010-04-10T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/04/boxee-python-dev/</id>
+    <content type="html">&lt;p&gt;Boxee may be &lt;em&gt;“the best way to enjoy entertainment from the Internet and computer on your TV”&lt;/em&gt; (according tor &lt;a href=&quot;http://www.boxee.tv/&quot; target=&quot;_blank&quot;&gt;their website&lt;/a&gt;), the developers documentation isn’t all that great. Not everything is well-documented and the (python) API doesn’t always do what’s expected, which makes developing own plugins not that easy.&lt;br /&gt;
+It isn’t also always possible to find the right solution with Google. Maybe because not all that much people are developing plugins for Boxee (or the don’t care to share) or because Google doesn’t index it well.&lt;/p&gt;
+&lt;p&gt;So I decided to share the things I found. Let’s hope google indexes them well and I’m able to help some fellow developers.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Textbox + SetLabel:&lt;/strong&gt;&lt;br /&gt;
+If you have a &lt;a href=&quot;http://developer.boxee.tv/Textbox_Control&quot;&gt;textbox&lt;/a&gt;, it is not possible to change the label via python in an easy way.&lt;/p&gt;
+&lt;pre lang=&quot;python&quot;&gt;mc.GetActiveWindow().GetLabel([id]).SetLabel(&#39;text&#39;)&lt;/pre&gt;
+&lt;p&gt;and&lt;/p&gt;
+&lt;pre lang=&quot;python&quot;&gt;mc.GetActiveWindow().GetControl([id]).SetLabel(&#39;text&#39;)&lt;/pre&gt;
+&lt;p&gt;don’t work on a Textbox, and&lt;/p&gt;
+&lt;pre lang=&quot;python&quot;&gt;GetTextbox([id])&lt;/pre&gt;
+&lt;p&gt;doesn’t exist.&lt;br /&gt;
+Setting the label can be done this way:&lt;/p&gt;
+&lt;pre lang=&quot;python&quot;&gt;xbmc.executebuiltin(&#39;Control.SetLabel([id],[text])&#39;)&lt;/pre&gt;
+&lt;p&gt;and you’ll have to replace every comma (,) with $COMMA&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Onload-tag with a dialog&lt;/strong&gt;&lt;br /&gt;
+I’ve experienced some troubles with the onload-tag in windows with type=”dialog”. If you have a &lt;em&gt;normal&lt;/em&gt; window, and load a dialog-window in a onclick method with this code, the onload of the dialog won’t work until you close the dialog:&lt;/p&gt;
+&lt;pre lang=&quot;xml&quot;&gt; mc.ActivateWindow(14001) &lt;/pre&gt;
+&lt;p&gt;The way to solve this is to dump the python code to load the dialog and just do this:&lt;/p&gt;
+&lt;pre lang=&quot;xml&quot;&gt;ActivateWindow(14001)&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Python import gives errors:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It took me a while to figure out, but this error:&lt;/p&gt;
+&lt;pre lang=&quot;xml&quot;&gt;18:54:51 T:2963869696 M:410439680  NOTICE: --&amp;gt;Python Interpreter Initialized&amp;lt;--
+18:54:51 T:2963869696 M:410439680  NOTICE: Traceback (most recent call last):
+18:54:51 T:2963869696 M:410439680  NOTICE:   File &quot;&quot;, line 2, in ?
+18:54:51 T:2963869696 M:410439680  NOTICE: ImportError
+18:54:51 T:2963869696 M:410439680  NOTICE: :
+18:54:51 T:2963869696 M:410439680  NOTICE: No module named xxxxxxx
+18:54:51 T:2963869696 M:410439680   ERROR: Scriptresult: Error&lt;/pre&gt;
+&lt;p&gt;Was caused by a bad window-id. Boxee window-id’s should be between 14000 and 14099&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Close a window with type=”dialog”:&lt;/strong&gt;&lt;br /&gt;
+If you have opened a window with type=”dialog”, it isn’t possible to close the window with this code:&lt;/p&gt;
+&lt;pre lang=&quot;xml&quot;&gt;CloseWindow(14001)&lt;/pre&gt;
+&lt;p&gt;Instead you have to do this:&lt;/p&gt;
+&lt;pre lang=&quot;xml&quot;&gt;Dialog.Close(14001)&lt;/pre&gt;
+&lt;p&gt;You can also add the “force” option (True/False), adding this option will skip all animations.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Vrt Internetradio Boxee plugin</title>
+    <link href="https://klaascuvelier.io/2010/04/vrt-internetradio-boxee-plugin/"/>
+    <updated>2010-04-12T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/04/vrt-internetradio-boxee-plugin/</id>
+    <content type="html">&lt;p&gt;So, I finally finished my second Boxee plugin. This time I can call it a &lt;em&gt;real&lt;/em&gt; plugin, there are options, lists and dialogs. Hooray!&lt;/p&gt;
+&lt;p&gt;The plugin is called “Vrt Internetradio”, and it basicly plays internet streams from the VRT (Vlaamse Radio- en Televisieomroeporganisatie).&lt;br /&gt;
+The VRT ¬†owns several radio stations and they provide streams to listen to them via the internet. I took the opportunity to use those to make a Boxee plugin so we all can play them with our beloved Boxee.&lt;/p&gt;
+&lt;p&gt;There’s not that much functionality, but I tried to keep the layout simple and tried to give a good user experience (up/down buttons to right controls and such).&lt;/p&gt;
+&lt;p&gt;Screenshots and download link are below , don’t hesitate to comment ¬†and help me improve the plugin.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The main screen&lt;/strong&gt;&lt;br /&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/04/vrt_boxee_main.png&quot; alt=&quot;The main screen&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Info about a particular station and substations to play&lt;/strong&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/04/vrt_boxee_station.png&quot; alt=&quot;Station info&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Starting a radio station:&lt;/strong&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/04/vrt_boxee_play.png&quot; alt=&quot;Starting a radio station&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The options dialog&lt;/strong&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/04/vrt_boxee_options.png&quot; alt=&quot;The options dialog&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/public/2010/04/vrtradio.zip&quot;&gt;Download the plugin&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Gowalla API Class (php)</title>
+    <link href="https://klaascuvelier.io/2010/04/gowalla-api-class/"/>
+    <updated>2010-04-14T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/04/gowalla-api-class/</id>
+    <content type="html">&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; Gowalla has been bought by Facebook and been discontinued.&lt;/p&gt;
+&lt;p&gt;I just quickly made a class for accessing the &lt;a href=&quot;http://gowalla.com/&quot; target=&quot;_blank&quot;&gt;Gowalla&lt;/a&gt; &lt;a href=&quot;http://gowalla.com/api/explorer&quot; target=&quot;_blank&quot;&gt;API&lt;/a&gt; because I needed it myself. I looked for an existing class on the internet but could only find some crappy stuff on Google Code.&lt;br /&gt;
+So I decided to make one myself.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The use&lt;/strong&gt; of the class is fairly simple. Include the class file (don’t forget to add you &lt;a href=&quot;http://gowalla.com/api/keys&quot; target=&quot;_blank&quot;&gt;API-key&lt;/a&gt;), make an instance and do your calls.&lt;br /&gt;
+The class internally uses CURL to do the requests to the server and returns the data as an &lt;a href=&quot;http://php.net/manual/en/language.types.array.php&quot; target=&quot;_blank&quot;&gt;associative array&lt;/a&gt;.&lt;br /&gt;
+I tried to document the methods enough so it’s easy to use them.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;:&lt;/p&gt;
+&lt;pre lang=&quot;php&quot;&gt;&lt;!--?php
+include(&#39;./class.gowalla.php&#39;);
+$gowalla = new GowallaAPI();
+$events	 = $gowalla---&gt;getSpotEvents(846403);
+foreach ($events[&#39;activity&#39;] as $event)
+{ // do stuff }
+?&amp;gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/public/2010/04/gowalla.zip&quot;&gt;Download it here&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Boxee on Ubuntu Lucid Minimal on Asrock ION 330</title>
+    <link href="https://klaascuvelier.io/2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/"/>
+    <updated>2010-06-30T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/</id>
+    <content type="html">&lt;div&gt;
+  &lt;p&gt;
+    Yesterday I performed a clean install from &lt;a href=&quot;http://archive.ubuntu.com/ubuntu/dists/lucid/main/installer-i386/current/images/netboot/mini.iso&quot;&gt;Ubuntu Lucid Lynx Minimal&lt;/a&gt; on my Asrock Ion 330.&lt;br /&gt; I followed &lt;a href=&quot;http://forums.boxee.tv/showthread.php?t=5644&quot;&gt;this guide&lt;/a&gt; like I did last time (for an earlier version of Ubuntu Minimal) but I encountered some problems.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Here&amp;#8217;s how I solved them.
+  &lt;/p&gt;
+  &lt;p&gt;
+    In chapter &amp;#8220;Updating the computer&amp;#8221;, change in the sources.list hardy or intreprid or jaunty by &amp;#8220;lucid&amp;#8221;.&lt;br /&gt; No problems in &amp;#8220;Install sound&amp;#8221;.
+  &lt;/p&gt;
+  &lt;p&gt;
+    The real problems came in &amp;#8220;Installing the graphical environment&amp;#8221;.&lt;br /&gt; When I wanted to install the latest driver for my &lt;a href=&quot;http://uk.download.nvidia.com/XFree86/Linux-x86/256.35/NVIDIA-Linux-x86-256.35.run&quot;&gt;ION graphics card&lt;/a&gt; I always got this error:
+  &lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;
+      ERROR: Unable to load the kernel module &amp;#8216;nvidia.ko&amp;#8217;. This is most likely&lt;br /&gt; because the kernel module was built using the wrong kernel source files.&lt;br /&gt; Please make sure you have installed the kernel source files for your&lt;br /&gt; kernel; on Red Hat Linux systems, for example, be sure you have the&lt;br /&gt; &amp;#8216;kernel-source&amp;#8217; rpm installed. If you know the correct kernel source&lt;br /&gt; files are installed, you may specify the kernel source path with the&lt;br /&gt; &amp;#8216;&amp;#8211;kernel-source-path&amp;#8217; commandline option.
+    &lt;/p&gt;
+  &lt;/blockquote&gt;
+  &lt;p&gt;
+    It took me a while before I found this solution:&lt;br /&gt; Make the file (or edit the file if it already exists)  /etc/default/linux-restricted-modules-common&lt;br /&gt; and add this content:
+  &lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;
+      DISABLED_MODULES=&amp;#8221;nv nvidia_new&amp;#8221;
+    &lt;/p&gt;
+  &lt;/blockquote&gt;
+  &lt;p&gt;
+    Now you should be able to run the installer without problems.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Another small problem was, logging in automatically. In earlier releases of Ubuntu you had to change some commands in /etc/event.d/tty1 (according to the guide mentioned earlier), but in Ubuntu Lucid, the event.d folder doesn&amp;#8217;t exist anymore, and you have to put it in /etc/init/ instead.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Good Luck!
+  &lt;/p&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>WordPress plugin: Authentication</title>
+    <link href="https://klaascuvelier.io/2010/07/wordpress-plugin-authentication/"/>
+    <updated>2010-07-25T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/07/wordpress-plugin-authentication/</id>
+    <content type="html">&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; This plugin is no longer maintained, as I don&#39;t use Wordpress anymore myself.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;So, I finally submitted my first plugin to the WordPress plugin base.&lt;/p&gt;
+&lt;p&gt;It’s a plugin which add functionality to request visitors authentication before the website can be viewed. It doesn’t use HTTP Authentication, just php and html.&lt;br /&gt;
+You can choose to use the WordPress authentication functionality to login, or give a password yourself.&lt;/p&gt;
+&lt;p&gt;Try it out, and give some feedback.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://wordpress.org/extend/plugins/basic-authentication/&quot;&gt;Link to Basic Authentication plugin&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Screenshot:&lt;br /&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/07/screenshot-1.png&quot; alt=&quot;Basic authentication plugin&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;— Update:&lt;/p&gt;
+&lt;p&gt;Now compatible with WordPress 3.3&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>So, I made a clock</title>
+    <link href="https://klaascuvelier.io/2010/10/so-i-made-a-clock/"/>
+    <updated>2010-10-24T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2010/10/so-i-made-a-clock/</id>
+    <content type="html">&lt;p&gt;So yes, I made a clock. In JavaScript (and HTML).&lt;br /&gt;
+It’s not just another JavaScript analog or digital clock, it’s actually a clock which is easy to read and it’s based on this design: &lt;a href=&quot;http://www.qlocktwo.com/index.php?lang=en&quot; target=&quot;_blank&quot;&gt;QLOCKTWO by Biegert&amp;amp;Funk&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I think it’s a cool way to display time. When I considered buying the clock, I was shocked when I saw the price. So I though it would be a nice challenge to make it myself, in JavaScript.&lt;/p&gt;
+&lt;p&gt;Here is the result:&lt;br /&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/10/clock.png&quot; alt=&quot;Screenshot of the clock&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;And you can &lt;a href=&quot;http://www.cuvedev.net/whattimeisit&quot; target=&quot;_blank&quot;&gt;see it in action here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I am in particular proud of the &lt;a href=&quot;http://www.cuvedev.net/whattimeisit/clock.js&quot; target=&quot;_blank&quot;&gt;JavaScipt code&lt;/a&gt;.
+The clock is “built” with text predefined text strings, and right strings are highlighted using a “logic” for the selected language. In this way it is fairly easy to add new languages (at this time only Dutch and English are available). I used the PrototypJS-library because I’m used to it, and it shortened my code drastically.&lt;/p&gt;
+&lt;p&gt;Update:&lt;br /&gt;
+And this is what it looks like on an iPad:&lt;br /&gt;
+&lt;img src=&quot;https://klaascuvelier.io/public/2010/10/clock-ipad.jpg&quot; alt=&quot;Photo of the clock on an iPad&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;still pretty expensive for “just a clock”, but already cheaper than the qlocktwo.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Squeezebox server on Ubuntu Oneiric</title>
+    <link href="https://klaascuvelier.io/2011/11/squeezebox-server-on-ubuntu-oneiric/"/>
+    <updated>2011-11-17T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2011/11/squeezebox-server-on-ubuntu-oneiric/</id>
+    <content type="html">&lt;p&gt;I had some problems with my squeezebox server installation after upgrading to Oneiric.&lt;br /&gt;
+When I tried starting the server, I got this error:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Starting Squeezebox Server: Use of inherited AUTOLOAD for non-method YAML::Syck::DumpYAML() is deprecated at /usr/share/squeezeboxserver/CPAN/YAML/Syck.pm line 65.&lt;br /&gt;
+The following modules failed to load: DBI EV XML::Parser::Expat HTML::Parser JSON::XS Digest::SHA1 YAML::Syck Sub::Name&lt;br /&gt;
+*&lt;strong&gt;**&lt;/strong&gt;&lt;br /&gt;
+NOTE:&lt;br /&gt;
+If you’re running some unsupported Linux/Unix platform, please use the buildme.s&lt;br /&gt;
+script located here:&lt;/p&gt;
+&lt;p&gt;http://svn.slimdevices.com/repos/slim/7.6/trunk/vendor/CPAN/&lt;/p&gt;
+&lt;p&gt;If 7.6 is outdated by the time you read this, Replace “7.6” with the major versi&lt;br /&gt;
+You should never need to do this if you’re on Windows or Mac OSX. If the install&lt;br /&gt;
+don’t work for you, ask for help and/or report a bug.&lt;/p&gt;
+&lt;p&gt;of Squeezebox Server you are running.&lt;/p&gt;
+&lt;p&gt;*&lt;strong&gt;**&lt;/strong&gt;&lt;br /&gt;
+Exiting..&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I read a lot on Google, about checking out a SVN repository and compiling stuff myself, but that failed for me.&lt;br /&gt;
+Installing a nightly version of the server is what solved my problems, version 7.7 that is.&lt;br /&gt;
+There doesn’t appear to be a “squeezeboxserver”, but installing “Logitech Media Server” instead worked perfectly in my case.&lt;/p&gt;
+&lt;p&gt;You can get it here:&lt;/p&gt;
+&lt;p&gt;http://downloads.slimdevices.com/nightly/?ver=7.7&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Sublime Text 2 &amp;#8211; rsync on save</title>
+    <link href="https://klaascuvelier.io/2011/12/sublime-text-2-rsync-on-save/"/>
+    <updated>2011-12-01T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2011/12/sublime-text-2-rsync-on-save/</id>
+    <content type="html">&lt;p&gt;As I’m running an Ubuntu Server in a virtual machine as development test server and I develop on my local environment, I need to keep both repositories in sync.&lt;br /&gt;
+Before, I shared the code on the development server to my local environment via NFS. The setup worked, but gave some complications with svn, and the auto mounting of the NFS-share after rebooting. So I started looking for a new way to keep all files in sync. I considered sharing via NFS the other way around, but that would make my test server very slow; all php files need to be loaded through NFS and all assets (images, css, javascript) too.&lt;br /&gt;
+The easiest way to solve my problem was through the good old rsync. As I’m too lazy to run an rsync command every time before I want to load a page from my test-server, I wanted it to be done automatically when I saved a file.&lt;br /&gt;
+As Sublime Text 2 is an awesome editor which supports plugins, I started surfing around looking for some examples which I then adapted for my own use..&lt;br /&gt;
+This is the plugin I now use:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;import sublime, sublime_plugin, subprocess&lt;/p&gt;
+&lt;p&gt;class RsyncOnSave(sublime_plugin.EventListener):&lt;br /&gt;
+def on_post_save(self, view):&lt;/p&gt;
+&lt;p&gt;syncProject = “””rsync -avz localpath remotepath &amp;amp;”””&lt;br /&gt;
+subprocess.call([syncProject],shell=True)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This code is put in a file named &lt;em&gt;RsyncOnSave.py&lt;/em&gt; which is saved a folder named &lt;em&gt;RsyncOnSave&lt;/em&gt;, in the Packages folder (for OSX thats: &lt;em&gt;~/Library/Application\ Support/Sublime\ Text\ 2/Packages/&lt;/em&gt;). The plugin should automatically be loaded when you (re-)start Sublime Text.&lt;br /&gt;
+localpath and remotepath obviously are the paths in your case. Note the ampersand at the end of the sync command, which makes sure your editor doesn’t freeze while the command is being executed.&lt;/p&gt;
+&lt;p&gt;Make sure you’ve put your public ssh-key in the authorized_keys on your server, so you don’t have to give your password when rsyncing.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Boxee 1.2.2 on Ubuntu Oneiric Minimal</title>
+    <link href="https://klaascuvelier.io/2011/12/boxee-1-2-2-on-ubuntu-oneiric-minimal-2/"/>
+    <updated>2011-12-21T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2011/12/boxee-1-2-2-on-ubuntu-oneiric-minimal-2/</id>
+    <content type="html">&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: you can download Boxee 1.5 on their website now:&lt;br /&gt;
+&lt;a href=&quot;http://blog.boxee.tv/2011/12/26/boxee-1-5-fall-software-update/&quot; title=&quot;http://blog.boxee.tv/2011/12/26/boxee-1-5-fall-software-update/&quot;&gt; http://blog.boxee.tv/2011/12/26/boxee-1-5-fall-software-update/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2011/12/boxee-oneiric.png&quot; alt=&quot;Screenshot tweet&quot; /&gt;
+&lt;a href=&quot;https://twitter.com/klaascuvelier/status/149615932136886272&quot;&gt;https://twitter.com/klaascuvelier/status/149615932136886272&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Looking to fix the playback errors, and I’ll post a walk-through later!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Sublime Text 2 &amp;#8211; Command on Save</title>
+    <link href="https://klaascuvelier.io/2012/02/sublime-text-2-command-on-save/"/>
+    <updated>2012-02-22T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2012/02/sublime-text-2-command-on-save/</id>
+    <content type="html">&lt;p&gt;This is a plugin based on the one I wrote here: &lt;a href=&quot;https://klaascuvelier.io/2011/12/sublime-text-2-rsync-on-save/&quot;&gt;sublime-text2-rsync-on-save&lt;/a&gt;&lt;br /&gt;
+The problem with the rsync-on-save plugin, is that it doesn’t support project specific rsync commands, mainly because Sublime Text doesn’t support project specific settings for packages.&lt;/p&gt;
+&lt;p&gt;In this plugin I worked around it in a certain way. I created a  plugin which executes a command based on the folder path.&lt;br /&gt;
+The path-command mapping is stored in a settings file, so it can be edited from  within Sublime Text 2.&lt;/p&gt;
+&lt;p&gt;I put the project on GitHub, so to install it, &lt;a href=&quot;https://github.com/klaascuvelier/ST2-CommandOnSave&quot;&gt;clone this repository&lt;/a&gt; into your packages folder.&lt;/p&gt;
+&lt;p&gt;There are some examples of path-command mapping in the settings file, and FYI, this is how my settings file looks:&lt;/p&gt;
+&lt;div style=&quot;width: 90%; overflow: auto&quot;&gt;
+  &lt;pre&gt;{
+  &quot;commands&quot;: [
+    &quot;/Users/klaascuvelier/Projects/showpad/cms/::/Users/klaascuvelier/Projects/showpad/cms/commandonsave.sh &amp;&quot;,
+    &quot;/Users/klaascuvelier/Projects/showpad/presentation/::/Users/klaascuvelier/Projects/showpad/presentation/commandonsave.sh &amp;&quot;,
+    &quot;/Users/klaascuvelier/Projects/showpad/dashboard/::/Users/klaascuvelier/Projects/showpad/dashboard/commandonsave.sh &amp;&quot;,
+    &quot;/Users/klaascuvelier/Projects/showpad/support/::/Users/klaascuvelier/Projects/showpad/support/commandonsave.sh &amp;&quot;
+  ]
+}&lt;/pre&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Css arrow mixin for LESS</title>
+    <link href="https://klaascuvelier.io/2012/05/css-arrow-mixin-for-less/"/>
+    <updated>2012-05-12T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2012/05/css-arrow-mixin-for-less/</id>
+    <content type="html">&lt;p&gt;I made a LESS (&lt;a href=&quot;http://www.lesscss.org/&quot;&gt;www.lesscss.org&lt;/a&gt;) mixin for CSS arrows (based on&lt;a href=&quot;http://www.cssarrowplease.com/&quot;&gt;www.cssarrowplease.com&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/klaascuvelier/less-css-arrow&quot;&gt;https://github.com/klaascuvelier/less-css-arrow&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Runkeeper.js</title>
+    <link href="https://klaascuvelier.io/2012/06/runkeeper-js/"/>
+    <updated>2012-06-26T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2012/06/runkeeper-js/</id>
+    <content type="html">&lt;p&gt;This is a NodeJS script I wrote to export data (trips) from the &lt;a title=&quot;Runkeeper&quot; href=&quot;http://www.runkeeper.com/&quot; target=&quot;_blank&quot;&gt;Runkeeper&lt;/a&gt; (iOS)database file.&lt;br /&gt;
+I originally wrote this, because I couldn’t sync my trips anymore since I’m using IOS6 beta.&lt;/p&gt;
+&lt;p&gt;The Runkeeper data is stored in an SQLite file on the device, so it was pretty easy to write a script to export data and put it into &lt;a title=&quot;GPX&quot; href=&quot;http://www.topografix.com/gpx.asp&quot; target=&quot;_blank&quot;&gt;GPX&lt;/a&gt; format.&lt;br /&gt;
+The script can list all trips in the database, and export a specified trip to GPX. You can either print the data in the console (and pipe, grep, awk whatever with it) or you can specify a path to write the output to.&lt;/p&gt;
+&lt;p&gt;Source and usage can be found here at Github: &lt;a title=&quot;klaascuvelier/runkeeper.js&quot; href=&quot;https://github.com/klaascuvelier/runkeeper.js&quot; target=&quot;_blank&quot;&gt;klaascuvelier/runkeeper.js&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: since the last update of the RunKeeper app, this problem is solved.&lt;br /&gt;
+But feel free to keep using the code to export data from the RunKeeper db on your iPhone&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Earport.fm drag &amp;#8216;n drop extension</title>
+    <link href="https://klaascuvelier.io/2013/04/earport-extension/"/>
+    <updated>2013-04-12T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2013/04/earport-extension/</id>
+    <content type="html">&lt;p&gt;For people who don’t know &lt;a href=&quot;http://www.earport.fm/&quot; target=&quot;_blank&quot;&gt;Earport&lt;/a&gt;, it is a service to listen to music together.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Short&lt;/strong&gt;: Members can create their own “music room” and create a playlist. All people joining (other members, friends, colleagues, …) will be hearing the same music at the same time.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2013/04/earport.png&quot; alt=&quot;Screenshot of Earport&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;I use the service from time to time, but it takes some time to create a nice, big playlist. Also, I have some playlists on my computer, I didn’t like it that I had to recreate them on another service.&lt;br /&gt;
+So I came up with to idea to drag an existing playlist (m3u-file) or a list of mp3 files on the Earport window, and let a script automatically add all tracks to the playlist.&lt;/p&gt;
+&lt;p&gt;The script is on &lt;a href=&quot;https://gist.github.com/klaascuvelier/5370520#file-earport-extension-js&quot; target=&quot;_blank&quot;&gt;GitHub&lt;/a&gt; (source below)&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bookmarklet:&lt;/strong&gt;&lt;br /&gt;
+You can, for the ease of use, put the code below in a bookmark, to use the script as a bookmarklet:&lt;br /&gt;
+Url:&lt;/p&gt;
+&lt;pre&gt;javascript:(function(){var k=$(&#39;&#39;),c=$(&quot;body&quot;),d=[],j=[];c.append(&#39;&#39;);Earport.Api.socket.on(&quot;search.query&quot;,e);Earport.Api.socket.on(&quot;playlist.queue&quot;,h);k.on(&quot;dragleave&quot;,function(l){k.remove()});c.on(&quot;dragenter dragover&quot;,function(l){l.preventDefault();l.stopPropagation();var m=l.dataTransfer?l.dataTransfer:l.originalEvent.dataTransfer;if(!m||$.inArray(&quot;Files&quot;,m.types)0){a()}return}var l=j.pop(),m=void 0;if(l){m=l.type;if(m===&quot;audio/mp3&quot;){i(l)}else{if(m===&quot;audio/x-mpegurl&quot;){g(l)}else{if(!!window.console){console.log(&quot;unsupported type &quot;+m);f()}}}}}function g(m){var l=new FileReader();l.onload=function(r){var p=this.result.split(&quot;\n&quot;),o=p.length,n=void 0,q=void 0;for(q=0;q1){useFilename=n.substr(0,1)!==&quot;#&quot;;if(!useFilename){try{info=n.split(&quot;,&quot;)[1].split(&quot;-&quot;);b(info[0],info[1]);q++}catch(r){n=p[++q]}}if(useFilename){filename=n.substr(0,n.lastIndexOf(&quot;.&quot;));song=filename.replace(/[0-9\-_\.]/gi,&quot; &quot;).replace(/  /g,&quot; &quot;);b(&quot;&quot;,song)}}}f()};l.onerror=function(n){f()};l.readAsText(m)}function i(m){var l=new FileReader();l.onload=function(r){var p=new jDataView(this.result);if(p.getString(3,p.byteLength-128)==&quot;TAG&quot;){var s=p.getString(30,p.tell()),n=p.getString(30,p.tell()),o=p.getString(30,p.tell()),q=p.getString(4,p.tell());b(n,s,o)}else{console.log(&quot;could not parse&quot;)}f()};l.onerror=function(n){f()};l.readAsArrayBuffer(m)}function b(n,t,p){var r=$.trim([n,t,p].join(&quot; &quot;)),s=r.split(&quot;\u0000&quot;),o=s.length,q=void 0,m=&quot;&quot;;for(q=0;q0){m+=s[q]}}d.push(m)}function a(){if(d.length===0){return}var l=d.pop();if(!!l){console.log(&quot;finding song &quot;+l);Earport.Api.socket.emit(&quot;search.query&quot;,{query:l})}a()}function e(m){if(m&amp;&amp;m.results&amp;&amp;m.results.length){var l=m.results[0];Earport.Api.socket.emit(&quot;playlist.queue&quot;,{track:l})}}function h(l){}})();&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Source:&lt;/strong&gt;&lt;br /&gt;
+&lt;a href=&quot;https://gist.github.com/klaascuvelier/5370520&quot;&gt;earport-extension.js on Github&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Sublime Command-on-Save</title>
+    <link href="https://klaascuvelier.io/2013/06/sublime-command-on-save/"/>
+    <updated>2013-06-10T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2013/06/sublime-command-on-save/</id>
+    <content type="html">&lt;p&gt;I just finished my Sublime Text 3 plugin: Command on Save.&lt;br /&gt;
+It executes given commands when you save files. From rsyncing to an other machine, pushing to GIT or generating documentation, everything is possible.&lt;/p&gt;
+&lt;p&gt;Just install the plugin in Sublime Text 3, configure some commands and you’re good to go.&lt;br /&gt;
+The easiest way to install the plugin is via Sublime Package Control by adding&lt;br /&gt;
+&lt;a href=&quot;https://github.com/klaascuvelier/SublimeCommandOnSave&quot;&gt;https://github.com/klaascuvelier/SublimeCommandOnSave&lt;/a&gt; as a new repository and installing the plugin “CommandOnSave”.&lt;br /&gt;
+Alternatively you can just clone the repository into your Sublime Text Packages folder.&lt;/p&gt;
+&lt;p&gt;Setting up a settings file is pretty straight forward. All you have to do is add a “commands” entry, with the paths you want to execute commands for and the commands themselves (in an array).&lt;br /&gt;
+Here are some examples:&lt;/p&gt;
+&lt;pre&gt;{
+  &quot;commands&quot;: {
+    // example 1: project is in folder /Users/klaascuvelier/Projects/example/
+    // rsync files to other server on save
+    &quot;/Users/klaascuvelier/Projects/example/&quot;: [
+        &quot;rsync -avz /Users/klaascuvelier/Projects/example/ server@server:/home/server/projects/example/ &amp;#038;&quot;
+    ],
+
+    // example 2:
+    // just run a bash script on save (you can put much more commands in there)
+    &quot;/Users/klaascuvelier/Projects/example2/&quot;: [
+        &quot;/Users/klaascuvelier/Projects/example2/command.sh &amp;#038;&quot;
+    ],
+
+    &quot;/Users/klaascuvelier/Projects/Sublime3/SublimeCommandOnSave/&quot;: [
+        &quot;echo &#39;hi&#39;&quot;,
+        &quot;echo &#39;aloha&#39;&quot;
+    ]
+  }
+}
+&lt;/pre&gt;
+&lt;p&gt;Feel free to fork and improve, or contact me if you need any help&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: this version is not compatible with Sublime Text 2, I do have an older version of this plugin available here: &lt;a href=&quot;https://github.com/klaascuvelier/ST2-CommandOnSave&quot;&gt;ST2-CommandOnSave&lt;/a&gt;. But that plugin is not longer maintained.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Pairing extra powerline adapters with Telenet AV 6400</title>
+    <link href="https://klaascuvelier.io/2013/06/pairing-powerline-adapters-with-telenet-av-6400/"/>
+    <updated>2013-06-14T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2013/06/pairing-powerline-adapters-with-telenet-av-6400/</id>
+    <content type="html">&lt;p&gt;As I wasn’t able to find much info about Telenets powerline adapters when I was looking to add some adapters to the existing network, I thought it could be useful to share this&lt;/p&gt;
+&lt;p&gt;According to Telenet technicians, you should be able to add almost any brand of adapter to the existing network. Although they didn’t guarantee it.&lt;/p&gt;
+&lt;p&gt;So I took a risk and ordered some additional adapters from D-Links 500AV series (D-Link Kit DHP-P501AV SchuKo Powerline AV Kit (500Mbit)).&lt;br /&gt;
+I was able to add them successfully to the existing network.&lt;/p&gt;
+&lt;p&gt;So it is possible to add powerline adapters from a, different brand, even 500Mb adapters (as the onse from Telenet are 200Mb).&lt;/p&gt;
+&lt;p&gt;Adding the new adapters was pretty easy;&lt;br /&gt;
+Plug in one new adapter, press and hold the “security button” for 2 seconds on one of the Telenet adapters (the only button on the bottom), the power led will start flashing. Then you have about 2 minutes to press (a,d hold for 2 seconds) the security button on the new adapter.&lt;br /&gt;
+The new adapter will try to connect,to the existing network, and the, reboot, after it’s rebooted, you should be able to use the powerline.&lt;br /&gt;
+If you have multiple adapters, just repeat the steps for the next adapters.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Using Symfony 2 routes with AngularJS</title>
+    <link href="https://klaascuvelier.io/2013/07/using-symfony-2-routes-with-angularjs/"/>
+    <updated>2013-07-17T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2013/07/using-symfony-2-routes-with-angularjs/</id>
+    <content type="html">&lt;h2 id=&quot;about-symfony2-routes&quot; tabindex=&quot;-1&quot;&gt;About Symfony2 Routes&lt;/h2&gt;
+&lt;p&gt;Symfony has a great implementation of &lt;a title=&quot;Symfony routing&quot; href=&quot;http://symfony.com/doc/current/book/routing.html&quot; target=&quot;_blank&quot;&gt;routing&lt;/a&gt; where you can assign names to routes. This way you can generate an URL by referencing this route via the name and giving some parameters (if needed) both in another method and in your views.&lt;/p&gt;
+&lt;h3 id=&quot;an-example%3A&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;An example:&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://gist.github.com/klaascuvelier/6018279&quot;&gt;symfony-controller.php on Github&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is a view where the routes are used&lt;br /&gt;
+&lt;a href=&quot;https://gist.github.com/klaascuvelier/6018261&quot;&gt;symfony-routing.html.twig on Github&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Using a name to reference to a specific route is very useful, if you decide later on that the url to fetch assets should be changed to */prefix/asset/{type} *or whatever, there is no need to do a search-replace over the code base.&lt;/p&gt;
+&lt;h2 id=&quot;bringing-this-flexibility-to-the-front-end&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;Bringing this flexibility to the front-end&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;There are various reasons why you’d need URLs in your JavaScript (AngularJS); fetching data, performing actions, …&lt;br /&gt;
+By hardcoding URLs you lose the flexibility Symfony provided, this is a construction to keep it in the front-end:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a service where all routes are stored in key/value-pairs, which can generate URLs by providing the route name and optional parameters&lt;/li&gt;
+&lt;li&gt;Create a directive to define all available routes in the URL service&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;the-service&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;The service&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://gist.github.com/klaascuvelier/6018363&quot;&gt;url-service.js on Github&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;the-directive&quot; tabindex=&quot;-1&quot;&gt;&lt;strong&gt;The directive&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;The easiest way to define the available routes in the service, is via a directive.&lt;br /&gt;
+An HTML element (in this case a script-tag) with a special attribute can be used to define all routes. In the pre-compile method, the element’s innerHTML is parsed to add all routes to the service.&lt;br /&gt;
+&lt;a href=&quot;https://gist.github.com/klaascuvelier/6018424&quot;&gt;url-directive.js on Github&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Using the URL directive&lt;/strong&gt;&lt;br /&gt;
+&lt;a href=&quot;https://gist.github.com/klaascuvelier/6018540&quot;&gt;url-example.html.twig on Github&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;using-urls-in-an-angularjs-controller&quot; tabindex=&quot;-1&quot;&gt;Using URLs in an AngularJS controller&lt;/h3&gt;
+&lt;p&gt;Using a route you defined earlier in a controller is pretty straight forward:&lt;br /&gt;
+&lt;a href=&quot;https://gist.github.com/klaascuvelier/6018397&quot;&gt;example-controller.js on Github&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;remarks&quot; tabindex=&quot;-1&quot;&gt;Remarks&lt;/h2&gt;
+&lt;p&gt;In the URL directive and service &lt;em&gt;:parameter&lt;/em&gt; is used to add parameters in the url, it would also be possible to use &lt;em&gt;{parameter}&lt;/em&gt; to make it more like the routes in PHP, but this would require to do an urldecode of the generated URL&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;:parameter&lt;/em&gt; placeholder has one downside, it limits your options for &lt;a href=&quot;http://symfony.com/doc/current/book/routing.html#required-and-optional-placeholders&quot; target=&quot;_blank&quot;&gt;parameter requirements&lt;/a&gt;.&lt;br /&gt;
+It’s not possible to add numeric or advanced regular expressions as requirements, as the placeholder is a fixed string.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Angular applyAsync + httpBackend</title>
+    <link href="https://klaascuvelier.io/2015/09/angular-applyasync-httpbackend/"/>
+    <updated>2015-09-09T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2015/09/angular-applyasync-httpbackend/</id>
+    <content type="html">&lt;p&gt;While trying to update our application to use Angular 1.4, we ran into some troubles.&lt;br /&gt;
+Unit tests started failing without a clear reason (oh yes, we have unit tests). Some hours of debugging later we found out `useApplyAsync` was the cause of our troubles.&lt;/p&gt;
+&lt;p&gt;useApplyAsync is a method to enable/disable the combined processing of http responses. Basically, with this option enabled, only one $digest cycle is triggered for multiple http request around the same time. (&lt;a title=&quot;Angular $http docs&quot; href=&quot;https://docs.angularjs.org/api/ng/provider/$httpProvider&quot; target=&quot;\_blank&quot;&gt;https://docs.angularjs.org/api/ng/provider/$httpProvider&lt;/a&gt;)&lt;br /&gt;
+This is supposed to be a huge performance improvement for big Angular applications, which actually totally makes sense after reading the explanation, so we enabled this option.&lt;/p&gt;
+&lt;p&gt;Once we found out disabling `applyAsync `fixed our unit tests, we found out pretty soon, that using multiple `$httpBackend.flush()` calls fixed our tests when `applyAsync` is enabled. I have a small jsfiddle here which recreates the problem: &lt;a href=&quot;http://jsfiddle.net/klaascuvelier/q752t51q/&quot; target=&quot;_blank&quot;&gt;http://jsfiddle.net/klaascuvelier/q752t51q/&lt;/a&gt;&lt;br /&gt;
+If you edit the source code you’ll see the multiple flushes or disabling `applyAsync` fixes the test.&lt;/p&gt;
+&lt;p&gt;Knowing the multiple flushes fixes the issue, I dove into the source code of the $httpBackend service of the angular-mocks.&lt;br /&gt;
+This is how the flush method looks:&lt;/p&gt;
+&lt;p&gt;(&lt;a title=&quot;Angular mocks source code&quot; href=&quot;https://github.com/angular/bower-angular-mocks/blob/master/angular-mocks.js#L1530-L1545&quot; target=&quot;_blank&quot;&gt;https://github.com/angular/bower-angular-mocks/blob/master/angular-mocks.js#L1530-L1545&lt;/a&gt;)&lt;/p&gt;
+&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+$httpBackend&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function-variable function&quot;&gt;flush&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;count&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; digest&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;digest &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; $rootScope&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;$digest&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;responses&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;No pending request to flush !&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;angular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;isDefined&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;count&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; count &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;count&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;responses&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;No more pending request to flush !&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        responses&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;responses&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        responses&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    $httpBackend&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;verifyNoOutstandingExpectation&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;digest&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By default, a `$rootScope.$digest` is triggered, and then the code loops over the responses (either all, or some), and executes those.&lt;br /&gt;
+Those responses are actually callbacks created by the wrapResponse method, which point to the `done` method in the angular $http service:&lt;/p&gt;
+&lt;p&gt;(&lt;a title=&quot;Angular $http source code&quot; href=&quot;https://github.com/angular/angular.js/blob/master/src/ng/http.js#L1265-L1285&quot; target=&quot;_blank&quot;&gt;https://github.com/angular/angular.js/blob/master/src/ng/http.js#L1265-L1285&lt;/a&gt;)&lt;/p&gt;
+&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;  
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;status&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; response&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; headersString&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; statusText&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;cache&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;isSuccess&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;status&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            cache&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;url&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;status&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; response&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;parseHeaders&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;headersString&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; statusText&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;// remove promise from the cache&lt;/span&gt;
+            cache&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;url&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;resolveHttpPromise&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token function&quot;&gt;resolvePromise&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;response&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; status&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; headersString&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; statusText&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;useApplyAsync&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        $rootScope&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;$applyAsync&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;resolveHttpPromise&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token function&quot;&gt;resolveHttpPromise&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;$rootScope&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;$$phase&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; $rootScope&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;$apply&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The interesting part here are the last lines; when using `applyAsync`, a `$digest` is scheduled through `$applyAsync`, when not using `applyAsync`, a digest is triggered immediately.&lt;br /&gt;
+This is the explanation for the problem we are seeing;&lt;/p&gt;
+&lt;p&gt;When not using `applyAsync`, this is the flow, in psuedo code:&lt;/p&gt;
+&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;do&lt;/span&gt; a first $http&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get request
+the response callback gets pushed onto the responses array
+trigger $httpBackend&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+loop over all responses is &lt;span class=&quot;token function&quot;&gt;started&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;length is &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; at &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt; moment&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
+pop callback from responses and &lt;span class=&quot;token function&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;responses length becomes &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+$digest gets &lt;span class=&quot;token function&quot;&gt;triggered&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;other promises &lt;span class=&quot;token keyword&quot;&gt;get&lt;/span&gt; resolved&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;rejected&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+the $digest triggers an action to &lt;span class=&quot;token keyword&quot;&gt;do&lt;/span&gt; another $http&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get request
+second $http&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get gets done&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; response gets pushed onto the responses &lt;span class=&quot;token function&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;length becomes &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+pop callback from responses and &lt;span class=&quot;token function&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;responses length becomes &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+$digest gets triggered
+&lt;span class=&quot;token comment&quot;&gt;// (no more responses)&lt;/span&gt;
+end loop
+&lt;span class=&quot;token comment&quot;&gt;// all is good&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And this is the pseudo code for using `applyAsync`&lt;/p&gt;
+&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;do&lt;/span&gt; a first $http&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get request
+the response callback gets pushed onto the responses array
+trigger $httpBackend&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+loop over all responses is &lt;span class=&quot;token function&quot;&gt;started&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;length is &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; at &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt; moment&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
+pop callback from responses and &lt;span class=&quot;token function&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;responses length becomes &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// no digest&lt;/span&gt;
+$digest gets &lt;span class=&quot;token function&quot;&gt;triggered&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;no more responses&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+end loop
+&lt;span class=&quot;token comment&quot;&gt;// 2nd $http.get did not get executed&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So our issue is that there is no next tick which flushes the applyAsync queue before we’re moving to the next item of the responses array.&lt;br /&gt;
+We can easily solve this by adding `$rootScope.$digest` at the end of the loop.&lt;/p&gt;
+&lt;p&gt;In my opinion it would make sense to trigger a `$digest` at that point. When you don’t have `applyAsync` enabled, angular (mocks) will execute your first http call, take care of the other promises, execute the second http call and take care of the other promises in 1 flush.&lt;br /&gt;
+Why would the `applyAsync` option require the unit test to do a double flush to make sure all http calls are done? Shouldn’t it be the httpBackend which takes care of the applyAsync changes instead of the unit test?&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Group Ordering app with Angular2 &amp; Firebase</title>
+    <link href="https://klaascuvelier.io/2016/01/angular2-firebase-ordering-prototype/"/>
+    <updated>2016-01-08T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2016/01/angular2-firebase-ordering-prototype/</id>
+    <content type="html">&lt;h2 id=&quot;tl%3Bdr&quot; tabindex=&quot;-1&quot;&gt;TL;DR&lt;/h2&gt;
+&lt;p&gt;Online ordering of food for a group of people can be cumbersome.
+I took on the challenge of building a prototype of a tool to improve the ordering of food for groups, in
+a limited amount of time, with unfamiliar technologies.&lt;/p&gt;
+&lt;h2 id=&quot;the-problem&quot; tabindex=&quot;-1&quot;&gt;The problem&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.showpad.com/&quot;&gt;Showpad&lt;/a&gt;, the company I work for, hosts Meetups quite often. For the meet-up of
+&lt;a href=&quot;http://www.meetup.com/socratesbe/&quot;&gt;SocratesBe&lt;/a&gt; I tend to be the person doing preparations and I am also in charge of
+ordering the food.&lt;/p&gt;
+&lt;p&gt;I remember the days there were only a few people joining the meet-up, and ordering the food was a breeze; asking people
+personally what food they want, placing the order, collecting the money.&lt;/p&gt;
+&lt;p&gt;As the SocratesBe group became more popular, more people started coming to the meet-ups, which is a good thing,
+obviously. Though, the ordering of the food became a hassle. Ever ordered food for 20 individuals and collected the
+money? It&#39;s a drag!&lt;/p&gt;
+&lt;p&gt;Two days before the meetup, I expressed my concerns about this issue on the Slack channel of SocratesBe.
+A clever man suggested to start my own pizza chain or maybe write some software to ease the task.&lt;/p&gt;
+&lt;p&gt;Starting my own pizza chain was not high on my priorities list and I doubt if I&#39;d ever be free to join the actual
+meet-ups again in that case.&lt;/p&gt;
+&lt;p&gt;I had already tweeted the food delivery service we use to ask if they had a solution
+to this problem. I assumed we weren&#39;t the only ones with this issue.
+Sadly they did not reply. &lt;a href=&quot;https://twitter.com/klaascuvelier/statuses/659094884368912384&quot;&gt;The actual tweets (in Dutch)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So if I wanted to improve the order process, I&#39;d had to go with &amp;quot;write your own software&amp;quot;….&lt;/p&gt;
+&lt;h2 id=&quot;the-challenge&quot; tabindex=&quot;-1&quot;&gt;The challenge&lt;/h2&gt;
+&lt;p&gt;Make it easier for a person to manage food orders for a group (order input, payments, status,…).&lt;/p&gt;
+&lt;h3 id=&quot;the-requirements&quot; tabindex=&quot;-1&quot;&gt;The requirements&lt;/h3&gt;
+&lt;p&gt;There are 3 main parts to this application; &lt;strong&gt;authentication&lt;/strong&gt;, a backend to &lt;strong&gt;store the data&lt;/strong&gt; and a
+frontend to &lt;strong&gt;put in and present the orders&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;As I was developing this for a meet-up, using Meetup + OAuth2 is the logical choice for authentication.&lt;/p&gt;
+&lt;p&gt;I&#39;ve been using Angular 1 a lot for projects and Angular 2 just went in beta, so I decided it was about time
+to write some Angular 2 (and TypeScript).&lt;/p&gt;
+&lt;p&gt;I did not want to invest time in writing a backend to store my data so I was in need for a &amp;quot;datastorage as a service&amp;quot;
+thing. I remembered reading a tutorial on Angular 1 and Firebase once, so I decided to try out Firebase…&lt;/p&gt;
+&lt;h3 id=&quot;challenges&quot; tabindex=&quot;-1&quot;&gt;Challenges&lt;/h3&gt;
+&lt;p&gt;As I mentioned, I have no experience with Angular 2 or TypeScript. So prototyping an app using Angular 2 would be quite
+a challenge. Also, as it&#39;s only in beta stage, there isn&#39;t too much documentation and but there are a fair amount of
+good tutorials available already.&lt;/p&gt;
+&lt;p&gt;I&#39;ve never used Firebase before, but I wasn&#39;t really expecting much trouble on that side.&lt;/p&gt;
+&lt;p&gt;The biggest challenge would obviously be time. Only 2 days until the meet-up and I have a full-time day job, so I was
+left with 2 evenings to write code.&lt;/p&gt;
+&lt;h3 id=&quot;the-implementation&quot; tabindex=&quot;-1&quot;&gt;The implementation&lt;/h3&gt;
+&lt;p&gt;I signed up for a free account on Firebase, I did not take the time to check the limitations. I&#39;d figure out a
+solution for those if I&#39;d run into any.&lt;/p&gt;
+&lt;p&gt;Creating an OAuth client in the Meetup API was straight forward as well.&lt;/p&gt;
+&lt;p&gt;Next step was to start thinking about the code. I knew Angular 2 prefers JSPM to get things working, but I
+was not really familiar with it. I did not want to waste my time on figuring out how to set up my dev + production
+build process with JSPM I decided to just look for an angular starters pack.&lt;/p&gt;
+&lt;p&gt;I had some starter packs bookmarked since they were showing up in my Twitter stream quite often.
+I went for &lt;a href=&quot;https://github.com/ocombe/ng2-webpack&quot;&gt;ng2-webpack&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/ocombe&quot;&gt;Olivier Combe&lt;/a&gt; as I was
+already quite familiar with WebPack and his repo had the dev and production build process set up and had some useful
+example code available (bootstrapping, routing, …).&lt;/p&gt;
+&lt;p&gt;The first thing I wanted to implement was the authentication. Authentication from a JavaScript app using OAuth seemed
+pretty straight forward, I had done this before; use the implicit flow, provide my app key and redirect url and ask
+for an access_token.&lt;/p&gt;
+&lt;p&gt;Sadly, it didn&#39;t go as smooth as I hoped for. I ran into 2 problems.&lt;/p&gt;
+&lt;p&gt;First, Meetup did not allow me to use &lt;code&gt;localhost&lt;/code&gt; as a redirect url. As webpack&#39;s dev server runs on &lt;code&gt;localhost:3000&lt;/code&gt;
+this was a problem. I ended up solving this by implementing more code than I intented to; I added storing
+the access_token in LocalStorage, this way I could run my code on production, get the code from LocalStorage and use
+it locally. There was one up side to this; this way I already implemented some &amp;quot;remember me&amp;quot; functionality.&lt;/p&gt;
+&lt;p&gt;I did not think about how I&#39;d host my frontend, luckily Firebase provided some hosting with the free account I had, and
+they have a great CLI tool. After some configuration I only had to run &lt;code&gt;npm run build &amp;amp;&amp;amp; firebase deploy&lt;/code&gt; to get my
+code on production.&lt;/p&gt;
+&lt;p&gt;The second problem I ran into when I tried doing an AJAX call for the user information…&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/public/2016/01/cors.png&quot;&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2016/01/cors.png&quot; alt=&quot;Screenshot console CORS errors&quot; /&gt;{: .image-center }&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Oh god… All frontend developers have ran into CORS problems, right?&lt;/p&gt;
+&lt;p&gt;The quickest solution I thought of, was creating a proxy script and running that on my VPS (kind of stupid hosting my
+frontend on Firebase but still having to use my VPS in the end). Not the greatest solution, but I was able to solve
+my issues quite quickly this way.&lt;/p&gt;
+&lt;p&gt;Next step was linking the app with Firebase. Although Angular 2 is only in beta for about 2 weeks, somebody already
+created &lt;a href=&quot;https://www.npmjs.com/package/angular2-firebase&quot;&gt;angular2-firebase&lt;/a&gt;. Thank you,
+&lt;a href=&quot;https://twitter.com/kylecordes&quot;&gt;Kyle&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I was not familiar with observables yet, still I was able to create some sort of &lt;code&gt;DataStorage&lt;/code&gt; service.
+(This great blog post came just too late: &lt;a href=&quot;http://blog.thoughtram.io/angular/2016/01/06/taking-advantage-of-observables-in-angular2.html&quot;&gt;Taking advantage of Observables in Angular 2&lt;/a&gt;)&lt;/p&gt;
+&lt;pre class=&quot;language-ts&quot;&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// datastore.ts&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; observableFirebaseObject&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; observableFirebaseArray &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;angular2-firebase&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; \&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;as&lt;/span&gt; Firebase &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;firebase&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; GroupOrder &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../classes/group-order&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; Order &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../classes/order&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;FIREBASE_ROOT&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../../config&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;FIREBASE_ORDER_GROUPS&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;FIREBASE_ROOT&lt;/span&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;/order-groups&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;FIREBASE_ORDERS&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;FIREBASE_ROOT&lt;/span&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;/orders&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;DataStore&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+rootRef&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Firebase&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+orderGroupsRef&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Firebase&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+ordersRef&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Firebase&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rootRef &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Firebase&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;FIREBASE_ROOT&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;orderGroupsRef &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Firebase&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;FIREBASE_ORDER_GROUPS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ordersRef &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Firebase&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;FIREBASE_ORDERS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;createGroupOrder&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;groupOrder&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; GroupOrder&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;orderGroupsRef&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;groupOrder&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;id&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;groupOrder&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With these basics implemented, I could start working on the app functionality.&lt;/p&gt;
+&lt;p&gt;This is when the real Angular 2 fun started, adding routes, creating components, writing views with the new template
+syntax:&lt;/p&gt;
+&lt;pre class=&quot;language-ts&quot;&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// create-group.html&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;div &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;content&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;h2&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Create a &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;group&lt;/span&gt; order&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;h2&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;form&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;submit&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;createGroupOrder(groupName.value, groupOrderUrl.value, groupDescription.value)&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Group Name&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;input type&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;text&quot;&lt;/span&gt; placeholder&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;some group name&quot;&lt;/span&gt; #groupName&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Order description&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;textarea #groupDescription&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;textarea&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Order url&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;input type&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;url&quot;&lt;/span&gt; placeholder&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;http://www.pizza.be&quot;&lt;/span&gt; #groupOrderUrl&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Organizer&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;label&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;input type&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;text&quot;&lt;/span&gt; disabled value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;{{ user.name }}&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;fieldset &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;submit&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;button type&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;submit&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Create group&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;button&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;fieldset&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;form&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-ts&quot;&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// create-group.ts&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; Component&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; OnInit &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;angular2/core&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; Router &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;angular2/router&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; DataStore &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../services/datastore/datastore&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; Authentication &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../services/authentication/authentication&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; UuidGenerator &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../services/uuid/uuid-generator&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; GroupOrder&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; GroupOrderStatus &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../classes/group-order&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; User &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;../../classes/user&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token decorator&quot;&gt;&lt;span class=&quot;token at operator&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;Component&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+selector&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;create-group&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+template&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;./create-group.html&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+styleUrls&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;./create-group.css&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+providers&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+directives&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+pipes&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;CreateGroupComponent&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;OnInit&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+dataStore&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; DataStore &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+authentication&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Authentication &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+router&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Router &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+user&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; User &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;dataStore&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; DataStore&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; authentication&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Authentication&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; router&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; Router&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dataStore &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; dataStore&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;authentication &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; authentication&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;router &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; router&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;ngOnInit&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token comment&quot;&gt;// needs login&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;authentication
+            &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getUser&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;user &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;user &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; user&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;router&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;navigate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;Login&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;createGroupOrder&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; orderUrl&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; description&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token comment&quot;&gt;// Refetch user&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;authentication&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getUser&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;user &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;user &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; user&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+                &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; UuidGenerator&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+                &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; order &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; GroupOrder&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                    id&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    name&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    orderUrl&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    description&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    creatorName&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; user&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    creatorId&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; user&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;id&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    status&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; GroupOrderStatus&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;OPEN&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+                &lt;span class=&quot;token comment&quot;&gt;// You&#39;d think this might cause some race condition, but haven&#39;t experienced it yet&lt;/span&gt;
+                &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dataStore&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;createGroupOrder&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;order&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;router&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;navigate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;GroupOrder&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; id &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;token function&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;You are not authenticated&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once I had basic functionality to create groups and add orders to groups I could start adding in some &amp;quot;administration&amp;quot;
+functionality (order statuses, payment statuses,…) and some quick wins for the people ordering
+(remembering the groups they visited, removing orders,…)&lt;/p&gt;
+&lt;p&gt;This is what it looked like in the end:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/public/2016/01/finish-about.png&quot;&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2016/01/finish-about.png&quot; alt=&quot;Screenshot app about page&quot; /&gt;{: .image-center }&lt;/a&gt;
+&lt;a href=&quot;https://klaascuvelier.io/public/2016/01/finish-order.png&quot;&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2016/01/finish-order.png&quot; alt=&quot;Screenshot app order page admin options&quot; /&gt;{: .image-center }&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Definitely not a masterpiece of UX, but surely good enough to ship and try out on the meet-up.&lt;/p&gt;
+&lt;h3 id=&quot;testing-it-out&quot; tabindex=&quot;-1&quot;&gt;Testing it out&lt;/h3&gt;
+&lt;p&gt;I posted the link to my order group on the Slack channel on the day of the meet-up, and people could start adding
+their order during the day.&lt;/p&gt;
+&lt;p&gt;It was still hard to copy over the orders to the actual food order service, but at least it the orders and the payments
+were manageable this time.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Goal accomplished!&lt;/strong&gt; The tool did its job!&lt;/p&gt;
+&lt;p&gt;(To be honest: 1 order was wrong but that was totally a human error, not the tool&#39;s fault).&lt;/p&gt;
+&lt;p&gt;I used the SocratesBe meet-up to give a lightning talk about this challenge. It turned out explaining everything in 10
+minutes was even harder than finishing the project in time.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/public/2016/01/lightning-talk.jpeg&quot;&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2016/01/lightning-talk.jpeg&quot; alt=&quot;Picture of me presenting the challenge&quot; /&gt;{: .image-center }&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;looking-back-on-the-challenge&quot; tabindex=&quot;-1&quot;&gt;Looking back on the challenge&lt;/h2&gt;
+&lt;p&gt;I was able to pull this off in under 8 hours, which I am still pretty impressed with myself.
+Shortcuts have been taken but the challenge was not to build a perfect app. The challenge was to create a
+tool in a short amount of time with services/tools I was not familiar with.&lt;/p&gt;
+&lt;p&gt;The security of the app is not great; I did not configure Firebase correctly, now everybody can read and write to my
+instance (people could mark their order as paid without paying). Authorization itself isn&#39;t very secure either, before
+doing some data related actions, I check if the logged in user from Meetup matches the owner of a group or an order,
+which could by bypassed pretty quick as well.&lt;/p&gt;
+&lt;p&gt;I guess ideally a &amp;quot;real&amp;quot; backend should be used; it would take care of the CORS issues with Meetup, I could use
+&lt;a href=&quot;https://tools.ietf.org/html/rfc7519&quot;&gt;JWT&lt;/a&gt; for authorization and I would not have to expose any of my
+credentials…&lt;/p&gt;
+&lt;p&gt;I probably could have easily solved the Meetup redirect issue locally by setting up a host in nginx with
+&lt;code&gt;proxy_pass&lt;/code&gt;, which I&#39;ve actually done before, but I did not think about it at the time.&lt;/p&gt;
+&lt;p&gt;The code is available on Github &lt;a href=&quot;https://github.com/klaascuvelier/ng2-group-order&quot;&gt;ng2-group-order&lt;/a&gt;, but keep
+in mind the purpose of this challenge…
+This is not the sort of code I wrote in my day job.&lt;/p&gt;
+&lt;p&gt;I was quite hesitant about TypeScript in the beginning, but I really loved writing typed code and taking advantage of
+the decorators!&lt;/p&gt;
+&lt;p&gt;It&#39;s too soon to form an opinion on Angular 2, but I definitely liked writing this app using it.&lt;/p&gt;
+&lt;p&gt;Hope you enjoyed my write-up. Don&#39;t hesitate to contact me if you have any questions or remarks!&lt;/p&gt;
+&lt;h2 id=&quot;also-want-to-get-started-with-angular-2%3F&quot; tabindex=&quot;-1&quot;&gt;Also want to get started with Angular 2?&lt;/h2&gt;
+&lt;p&gt;There are already quite some tutorials available, but definitely check out the ones by
+&lt;a href=&quot;http://blog.thoughtram.io/categories/angular-2/&quot;&gt;Thoughtram&lt;/a&gt;, they are great!&lt;/p&gt;
+&lt;p&gt;I&#39;ve used webpack myself to build my little app, there are more options, but this proves you&#39;re not tight to JSPM.
+I used &lt;a href=&quot;https://github.com/ocombe/ng2-webpack&quot;&gt;ng2-webpack&lt;/a&gt; and I was very happy how easy it was to get started (and
+keep using it when adding extra functionality).&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Internationalization in Angular 2</title>
+    <link href="https://klaascuvelier.io/2016/09/internationalization-in-angular2/"/>
+    <updated>2016-09-21T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2016/09/internationalization-in-angular2/</id>
+    <content type="html">&lt;p&gt;On September 21 &lt;a href=&quot;https://twitter.com/vberchet&quot;&gt;Victor Berchet&lt;/a&gt; gave a presentation on the state of internationalization in Angular 2 at BigCommerce&#39;s offices in San Francisco.
+This is a small summary on that presentation.&lt;/p&gt;
+&lt;h4 id=&quot;tl%3Bdr&quot; tabindex=&quot;-1&quot;&gt;TL;DR&lt;/h4&gt;
+&lt;p&gt;Angular 2 has i18n and l10n features built into its core package. Currently the implementation is ready, but the configuration is quite cumbsersome and there are some
+trade-offs that have been made. From what Victor said I assume some changes are coming (probably mostly configuration related).&lt;/p&gt;
+&lt;h1&gt;Internationalization in Angular 2&lt;/h1&gt;
+&lt;p&gt;Angular 2 final got released last week, and with its core package it shipped internationalization and localization features, which lets you do translations and localized formatting
+of your application.
+What is not ready however is the documentation for it, but the &lt;a href=&quot;https://github.com/angular/angular.io/pull/2340&quot;&gt;PR&lt;/a&gt; for the documentation is already pending, so it should be available on &lt;a href=&quot;https://www.angular.io/&quot;&gt;Angular.io&lt;/a&gt; quite soon.&lt;/p&gt;
+&lt;p&gt;You can easily mark DOM elements that need to be internationalized by adding the &lt;code&gt;i18n&lt;/code&gt; directive (as an attribute).
+The &lt;code&gt;i18n&lt;/code&gt; attribute can be used without a value, or you can add a description and a meaning as value (separated by a pipe), these are just metadata for the person doing the translations.&lt;/p&gt;
+&lt;p&gt;Everything you&#39;d expect from i18n is available. The parser won&#39;t translate your HTML tags, but will replace them by placeholders in the
+translation dictionary (so if the syntax of a language is different and the HTML tag needs to be in a different place for a certain language, that&#39;s possible).
+It is possible to translate element attributes as well, by adding &lt;code&gt;i18n-[the attribute]&lt;/code&gt; to your element,
+you can mark a whole group of elements to be translated by wrapping them in a i18n-comment or using the &lt;code&gt;ng-container&lt;/code&gt; construct and there is also support for pluralization.
+Angular uses the standardized &lt;a href=&quot;http://userguide.icu-project.org/formatparse/messages&quot;&gt;ICU format&lt;/a&gt; for that.&lt;/p&gt;
+&lt;p&gt;Have a look at some of the syntax:&lt;/p&gt;
+&lt;pre class=&quot;language-ts&quot;&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; raw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// example.html&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span i18n&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;to be translated&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span i18n&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;some description|this is a bird&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Crane&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span i18n&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;other description|this is a machine&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Crane&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;p&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Hello &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;some-class&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Angular&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;p&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;a href&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;#&quot;&lt;/span&gt; title&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;link to some website&quot;&lt;/span&gt; i18n&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;title&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;the link&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;a&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt; i18n &lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;Translate by comment&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;i18n&lt;span class=&quot;token operator&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;ng&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;container i18n&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;some text&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;more text&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;ng&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;container&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;div i18n&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; appleCount&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; plural&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; no apples at all &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    one &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; one apple &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; seventeen apples &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    other &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; some &lt;span class=&quot;token function&quot;&gt;apples&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;appleCount&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt; endraw &lt;span class=&quot;token operator&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When all of your templates have the necessary internationalization tags it&#39;s time to generate the
+library with strings using the &lt;code&gt;ng-xi18n&lt;/code&gt; binary that comes with Angular.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;% raw %&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+$ ./node_modules/.bin/ng-xi18n
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;% endraw %&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;small&gt;I did run into some problems running this command, more on that at the end.&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;Running this command will generate a &lt;code&gt;messages.xlf&lt;/code&gt; file in your application root.
+Currently &lt;code&gt;XMB&lt;/code&gt; and &lt;code&gt;XLF&lt;/code&gt; formats are supported.&lt;/p&gt;
+&lt;p&gt;When all of your message strings have been translated, you can let your application know it can use them by
+adding the translation providers when bootstrapping.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;% raw %&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+// main.ts
+&lt;span class=&quot;token function&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; TRANSLATIONS, TRANSLATIONS_FORMAT, LOCALE_ID &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; from &lt;span class=&quot;token string&quot;&gt;&#39;@angular/core&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; TRANSLATION &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; from &lt;span class=&quot;token string&quot;&gt;&#39;./messages.en&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+// &lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.
+
+platformBrowserDynamic&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;.bootstrapModule&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+AppModule,
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+providers: &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; provide: TRANSLATIONS, useValue: TRANSLATION &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;,
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; provide: TRANSLATIONS_FORMAT, useValue: &lt;span class=&quot;token string&quot;&gt;&#39;xlf&#39;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;,
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; provide: LOCALE_ID, useValue: &lt;span class=&quot;token string&quot;&gt;&#39;en&#39;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;% endraw %&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The current implementation of internationalization requires you to define the locale you want to use when bootstrapping.
+There are some plans to move this to the angularCompilerOptions (for AoT).&lt;/p&gt;
+&lt;p&gt;The obvious advantage here is the speed, in the build phase all of the strings are compiled in.
+The downside is that you&#39;ll need to generate a bundle per locale you want to support, and figure out how to know which bundle to serve...&lt;/p&gt;
+&lt;p&gt;The Angular team is aware of this and has supporting multiple locales on the roadmap, but they haven&#39;t quite figured out yet how they
+will accomplish this.&lt;/p&gt;
+&lt;h2 id=&quot;localization-in-angular-2&quot; tabindex=&quot;-1&quot;&gt;Localization in Angular 2&lt;/h2&gt;
+&lt;p&gt;Victor also touched the subject of localization a little.
+There are some build in pipes like &lt;code&gt;shortDate&lt;/code&gt; and &lt;code&gt;currency&lt;/code&gt; which will take in to account the locale you specified.&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;% raw %&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+// test.html
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; cartTotal &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; currency &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; today &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; date:&lt;span class=&quot;token string&quot;&gt;&#39;shortDate&#39;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;% endraw %&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;issues-i-ran-in-to%3A&quot; tabindex=&quot;-1&quot;&gt;Issues I ran in to:&lt;/h2&gt;
+&lt;h3 id=&quot;ng-xi18n-command&quot; tabindex=&quot;-1&quot;&gt;ng-xi18n command&lt;/h3&gt;
+&lt;p&gt;The generation of the &lt;code&gt;xlf&lt;/code&gt; file did not go very smooth for me.&lt;/p&gt;
+&lt;p&gt;Running the command from the root folder did not use the &lt;code&gt;tsconfig.json&lt;/code&gt; file
+from the &lt;code&gt;src&lt;/code&gt; folder. It would make sense that I have to run this command from the &lt;code&gt;src&lt;/code&gt; folder, as that is the source root and that&#39;s the place
+I would want the &lt;code&gt;messages.xlf&lt;/code&gt; file to live.&lt;/p&gt;
+&lt;p&gt;I tried running &lt;code&gt;../node_modules/.bin/ng-xi18n&lt;/code&gt; form the &lt;code&gt;src&lt;/code&gt; folder but that did not work out, neither
+did running &lt;code&gt;./node_modules/.bin/ng-xi18n --project src&lt;/code&gt;. In the end I copied over the &lt;code&gt;tsconfig.json&lt;/code&gt; file to the root which made the command run.
+Currently the &lt;code&gt;messages.xlf&lt;/code&gt; file is outside the &lt;code&gt;src&lt;/code&gt; folder, but I put the translated file &lt;code&gt;messages.en.xlf&lt;/code&gt; in the &lt;code&gt;src&lt;/code&gt; folder.&lt;/p&gt;
+&lt;h3 id=&quot;currency-and-locale&quot; tabindex=&quot;-1&quot;&gt;currency and locale&lt;/h3&gt;
+&lt;p&gt;I was not able to make the currency pipe take in to account the specified locale. The result kept being in US locale.
+This was something Victor actually had as well in his slides.
+Looking at the &lt;a href=&quot;https://github.com/angular/angular/blob/master/modules/@angular/common/src/pipes/number_pipe.ts&quot;&gt;CurrencyPipe implementation&lt;/a&gt;
+it looks like USD is the default currency and it&#39;s not really taking into account the locale yet&lt;small&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;h2 id=&quot;summary&quot; tabindex=&quot;-1&quot;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;I think the implementation of i18n and l10n in the Angular core looks promising, but it also looks unfinished.
+The lack of multiple locale support and the upcoming configuration changes are a sign of this (and the possible locale bug?).&lt;/p&gt;
+&lt;p&gt;I don&#39;t think the &lt;code&gt;i18n&lt;/code&gt; directive is going to change (a lot), so it is definitely usable at this time, that is if your application only supports&lt;br /&gt;
+one locale (or if you want to go through the pain of building and serving multiple bundles).&lt;/p&gt;
+&lt;p&gt;If your application needs support for multiple locales already, I&#39;d suggest you use &lt;a href=&quot;https://github.com/ocombe/ng2-translate&quot;&gt;ng2-translate&lt;/a&gt; by &lt;a href=&quot;https://twitter.com/ocombe&quot;&gt;Olivier Combe&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The code I used in my examples is available at &lt;a href=&quot;https://github.com/klaascuvelier/ng2-i18n&quot;&gt;ng2-i18n on Github&lt;/a&gt; and while doing some research I stumbled upon &lt;a href=&quot;https://github.com/StephenFluin/i18n-sample&quot;&gt;this example&lt;/a&gt; as well.&lt;/p&gt;
+&lt;p&gt;Victor has shared his &lt;a href=&quot;https://docs.google.com/presentation/d/1xWnEa0LhHmMgNUsq4pQ-dLygw5M_dkE3-tYlcO0cPq0/edit#slide=id.g128d8fde34_1_2&quot;&gt;slides from the Meetup&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Angular and npm link</title>
+    <link href="https://klaascuvelier.io/2016/11/angular-and-npm-link/"/>
+    <updated>2016-11-02T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2016/11/angular-and-npm-link/</id>
+    <content type="html">&lt;p class=&quot;post-note&quot;&gt;This article applies to Angular 2 and newer versions.&lt;/p&gt;
+&lt;h4 id=&quot;tl%3Bdr&quot; tabindex=&quot;-1&quot;&gt;TL;DR&lt;/h4&gt;
+&lt;p&gt;Using &lt;code&gt;npm link&lt;/code&gt; when developing Angular plugins might give you some headaches when trying to import Angular modules
+from your linked package. It&#39;s related to the &lt;code&gt;node_modules&lt;/code&gt; directory.&lt;/p&gt;
+&lt;h2 id=&quot;about-%60npm-link%60&quot; tabindex=&quot;-1&quot;&gt;About `npm link`&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;npm link&lt;/code&gt; makes it easy to use a package you are actively working on in an other project without having to
+&lt;code&gt;npm publish&lt;/code&gt; and &lt;code&gt;npm update&lt;/code&gt; with every change. The &lt;a href=&quot;https://docs.npmjs.com/cli/link&quot;&gt;npm documentation&lt;/a&gt; on it is very
+clear, basically it just comes down to sym-linking your plugin package into the node_modules folder from the other
+project.&lt;/p&gt;
+&lt;h2 id=&quot;the-problem-when-developing-angular-modules&quot; tabindex=&quot;-1&quot;&gt;The problem when developing Angular modules&lt;/h2&gt;
+&lt;p&gt;I ran into this problem:
+&lt;code&gt;VM6012:129 Uncaught Error: Unexpected value &#39;ExternalModule&#39; imported by the module &#39;AppModule&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://klaascuvelier.io/public/2016-11-npm-link-angular-issue.png&quot;&gt;&lt;img src=&quot;https://klaascuvelier.io/public/2016-11-npm-link-angular-issue.png&quot; alt=&quot;Screenshot of the actual error&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;My external Angular module (linked through &lt;code&gt;npm link&lt;/code&gt;) could not be imported by my host application.
+Google did not turn up with much useful information on my problem, so I decided to dive into the Angular source code
+to get a clue.&lt;/p&gt;
+&lt;h2 id=&quot;finding-out-why-the-external-module-is-invalid&quot; tabindex=&quot;-1&quot;&gt;Finding out why the external module is invalid&lt;/h2&gt;
+&lt;p&gt;The specific error was thrown by the
+&lt;a href=&quot;https://github.com/angular/angular/blob/234c5599f10c33e743594b556b63bc6fdd87e7eb/modules/%40angular/compiler/src/metadata_resolver.ts#L248-L250&quot;&gt;metadata_resolver class&lt;/a&gt;
+and indicates that Angular could not find the metadata for the module.
+The surrounding code led me to the &lt;a href=&quot;https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L25&quot;&gt;ng_module_resolver class&lt;/a&gt;,
+the &lt;a href=&quot;https://github.com/angular/angular/blob/master/modules/%40angular/core/src/reflection/reflector.ts#L33&quot;&gt;reflector class&lt;/a&gt;
+and the &lt;a href=&quot;https://github.com/angular/angular/blob/76dd026447011823770e23fb5c4168c7d96a494b/modules/%40angular/core/src/reflection/reflection_capabilities.ts#L92&quot;&gt;reflection_capabilities class&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The external module seemed to have the right decorator data, but &lt;a href=&quot;https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L26&quot;&gt;ng_module_resolve&lt;/a&gt;
+told me there was not &lt;code&gt;NgModuleMetadata&lt;/code&gt; available for my module.
+Stepping into the &lt;a href=&quot;https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L14-L16&quot;&gt;_isNgModuleMetadata method&lt;/a&gt;
+showed me that my metadata looked very much like an &lt;code&gt;NgModule&lt;/code&gt; instance, but was actually not.&lt;/p&gt;
+&lt;p&gt;Diving into the &lt;a href=&quot;https://github.com/angular/angular/blob/38e2203b24ba3657e92b51fae910915b481c2486/modules/%40angular/core/src/util/decorators.ts#L264-L288&quot;&gt;DecoratorFactory method&lt;/a&gt;
+reminded me that decorators are just functions.
+So when the metadata of my module very much looks like an &lt;code&gt;NgModule&lt;/code&gt; (created by the &lt;code&gt;DecoratorFactory&lt;/code&gt;) but in fact
+isn&#39;t, it might just be an instance of an &lt;code&gt;NgModule&lt;/code&gt; created by another &lt;code&gt;DecoratorFactory&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;From there on it did not take me too long to figure out that the &lt;code&gt;import { NgModule } from &amp;quot;@angular/core&amp;quot;;&lt;/code&gt; in my
+linked package was using the angular package from the &lt;code&gt;node_modules&lt;/code&gt; folder at it&#39;s original location, and not the
+ones from the host location.&lt;/p&gt;
+&lt;h2 id=&quot;wrapping-up&quot; tabindex=&quot;-1&quot;&gt;Wrapping up&lt;/h2&gt;
+&lt;p&gt;In hindsight this all makes sense.&lt;/p&gt;
+&lt;p&gt;This issue can be explained by the fact that my external package is a symlink and because of
+&lt;a href=&quot;https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders&quot;&gt;how Node modules are resolved&lt;/a&gt;.
+So two instances of &lt;code&gt;NgModule&lt;/code&gt; were created, and this explains why the
+&lt;a href=&quot;https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L14-L16&quot;&gt;_isNgModuleMetadata method&lt;/a&gt;,
+returned false.&lt;/p&gt;
+&lt;p&gt;Still, it took me quite a while to fully figure this out.
+I don&#39;t think we can blame Angular for the vague error message or &lt;code&gt;npm link&lt;/code&gt; for the way it&#39;s implemented.
+It&#39;s just a stupid coincidence of symlinks and method instances (decorators).&lt;/p&gt;
+&lt;p&gt;I stopped using &lt;code&gt;npm link&lt;/code&gt; for this specific project to fix this issue,
+i hope this explanation makes sense and can help a few people resolving similar issues when running into them.&lt;/p&gt;
+&lt;h2 id=&quot;the-upside&quot; tabindex=&quot;-1&quot;&gt;The upside&lt;/h2&gt;
+&lt;p&gt;I guess there is mostly always an upside on running into issues like this; I really learnt a lot on Angular 2.&lt;/p&gt;
+&lt;p&gt;I&#39;m a big believer that knowing the internals of a framework can benefit you when using a framework.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>Setting up a Lerna monorepo with build step</title>
+    <link href="https://klaascuvelier.io/2018/03/lerna-with-build-step/"/>
+    <updated>2018-03-15T00:00:00Z</updated>
+    <id>https://klaascuvelier.io/2018/03/lerna-with-build-step/</id>
+    <content type="html">&lt;h2 id=&quot;situation-sketch&quot; tabindex=&quot;-1&quot;&gt;Situation sketch&lt;/h2&gt;
+&lt;p&gt;At &lt;a href=&quot;https://www.showpad.com/&quot;&gt;Showpad&lt;/a&gt;, we created quite a few libraries for internal use (a lot of them are Angular libraries).
+Most libraries have their own repository and get published separately to our private NPM registry.
+Angular&#39;s short &lt;a href=&quot;https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md&quot;&gt;release cycle&lt;/a&gt; is great for the
+ecosystem, but it can be challenging to keep all your applications and libraries at the same, latest version. While a major release every 6
+months doesn&#39;t seem like a lot, keeping up can be a big challenge if you have multiple applications.&lt;/p&gt;
+&lt;p&gt;Recently, we decided to try moving some libraries to a monorepo to see if it would benefit us.
+Setting up the repo was not very straightforward and advanced Lerna documentation is pretty scarce (at the time of writing) so I decided
+to share our set up.&lt;/p&gt;
+&lt;h2 id=&quot;creating-the-monorepo&quot; tabindex=&quot;-1&quot;&gt;Creating the monorepo&lt;/h2&gt;
+&lt;p&gt;We considered some different monorepo tools and eventually dediced to use &lt;a href=&quot;https://github.com/lerna/lerna&quot;&gt;Lerna&lt;/a&gt;.
+Lerna is a tool that optimizes the workflow around managing multi-package repositories with git an npm. It&#39;s created an used by the people
+behind the &lt;a href=&quot;https://github.com/babel/babel&quot;&gt;Babel&lt;/a&gt; project.&lt;/p&gt;
+&lt;p&gt;Getting started with Lerna is pretty straight forward; for basic set-ups, the documentation on the website is sufficient. That&#39;s also how
+we started our monorepo:&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; clone https://github.com/showpad/angular-packages
+$ &lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; angular-packages
+$ lerna init&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Most of the repositories we wanted to add to the monorepo had a build step; inlining templates and styles and generating an
+&lt;a href=&quot;https://angular.io/guide/aot-compiler&quot;&gt;AOT&lt;/a&gt; compiled library. We had a separate &lt;code&gt;package.json&lt;/code&gt; file in our &lt;code&gt;src&lt;/code&gt; folder only declaring
+&lt;code&gt;name&lt;/code&gt;, &lt;code&gt;version&lt;/code&gt; and &lt;code&gt;peerDependencies&lt;/code&gt;, which we copied over to the dist folder. Results were published with &lt;code&gt;npm publish dist&lt;/code&gt;,
+thus only publishing the
+generated files.&lt;/p&gt;
+&lt;p&gt;Importing those repositories into Lerna like that was a bit of a problem; Lerna does not have a build step, you can&#39;t specify
+a subfolder to be published and there would be quite some duplicated build code.&lt;/p&gt;
+&lt;p&gt;The problem could be solved by just copying over the &lt;code&gt;src&lt;/code&gt; folder and &lt;code&gt;package.json&lt;/code&gt; file from the original repos
+(so not using the &lt;code&gt;lerna import&lt;/code&gt; function), and adding an &lt;code&gt;index.js&lt;/code&gt; and &lt;code&gt;index.d.ts&lt;/code&gt; file which export everything from the &lt;code&gt;src&lt;/code&gt; folder
+and then publishing the whole folder (with source files instead of compiled files).&lt;/p&gt;
+&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// index.js and index.d.ts&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;./src&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Publishing TypeScript source files was no problem while using Angular &amp;lt;= 4.x, but when Angular version 5 was released, a stricter
+version of tsconfig was introduced, which basically
+&lt;a href=&quot;https://github.com/angular/angular-cli/issues/8284#issuecomment-341417325&quot;&gt;disallowed having uncompiled files in your node modules&lt;/a&gt;.
+This Typescript configuration change forced us to add a build step again.&lt;/p&gt;
+&lt;h2 id=&quot;adding-a-build-step&quot; tabindex=&quot;-1&quot;&gt;Adding a build step&lt;/h2&gt;
+&lt;p&gt;It took us a while to figure how to do it, but apparently Lerna has &lt;code&gt;pre&lt;/code&gt; and &lt;code&gt;post&lt;/code&gt;
+publish scripts. It&#39;s not very well documented.
+&lt;a href=&quot;https://github.com/lerna/lerna/issues/643#issuecomment-284888565&quot;&gt;This was the only mention&lt;/a&gt; we could find about it.
+The word &lt;strong&gt;synchronous&lt;/strong&gt; was also not very obvious in that comment.&lt;/p&gt;
+&lt;p&gt;By adding a script named &lt;code&gt;prepublish.js&lt;/code&gt; (or &lt;code&gt;postpublish.js&lt;/code&gt;) in the &lt;code&gt;script&lt;/code&gt; folder of any package, you can run &lt;strong&gt;synchronous&lt;/strong&gt;
+scripts.&lt;/p&gt;
+&lt;p&gt;We ended up extracting the code for executing the script and showing some info into a file in the root directory,
+and adding a small &lt;code&gt;script/prepublish.js&lt;/code&gt; file into every package that needs to be built:&lt;/p&gt;
+&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// ./packages/package-name/scripts/prepublish.js&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; path &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; prePublish &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;../../../bundling/prepublish&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token function&quot;&gt;prePublish&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;search&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; path&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;__dirname&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;../&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// ./bundling/prepublish.js&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; ora &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ora&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; timeout &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; buildCommand &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;npm run build&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;prePublish&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;packageAlias&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; packagePath&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; spinner &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;ora&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token literal-property property&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;Building &quot;&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;packageAlias&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot; library&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token literal-property property&quot;&gt;spinner&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token literal-property property&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token literal-property property&quot;&gt;frames&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;…&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;child_process&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;execSync&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;buildCommand&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      timeout&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;token literal-property property&quot;&gt;cwd&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; packagePath&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    spinner&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;fail&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;Could not finish building &quot;&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;packageAlias&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot; library&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    console&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;error&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;stdout&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    process&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+  spinner&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;succeed&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;Finished building &quot;&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;packageAlias&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot; library&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+module&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;exports &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; prePublish&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The bundling script runs the npm build script in the specified folder synchronously (with a timeout) and
+shows some information in the terminal so we can see what step the &lt;code&gt;lerna publish&lt;/code&gt; command is in.
+We&#39;re using &lt;a href=&quot;https://github.com/sindresorhus/ora&quot;&gt;ora&lt;/a&gt; for that, just for the ease of use. We replaced the default spinner
+with a static one, as it does not really spins because the command is ran synchronously.&lt;/p&gt;
+&lt;p&gt;The npm build script runs a Gulp script that inlines the templates and styles and then runs &lt;code&gt;ngc&lt;/code&gt; on the generated files.&lt;/p&gt;
+&lt;h3 id=&quot;controlling-the-package-contents&quot; tabindex=&quot;-1&quot;&gt;Controlling the package contents&lt;/h3&gt;
+&lt;p&gt;The last part of adding the build step was controlling the contents of the npm published package. We don&#39;t want to ship the
+source and script folders.
+You can do this by specifying the &lt;code&gt;files&lt;/code&gt; in the &lt;code&gt;package.json&lt;/code&gt;. This is how a &lt;code&gt;package.json&lt;/code&gt; file looks in most of our packages:&lt;/p&gt;
+&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// package.json&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;@showpad/ng-package-name&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;x.x.x&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;package description&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;lint&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;tslint -c tslint.json &#39;./src/**/*.ts&#39;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;unit&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;karma start karma.conf.js&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;npm run lint &amp;amp;&amp;amp; npm run unit&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;build&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;gulp build:esm&quot;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;main&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;index.js&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;files&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;index.js&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;index.d.ts&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;dist&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;README&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;peerDendencies&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// required deps for the package&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;devDependencies&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// required deps for development&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;publishConfig&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;registry&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;url to showpad npm repository&quot;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Of course we also had to update the &lt;code&gt;index.js&lt;/code&gt; file to point to the &lt;code&gt;dist&lt;/code&gt; folder.&lt;/p&gt;
+&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// index.js and index.d.ts&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;./dist&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;conclusion&quot; tabindex=&quot;-1&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;While it was not very obvious how to move multiple existing repositories including a build step into a monorepo, we were able to figure it
+out with some digging in the code and quite some trial and error.&lt;/p&gt;
+&lt;p&gt;Hopefully it might help you out as well and feel free to point out any improvements to our set-up.&lt;/p&gt;
+&lt;h2 id=&quot;special-thanks&quot; tabindex=&quot;-1&quot;&gt;Special thanks&lt;/h2&gt;
+&lt;p&gt;A special thanks to the people reviewing this post:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Brecht Billiet &lt;a href=&quot;https://twitter.com/brechtbilliet&quot;&gt;@brechtbilliet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Thibaut Nguyen &lt;a href=&quot;https://twitter.com/teebot&quot;&gt;@teebot&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+</feed>

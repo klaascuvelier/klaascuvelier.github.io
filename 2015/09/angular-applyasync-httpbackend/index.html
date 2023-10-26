@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2015/09/angular-applyasync-httpbackend/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>While trying to update our application to use Angular 1.4, we ran into some troubles.<br>
+Unit tests started failing without a clear reason (oh yes, we have unit tests). Some hours of debugging later we found out `useApplyAsync` was the cause of our troubles.</p>
+<p>useApplyAsync is a method to enable/disable the combined processing of http responses. Basically, with this option enabled, only one $digest cycle is triggered for multiple http request around the same time. (<a title="Angular $http docs" href="https://docs.angularjs.org/api/ng/provider/$httpProvider" target="\_blank">https://docs.angularjs.org/api/ng/provider/$httpProvider</a>)<br>
+This is supposed to be a huge performance improvement for big Angular applications, which actually totally makes sense after reading the explanation, so we enabled this option.</p>
+<p>Once we found out disabling `applyAsync `fixed our unit tests, we found out pretty soon, that using multiple `$httpBackend.flush()` calls fixed our tests when `applyAsync` is enabled. I have a small jsfiddle here which recreates the problem: <a href="http://jsfiddle.net/klaascuvelier/q752t51q/" target="_blank">http://jsfiddle.net/klaascuvelier/q752t51q/</a><br>
+If you edit the source code you’ll see the multiple flushes or disabling `applyAsync` fixes the test.</p>
+<p>Knowing the multiple flushes fixes the issue, I dove into the source code of the $httpBackend service of the angular-mocks.<br>
+This is how the flush method looks:</p>
+<p>(<a title="Angular mocks source code" href="https://github.com/angular/bower-angular-mocks/blob/master/angular-mocks.js#L1530-L1545" target="_blank">https://github.com/angular/bower-angular-mocks/blob/master/angular-mocks.js#L1530-L1545</a>)</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+$httpBackend<span class="token punctuation">.</span><span class="token function-variable function">flush</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">count<span class="token punctuation">,</span> digest</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>digest <span class="token operator">!==</span> <span class="token boolean">false</span><span class="token punctuation">)</span> $rootScope<span class="token punctuation">.</span><span class="token function">$digest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>responses<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'No pending request to flush !'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>angular<span class="token punctuation">.</span><span class="token function">isDefined</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> count <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">while</span> <span class="token punctuation">(</span>count<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>responses<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'No more pending request to flush !'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        responses<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">while</span> <span class="token punctuation">(</span>responses<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        responses<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    $httpBackend<span class="token punctuation">.</span><span class="token function">verifyNoOutstandingExpectation</span><span class="token punctuation">(</span>digest<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>By default, a `$rootScope.$digest` is triggered, and then the code loops over the responses (either all, or some), and executes those.<br>
+Those responses are actually callbacks created by the wrapResponse method, which point to the `done` method in the angular $http service:</p>
+<p>(<a title="Angular $http source code" href="https://github.com/angular/angular.js/blob/master/src/ng/http.js#L1265-L1285" target="_blank">https://github.com/angular/angular.js/blob/master/src/ng/http.js#L1265-L1285</a>)</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>  
+<span class="token keyword">function</span> <span class="token function">done</span><span class="token punctuation">(</span><span class="token parameter">status<span class="token punctuation">,</span> response<span class="token punctuation">,</span> headersString<span class="token punctuation">,</span> statusText</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>cache<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isSuccess</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">[</span>status<span class="token punctuation">,</span> response<span class="token punctuation">,</span> <span class="token function">parseHeaders</span><span class="token punctuation">(</span>headersString<span class="token punctuation">)</span><span class="token punctuation">,</span> statusText<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// remove promise from the cache</span>
+            cache<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">function</span> <span class="token function">resolveHttpPromise</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">resolvePromise</span><span class="token punctuation">(</span>response<span class="token punctuation">,</span> status<span class="token punctuation">,</span> headersString<span class="token punctuation">,</span> statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>useApplyAsync<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        $rootScope<span class="token punctuation">.</span><span class="token function">$applyAsync</span><span class="token punctuation">(</span>resolveHttpPromise<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">resolveHttpPromise</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>$rootScope<span class="token punctuation">.</span>$$phase<span class="token punctuation">)</span> $rootScope<span class="token punctuation">.</span><span class="token function">$apply</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>The interesting part here are the last lines; when using `applyAsync`, a `$digest` is scheduled through `$applyAsync`, when not using `applyAsync`, a digest is triggered immediately.<br>
+This is the explanation for the problem we are seeing;</p>
+<p>When not using `applyAsync`, this is the flow, in psuedo code:</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token keyword">do</span> a first $http<span class="token punctuation">.</span>get request
+the response callback gets pushed onto the responses array
+trigger $httpBackend<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+loop over all responses is <span class="token function">started</span> <span class="token punctuation">(</span>length is <span class="token number">1</span> at <span class="token keyword">this</span> moment<span class="token punctuation">)</span><span class="token operator">:</span>
+pop callback from responses and <span class="token function">execute</span> <span class="token punctuation">(</span>responses length becomes <span class="token number">0</span><span class="token punctuation">)</span>
+$digest gets <span class="token function">triggered</span> <span class="token punctuation">(</span>other promises <span class="token keyword">get</span> resolved<span class="token operator">/</span>rejected<span class="token punctuation">)</span>
+the $digest triggers an action to <span class="token keyword">do</span> another $http<span class="token punctuation">.</span>get request
+second $http<span class="token punctuation">.</span>get gets done<span class="token punctuation">,</span> response gets pushed onto the responses <span class="token function">array</span> <span class="token punctuation">(</span>length becomes <span class="token number">1</span><span class="token punctuation">)</span>
+pop callback from responses and <span class="token function">execute</span> <span class="token punctuation">(</span>responses length becomes <span class="token number">0</span><span class="token punctuation">)</span>
+$digest gets triggered
+<span class="token comment">// (no more responses)</span>
+end loop
+<span class="token comment">// all is good</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>And this is the pseudo code for using `applyAsync`</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token keyword">do</span> a first $http<span class="token punctuation">.</span>get request
+the response callback gets pushed onto the responses array
+trigger $httpBackend<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+loop over all responses is <span class="token function">started</span> <span class="token punctuation">(</span>length is <span class="token number">1</span> at <span class="token keyword">this</span> moment<span class="token punctuation">)</span><span class="token operator">:</span>
+pop callback from responses and <span class="token function">execute</span> <span class="token punctuation">(</span>responses length becomes <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment">// no digest</span>
+$digest gets <span class="token function">triggered</span>
+<span class="token punctuation">(</span>no more responses<span class="token punctuation">)</span>
+end loop
+<span class="token comment">// 2nd $http.get did not get executed</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>So our issue is that there is no next tick which flushes the applyAsync queue before we’re moving to the next item of the responses array.<br>
+We can easily solve this by adding `$rootScope.$digest` at the end of the loop.</p>
+<p>In my opinion it would make sense to trigger a `$digest` at that point. When you don’t have `applyAsync` enabled, angular (mocks) will execute your first http call, take care of the other promises, execute the second http call and take care of the other promises in 1 flush.<br>
+Why would the `applyAsync` option require the unit test to do a double flush to make sure all http calls are done? Shouldn’t it be the httpBackend which takes care of the applyAsync changes instead of the unit test?</p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2010/04/boxee-python-dev/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>Boxee may be <em>“the best way to enjoy entertainment from the Internet and computer on your TV”</em> (according tor <a href="http://www.boxee.tv" target="_blank">their website</a>), the developers documentation isn’t all that great. Not everything is well-documented and the (python) API doesn’t always do what’s expected, which makes developing own plugins not that easy.<br>
+It isn’t also always possible to find the right solution with Google. Maybe because not all that much people are developing plugins for Boxee (or the don’t care to share) or because Google doesn’t index it well.</p>
+<p>So I decided to share the things I found. Let’s hope google indexes them well and I’m able to help some fellow developers.</p>
+<p><strong>Textbox + SetLabel:</strong><br>
+If you have a <a href="http://developer.boxee.tv/Textbox_Control">textbox</a>, it is not possible to change the label via python in an easy way.</p>
+<pre lang="python">mc.GetActiveWindow().GetLabel([id]).SetLabel('text')</pre>
+<p>and</p>
+<pre lang="python">mc.GetActiveWindow().GetControl([id]).SetLabel('text')</pre>
+<p>don’t work on a Textbox, and</p>
+<pre lang="python">GetTextbox([id])</pre>
+<p>doesn’t exist.<br>
+Setting the label can be done this way:</p>
+<pre lang="python">xbmc.executebuiltin('Control.SetLabel([id],[text])')</pre>
+<p>and you’ll have to replace every comma (,) with $COMMA</p>
+<p><strong>Onload-tag with a dialog</strong><br>
+I’ve experienced some troubles with the onload-tag in windows with type=”dialog”. If you have a <em>normal</em> window, and load a dialog-window in a onclick method with this code, the onload of the dialog won’t work until you close the dialog:</p>
+<pre lang="xml"> mc.ActivateWindow(14001) </pre>
+<p>The way to solve this is to dump the python code to load the dialog and just do this:</p>
+<pre lang="xml">ActivateWindow(14001)</pre>
+<p><strong>Python import gives errors:</strong></p>
+<p>It took me a while to figure out, but this error:</p>
+<pre lang="xml">18:54:51 T:2963869696 M:410439680  NOTICE: --&gt;Python Interpreter Initialized&lt;--
+18:54:51 T:2963869696 M:410439680  NOTICE: Traceback (most recent call last):
+18:54:51 T:2963869696 M:410439680  NOTICE:   File "", line 2, in ?
+18:54:51 T:2963869696 M:410439680  NOTICE: ImportError
+18:54:51 T:2963869696 M:410439680  NOTICE: :
+18:54:51 T:2963869696 M:410439680  NOTICE: No module named xxxxxxx
+18:54:51 T:2963869696 M:410439680   ERROR: Scriptresult: Error</pre>
+<p>Was caused by a bad window-id. Boxee window-id’s should be between 14000 and 14099</p>
+<p><strong>Close a window with type=”dialog”:</strong><br>
+If you have opened a window with type=”dialog”, it isn’t possible to close the window with this code:</p>
+<pre lang="xml">CloseWindow(14001)</pre>
+<p>Instead you have to do this:</p>
+<pre lang="xml">Dialog.Close(14001)</pre>
+<p>You can also add the “force” option (True/False), adding this option will skip all animations.</p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

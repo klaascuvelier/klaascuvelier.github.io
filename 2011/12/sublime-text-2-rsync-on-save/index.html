@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2011/12/sublime-text-2-rsync-on-save/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>As I’m running an Ubuntu Server in a virtual machine as development test server and I develop on my local environment, I need to keep both repositories in sync.<br>
+Before, I shared the code on the development server to my local environment via NFS. The setup worked, but gave some complications with svn, and the auto mounting of the NFS-share after rebooting. So I started looking for a new way to keep all files in sync. I considered sharing via NFS the other way around, but that would make my test server very slow; all php files need to be loaded through NFS and all assets (images, css, javascript) too.<br>
+The easiest way to solve my problem was through the good old rsync. As I’m too lazy to run an rsync command every time before I want to load a page from my test-server, I wanted it to be done automatically when I saved a file.<br>
+As Sublime Text 2 is an awesome editor which supports plugins, I started surfing around looking for some examples which I then adapted for my own use..<br>
+This is the plugin I now use:</p>
+<blockquote>
+<p>import sublime, sublime_plugin, subprocess</p>
+<p>class RsyncOnSave(sublime_plugin.EventListener):<br>
+def on_post_save(self, view):</p>
+<p>syncProject = “””rsync -avz localpath remotepath &amp;”””<br>
+subprocess.call([syncProject],shell=True)</p>
+</blockquote>
+<p>This code is put in a file named <em>RsyncOnSave.py</em> which is saved a folder named <em>RsyncOnSave</em>, in the Packages folder (for OSX thats: <em>~/Library/Application\ Support/Sublime\ Text\ 2/Packages/</em>). The plugin should automatically be loaded when you (re-)start Sublime Text.<br>
+localpath and remotepath obviously are the paths in your case. Note the ampersand at the end of the sync command, which makes sure your editor doesn’t freeze while the command is being executed.</p>
+<p>Make sure you’ve put your public ssh-key in the authorized_keys on your server, so you don’t have to give your password when rsyncing.</p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

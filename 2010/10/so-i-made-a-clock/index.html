@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2010/10/so-i-made-a-clock/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>So yes, I made a clock. In JavaScript (and HTML).<br>
+It’s not just another JavaScript analog or digital clock, it’s actually a clock which is easy to read and it’s based on this design: <a href="http://www.qlocktwo.com/index.php?lang=en" target="_blank">QLOCKTWO by Biegert&amp;Funk</a>.</p>
+<p>I think it’s a cool way to display time. When I considered buying the clock, I was shocked when I saw the price. So I though it would be a nice challenge to make it myself, in JavaScript.</p>
+<p>Here is the result:<br>
+<img src="/public/2010/10/clock.png" alt="Screenshot of the clock"></p>
+<p>And you can <a href="http://www.cuvedev.net/whattimeisit" target="_blank">see it in action here</a>.</p>
+<p>I am in particular proud of the <a href="http://www.cuvedev.net/whattimeisit/clock.js" target="_blank">JavaScipt code</a>.
+The clock is “built” with text predefined text strings, and right strings are highlighted using a “logic” for the selected language. In this way it is fairly easy to add new languages (at this time only Dutch and English are available). I used the PrototypJS-library because I’m used to it, and it shortened my code drastically.</p>
+<p>Update:<br>
+And this is what it looks like on an iPad:<br>
+<img src="/public/2010/10/clock-ipad.jpg" alt="Photo of the clock on an iPad"></p>
+<p>still pretty expensive for “just a clock”, but already cheaper than the qlocktwo.</p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

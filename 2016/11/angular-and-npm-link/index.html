@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2016/11/angular-and-npm-link/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p class="post-note">This article applies to Angular 2 and newer versions.</p>
+<h4 id="tl%3Bdr" tabindex="-1">TL;DR</h4>
+<p>Using <code>npm link</code> when developing Angular plugins might give you some headaches when trying to import Angular modules
+from your linked package. It's related to the <code>node_modules</code> directory.</p>
+<h2 id="about-%60npm-link%60" tabindex="-1">About `npm link`</h2>
+<p><code>npm link</code> makes it easy to use a package you are actively working on in an other project without having to
+<code>npm publish</code> and <code>npm update</code> with every change. The <a href="https://docs.npmjs.com/cli/link">npm documentation</a> on it is very
+clear, basically it just comes down to sym-linking your plugin package into the node_modules folder from the other
+project.</p>
+<h2 id="the-problem-when-developing-angular-modules" tabindex="-1">The problem when developing Angular modules</h2>
+<p>I ran into this problem:
+<code>VM6012:129 Uncaught Error: Unexpected value 'ExternalModule' imported by the module 'AppModule'</code></p>
+<p><a href="/public/2016-11-npm-link-angular-issue.png"><img src="/public/2016-11-npm-link-angular-issue.png" alt="Screenshot of the actual error"></a></p>
+<p>My external Angular module (linked through <code>npm link</code>) could not be imported by my host application.
+Google did not turn up with much useful information on my problem, so I decided to dive into the Angular source code
+to get a clue.</p>
+<h2 id="finding-out-why-the-external-module-is-invalid" tabindex="-1">Finding out why the external module is invalid</h2>
+<p>The specific error was thrown by the
+<a href="https://github.com/angular/angular/blob/234c5599f10c33e743594b556b63bc6fdd87e7eb/modules/%40angular/compiler/src/metadata_resolver.ts#L248-L250">metadata_resolver class</a>
+and indicates that Angular could not find the metadata for the module.
+The surrounding code led me to the <a href="https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L25">ng_module_resolver class</a>,
+the <a href="https://github.com/angular/angular/blob/master/modules/%40angular/core/src/reflection/reflector.ts#L33">reflector class</a>
+and the <a href="https://github.com/angular/angular/blob/76dd026447011823770e23fb5c4168c7d96a494b/modules/%40angular/core/src/reflection/reflection_capabilities.ts#L92">reflection_capabilities class</a>.</p>
+<p>The external module seemed to have the right decorator data, but <a href="https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L26">ng_module_resolve</a>
+told me there was not <code>NgModuleMetadata</code> available for my module.
+Stepping into the <a href="https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L14-L16">_isNgModuleMetadata method</a>
+showed me that my metadata looked very much like an <code>NgModule</code> instance, but was actually not.</p>
+<p>Diving into the <a href="https://github.com/angular/angular/blob/38e2203b24ba3657e92b51fae910915b481c2486/modules/%40angular/core/src/util/decorators.ts#L264-L288">DecoratorFactory method</a>
+reminded me that decorators are just functions.
+So when the metadata of my module very much looks like an <code>NgModule</code> (created by the <code>DecoratorFactory</code>) but in fact
+isn't, it might just be an instance of an <code>NgModule</code> created by another <code>DecoratorFactory</code>.</p>
+<p>From there on it did not take me too long to figure out that the <code>import { NgModule } from &quot;@angular/core&quot;;</code> in my
+linked package was using the angular package from the <code>node_modules</code> folder at it's original location, and not the
+ones from the host location.</p>
+<h2 id="wrapping-up" tabindex="-1">Wrapping up</h2>
+<p>In hindsight this all makes sense.</p>
+<p>This issue can be explained by the fact that my external package is a symlink and because of
+<a href="https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders">how Node modules are resolved</a>.
+So two instances of <code>NgModule</code> were created, and this explains why the
+<a href="https://github.com/angular/angular/blob/master/modules/%40angular/compiler/src/ng_module_resolver.ts#L14-L16">_isNgModuleMetadata method</a>,
+returned false.</p>
+<p>Still, it took me quite a while to fully figure this out.
+I don't think we can blame Angular for the vague error message or <code>npm link</code> for the way it's implemented.
+It's just a stupid coincidence of symlinks and method instances (decorators).</p>
+<p>I stopped using <code>npm link</code> for this specific project to fix this issue,
+i hope this explanation makes sense and can help a few people resolving similar issues when running into them.</p>
+<h2 id="the-upside" tabindex="-1">The upside</h2>
+<p>I guess there is mostly always an upside on running into issues like this; I really learnt a lot on Angular 2.</p>
+<p>I'm a big believer that knowing the internals of a framework can benefit you when using a framework.</p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

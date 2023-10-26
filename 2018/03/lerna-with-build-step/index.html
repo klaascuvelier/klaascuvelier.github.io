@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2018/03/lerna-with-build-step/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <h2 id="situation-sketch" tabindex="-1">Situation sketch</h2>
+<p>At <a href="https://www.showpad.com">Showpad</a>, we created quite a few libraries for internal use (a lot of them are Angular libraries).
+Most libraries have their own repository and get published separately to our private NPM registry.
+Angular's short <a href="https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md">release cycle</a> is great for the
+ecosystem, but it can be challenging to keep all your applications and libraries at the same, latest version. While a major release every 6
+months doesn't seem like a lot, keeping up can be a big challenge if you have multiple applications.</p>
+<p>Recently, we decided to try moving some libraries to a monorepo to see if it would benefit us.
+Setting up the repo was not very straightforward and advanced Lerna documentation is pretty scarce (at the time of writing) so I decided
+to share our set up.</p>
+<h2 id="creating-the-monorepo" tabindex="-1">Creating the monorepo</h2>
+<p>We considered some different monorepo tools and eventually dediced to use <a href="https://github.com/lerna/lerna">Lerna</a>.
+Lerna is a tool that optimizes the workflow around managing multi-package repositories with git an npm. It's created an used by the people
+behind the <a href="https://github.com/babel/babel">Babel</a> project.</p>
+<p>Getting started with Lerna is pretty straight forward; for basic set-ups, the documentation on the website is sufficient. That's also how
+we started our monorepo:</p>
+<pre class="language-bash"><code class="language-bash">$ <span class="token function">git</span> clone https://github.com/showpad/angular-packages
+$ <span class="token builtin class-name">cd</span> angular-packages
+$ lerna init</code></pre>
+<p>Most of the repositories we wanted to add to the monorepo had a build step; inlining templates and styles and generating an
+<a href="https://angular.io/guide/aot-compiler">AOT</a> compiled library. We had a separate <code>package.json</code> file in our <code>src</code> folder only declaring
+<code>name</code>, <code>version</code> and <code>peerDependencies</code>, which we copied over to the dist folder. Results were published with <code>npm publish dist</code>,
+thus only publishing the
+generated files.</p>
+<p>Importing those repositories into Lerna like that was a bit of a problem; Lerna does not have a build step, you can't specify
+a subfolder to be published and there would be quite some duplicated build code.</p>
+<p>The problem could be solved by just copying over the <code>src</code> folder and <code>package.json</code> file from the original repos
+(so not using the <code>lerna import</code> function), and adding an <code>index.js</code> and <code>index.d.ts</code> file which export everything from the <code>src</code> folder
+and then publishing the whole folder (with source files instead of compiled files).</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// index.js and index.d.ts</span>
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">"./src"</span><span class="token punctuation">;</span></code></pre>
+<p>Publishing TypeScript source files was no problem while using Angular &lt;= 4.x, but when Angular version 5 was released, a stricter
+version of tsconfig was introduced, which basically
+<a href="https://github.com/angular/angular-cli/issues/8284#issuecomment-341417325">disallowed having uncompiled files in your node modules</a>.
+This Typescript configuration change forced us to add a build step again.</p>
+<h2 id="adding-a-build-step" tabindex="-1">Adding a build step</h2>
+<p>It took us a while to figure how to do it, but apparently Lerna has <code>pre</code> and <code>post</code>
+publish scripts. It's not very well documented.
+<a href="https://github.com/lerna/lerna/issues/643#issuecomment-284888565">This was the only mention</a> we could find about it.
+The word <strong>synchronous</strong> was also not very obvious in that comment.</p>
+<p>By adding a script named <code>prepublish.js</code> (or <code>postpublish.js</code>) in the <code>script</code> folder of any package, you can run <strong>synchronous</strong>
+scripts.</p>
+<p>We ended up extracting the code for executing the script and showing some info into a file in the root directory,
+and adding a small <code>script/prepublish.js</code> file into every package that needs to be built:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// ./packages/package-name/scripts/prepublish.js</span>
+
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"path"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> prePublish <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"../../../bundling/prepublish"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">prePublish</span><span class="token punctuation">(</span><span class="token string">"search"</span><span class="token punctuation">,</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">"../"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-js"><code class="language-js"><span class="token comment">// ./bundling/prepublish.js</span>
+
+<span class="token keyword">const</span> ora <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"ora"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> timeout <span class="token operator">=</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> buildCommand <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">npm run build</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">prePublish</span><span class="token punctuation">(</span><span class="token parameter">packageAlias<span class="token punctuation">,</span> packagePath</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> spinner <span class="token operator">=</span> <span class="token function">ora</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    <span class="token literal-property property">spinner</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">interval</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token literal-property property">frames</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"…"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"child_process"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">execSync</span><span class="token punctuation">(</span>buildCommand<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      timeout<span class="token punctuation">,</span>
+      <span class="token literal-property property">cwd</span><span class="token operator">:</span> packagePath<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    spinner<span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Could not finish building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    process<span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  spinner<span class="token punctuation">.</span><span class="token function">succeed</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Finished building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> prePublish<span class="token punctuation">;</span></code></pre>
+<p>The bundling script runs the npm build script in the specified folder synchronously (with a timeout) and
+shows some information in the terminal so we can see what step the <code>lerna publish</code> command is in.
+We're using <a href="https://github.com/sindresorhus/ora">ora</a> for that, just for the ease of use. We replaced the default spinner
+with a static one, as it does not really spins because the command is ran synchronously.</p>
+<p>The npm build script runs a Gulp script that inlines the templates and styles and then runs <code>ngc</code> on the generated files.</p>
+<h3 id="controlling-the-package-contents" tabindex="-1">Controlling the package contents</h3>
+<p>The last part of adding the build step was controlling the contents of the npm published package. We don't want to ship the
+source and script folders.
+You can do this by specifying the <code>files</code> in the <code>package.json</code>. This is how a <code>package.json</code> file looks in most of our packages:</p>
+<pre class="language-json"><code class="language-json"><span class="token comment">// package.json</span>
+
+<span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"@showpad/ng-package-name"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"x.x.x"</span><span class="token punctuation">,</span>
+  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"package description"</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"tslint -c tslint.json './src/**/*.ts'"</span><span class="token punctuation">,</span>
+    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token string">"karma start karma.conf.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"npm run lint &amp;&amp; npm run unit"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"gulp build:esm"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"index.js"</span><span class="token punctuation">,</span> <span class="token string">"index.d.ts"</span><span class="token punctuation">,</span> <span class="token string">"dist"</span><span class="token punctuation">,</span> <span class="token string">"README"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"peerDendencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// required deps for the package</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// required deps for development</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"publishConfig"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"registry"</span><span class="token operator">:</span> <span class="token string">"url to showpad npm repository"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Of course we also had to update the <code>index.js</code> file to point to the <code>dist</code> folder.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// index.js and index.d.ts</span>
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">"./dist"</span><span class="token punctuation">;</span></code></pre>
+<h2 id="conclusion" tabindex="-1">Conclusion</h2>
+<p>While it was not very obvious how to move multiple existing repositories including a build step into a monorepo, we were able to figure it
+out with some digging in the code and quite some trial and error.</p>
+<p>Hopefully it might help you out as well and feel free to point out any improvements to our set-up.</p>
+<h2 id="special-thanks" tabindex="-1">Special thanks</h2>
+<p>A special thanks to the people reviewing this post:</p>
+<ul>
+<li>Brecht Billiet <a href="https://twitter.com/brechtbilliet">@brechtbilliet</a></li>
+<li>Thibaut Nguyen <a href="https://twitter.com/teebot">@teebot</a></li>
+</ul>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

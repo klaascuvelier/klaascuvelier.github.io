@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2016/01/angular2-firebase-ordering-prototype/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <h2 id="tl%3Bdr" tabindex="-1">TL;DR</h2>
+<p>Online ordering of food for a group of people can be cumbersome.
+I took on the challenge of building a prototype of a tool to improve the ordering of food for groups, in
+a limited amount of time, with unfamiliar technologies.</p>
+<h2 id="the-problem" tabindex="-1">The problem</h2>
+<p><a href="http://www.showpad.com">Showpad</a>, the company I work for, hosts Meetups quite often. For the meet-up of
+<a href="http://www.meetup.com/socratesbe/">SocratesBe</a> I tend to be the person doing preparations and I am also in charge of
+ordering the food.</p>
+<p>I remember the days there were only a few people joining the meet-up, and ordering the food was a breeze; asking people
+personally what food they want, placing the order, collecting the money.</p>
+<p>As the SocratesBe group became more popular, more people started coming to the meet-ups, which is a good thing,
+obviously. Though, the ordering of the food became a hassle. Ever ordered food for 20 individuals and collected the
+money? It's a drag!</p>
+<p>Two days before the meetup, I expressed my concerns about this issue on the Slack channel of SocratesBe.
+A clever man suggested to start my own pizza chain or maybe write some software to ease the task.</p>
+<p>Starting my own pizza chain was not high on my priorities list and I doubt if I'd ever be free to join the actual
+meet-ups again in that case.</p>
+<p>I had already tweeted the food delivery service we use to ask if they had a solution
+to this problem. I assumed we weren't the only ones with this issue.
+Sadly they did not reply. <a href="https://twitter.com/klaascuvelier/statuses/659094884368912384">The actual tweets (in Dutch)</a></p>
+<p>So if I wanted to improve the order process, I'd had to go with &quot;write your own software&quot;….</p>
+<h2 id="the-challenge" tabindex="-1">The challenge</h2>
+<p>Make it easier for a person to manage food orders for a group (order input, payments, status,…).</p>
+<h3 id="the-requirements" tabindex="-1">The requirements</h3>
+<p>There are 3 main parts to this application; <strong>authentication</strong>, a backend to <strong>store the data</strong> and a
+frontend to <strong>put in and present the orders</strong>.</p>
+<p>As I was developing this for a meet-up, using Meetup + OAuth2 is the logical choice for authentication.</p>
+<p>I've been using Angular 1 a lot for projects and Angular 2 just went in beta, so I decided it was about time
+to write some Angular 2 (and TypeScript).</p>
+<p>I did not want to invest time in writing a backend to store my data so I was in need for a &quot;datastorage as a service&quot;
+thing. I remembered reading a tutorial on Angular 1 and Firebase once, so I decided to try out Firebase…</p>
+<h3 id="challenges" tabindex="-1">Challenges</h3>
+<p>As I mentioned, I have no experience with Angular 2 or TypeScript. So prototyping an app using Angular 2 would be quite
+a challenge. Also, as it's only in beta stage, there isn't too much documentation and but there are a fair amount of
+good tutorials available already.</p>
+<p>I've never used Firebase before, but I wasn't really expecting much trouble on that side.</p>
+<p>The biggest challenge would obviously be time. Only 2 days until the meet-up and I have a full-time day job, so I was
+left with 2 evenings to write code.</p>
+<h3 id="the-implementation" tabindex="-1">The implementation</h3>
+<p>I signed up for a free account on Firebase, I did not take the time to check the limitations. I'd figure out a
+solution for those if I'd run into any.</p>
+<p>Creating an OAuth client in the Meetup API was straight forward as well.</p>
+<p>Next step was to start thinking about the code. I knew Angular 2 prefers JSPM to get things working, but I
+was not really familiar with it. I did not want to waste my time on figuring out how to set up my dev + production
+build process with JSPM I decided to just look for an angular starters pack.</p>
+<p>I had some starter packs bookmarked since they were showing up in my Twitter stream quite often.
+I went for <a href="https://github.com/ocombe/ng2-webpack">ng2-webpack</a> by <a href="https://twitter.com/ocombe">Olivier Combe</a> as I was
+already quite familiar with WebPack and his repo had the dev and production build process set up and had some useful
+example code available (bootstrapping, routing, …).</p>
+<p>The first thing I wanted to implement was the authentication. Authentication from a JavaScript app using OAuth seemed
+pretty straight forward, I had done this before; use the implicit flow, provide my app key and redirect url and ask
+for an access_token.</p>
+<p>Sadly, it didn't go as smooth as I hoped for. I ran into 2 problems.</p>
+<p>First, Meetup did not allow me to use <code>localhost</code> as a redirect url. As webpack's dev server runs on <code>localhost:3000</code>
+this was a problem. I ended up solving this by implementing more code than I intented to; I added storing
+the access_token in LocalStorage, this way I could run my code on production, get the code from LocalStorage and use
+it locally. There was one up side to this; this way I already implemented some &quot;remember me&quot; functionality.</p>
+<p>I did not think about how I'd host my frontend, luckily Firebase provided some hosting with the free account I had, and
+they have a great CLI tool. After some configuration I only had to run <code>npm run build &amp;&amp; firebase deploy</code> to get my
+code on production.</p>
+<p>The second problem I ran into when I tried doing an AJAX call for the user information…</p>
+<p><a href="/public/2016/01/cors.png"><img src="/public/2016/01/cors.png" alt="Screenshot console CORS errors">{: .image-center }</a></p>
+<p>Oh god… All frontend developers have ran into CORS problems, right?</p>
+<p>The quickest solution I thought of, was creating a proxy script and running that on my VPS (kind of stupid hosting my
+frontend on Firebase but still having to use my VPS in the end). Not the greatest solution, but I was able to solve
+my issues quite quickly this way.</p>
+<p>Next step was linking the app with Firebase. Although Angular 2 is only in beta for about 2 weeks, somebody already
+created <a href="https://www.npmjs.com/package/angular2-firebase">angular2-firebase</a>. Thank you,
+<a href="https://twitter.com/kylecordes">Kyle</a></p>
+<p>I was not familiar with observables yet, still I was able to create some sort of <code>DataStorage</code> service.
+(This great blog post came just too late: <a href="http://blog.thoughtram.io/angular/2016/01/06/taking-advantage-of-observables-in-angular2.html">Taking advantage of Observables in Angular 2</a>)</p>
+<pre class="language-ts"><code class="language-ts"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token comment">// datastore.ts</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> observableFirebaseObject<span class="token punctuation">,</span> observableFirebaseArray <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'angular2-firebase'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> \<span class="token operator">*</span> <span class="token keyword">as</span> Firebase <span class="token keyword">from</span> <span class="token string">'firebase'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> GroupOrder <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../classes/group-order'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Order <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../classes/order'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token constant">FIREBASE_ROOT</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../../config'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token constant">FIREBASE_ORDER_GROUPS</span> <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">FIREBASE_ROOT</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/order-groups</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">FIREBASE_ORDERS</span> <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">FIREBASE_ROOT</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/orders</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">DataStore</span>
+<span class="token punctuation">{</span>
+rootRef<span class="token operator">:</span> Firebase<span class="token punctuation">;</span>
+orderGroupsRef<span class="token operator">:</span> Firebase<span class="token punctuation">;</span>
+ordersRef<span class="token operator">:</span> Firebase<span class="token punctuation">;</span>
+
+    <span class="token function">constructor</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>rootRef <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Firebase</span><span class="token punctuation">(</span><span class="token constant">FIREBASE_ROOT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>orderGroupsRef <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Firebase</span><span class="token punctuation">(</span><span class="token constant">FIREBASE_ORDER_GROUPS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>ordersRef <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Firebase</span><span class="token punctuation">(</span><span class="token constant">FIREBASE_ORDERS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">createGroupOrder</span> <span class="token punctuation">(</span>groupOrder<span class="token operator">:</span> GroupOrder<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>orderGroupsRef<span class="token punctuation">.</span><span class="token function">child</span><span class="token punctuation">(</span>groupOrder<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>groupOrder<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">...</span>
+
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>With these basics implemented, I could start working on the app functionality.</p>
+<p>This is when the real Angular 2 fun started, adding routes, creating components, writing views with the new template
+syntax:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token comment">// create-group.html</span>
+
+<span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"content"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>h2<span class="token operator">></span>Create a <span class="token keyword">new</span> <span class="token class-name">group</span> order<span class="token operator">&lt;</span><span class="token operator">/</span>h2<span class="token operator">></span>
+
+    <span class="token operator">&lt;</span><span class="token function">form</span> <span class="token punctuation">(</span>submit<span class="token punctuation">)</span><span class="token operator">=</span><span class="token string">"createGroupOrder(groupName.value, groupOrderUrl.value, groupDescription.value)"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>fieldset<span class="token operator">></span>
+            <span class="token operator">&lt;</span>label<span class="token operator">></span>Group Name<span class="token operator">&lt;</span><span class="token operator">/</span>label<span class="token operator">></span>
+            <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"text"</span> placeholder<span class="token operator">=</span><span class="token string">"some group name"</span> #groupName<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>fieldset<span class="token operator">></span>
+
+        <span class="token operator">&lt;</span>fieldset<span class="token operator">></span>
+            <span class="token operator">&lt;</span>label<span class="token operator">></span>Order description<span class="token operator">&lt;</span><span class="token operator">/</span>label<span class="token operator">></span>
+            <span class="token operator">&lt;</span>textarea #groupDescription<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>textarea<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>fieldset<span class="token operator">></span>
+
+        <span class="token operator">&lt;</span>fieldset<span class="token operator">></span>
+            <span class="token operator">&lt;</span>label<span class="token operator">></span>Order url<span class="token operator">&lt;</span><span class="token operator">/</span>label<span class="token operator">></span>
+            <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"url"</span> placeholder<span class="token operator">=</span><span class="token string">"http://www.pizza.be"</span> #groupOrderUrl<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>fieldset<span class="token operator">></span>
+
+        <span class="token operator">&lt;</span>fieldset<span class="token operator">></span>
+            <span class="token operator">&lt;</span>label<span class="token operator">></span>Organizer<span class="token operator">&lt;</span><span class="token operator">/</span>label<span class="token operator">></span>
+            <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"text"</span> disabled value<span class="token operator">=</span><span class="token string">"{{ user.name }}"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>fieldset<span class="token operator">></span>
+
+        <span class="token operator">&lt;</span>fieldset <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"submit"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>button type<span class="token operator">=</span><span class="token string">"submit"</span><span class="token operator">></span>Create group<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>fieldset<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>form<span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<pre class="language-ts"><code class="language-ts"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token comment">// create-group.ts</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Component<span class="token punctuation">,</span> OnInit <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'angular2/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Router <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'angular2/router'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> DataStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../services/datastore/datastore'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Authentication <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../services/authentication/authentication'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> UuidGenerator <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../services/uuid/uuid-generator'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> GroupOrder<span class="token punctuation">,</span> GroupOrderStatus <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../classes/group-order'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> User <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../../classes/user'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Component</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+selector<span class="token operator">:</span> <span class="token string">'create-group'</span><span class="token punctuation">,</span>
+template<span class="token operator">:</span> <span class="token keyword">require</span><span class="token punctuation">(</span><span class="token string">'./create-group.html'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+styleUrls<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token keyword">require</span><span class="token punctuation">(</span><span class="token string">'./create-group.css'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+directives<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+pipes<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CreateGroupComponent</span> <span class="token keyword">implements</span> <span class="token class-name">OnInit</span>
+<span class="token punctuation">{</span>
+dataStore<span class="token operator">:</span> DataStore <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+authentication<span class="token operator">:</span> Authentication <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+router<span class="token operator">:</span> Router <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+user<span class="token operator">:</span> User <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">constructor</span> <span class="token punctuation">(</span>dataStore<span class="token operator">:</span> DataStore<span class="token punctuation">,</span> authentication<span class="token operator">:</span> Authentication<span class="token punctuation">,</span> router<span class="token operator">:</span> Router<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>dataStore <span class="token operator">=</span> dataStore<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>authentication <span class="token operator">=</span> authentication<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>router <span class="token operator">=</span> router<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">ngOnInit</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// needs login</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>authentication
+            <span class="token punctuation">.</span><span class="token function">getUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>user <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>user <span class="token operator">=</span> user<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>router<span class="token punctuation">.</span><span class="token function">navigate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'Login'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">createGroupOrder</span> <span class="token punctuation">(</span>name<span class="token punctuation">,</span> orderUrl<span class="token punctuation">,</span> description<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// Refetch user</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>authentication<span class="token punctuation">.</span><span class="token function">getUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>user <span class="token operator">=></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>user <span class="token operator">=</span> user<span class="token punctuation">;</span>
+
+                <span class="token keyword">const</span> id <span class="token operator">=</span> UuidGenerator<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token keyword">const</span> order <span class="token operator">=</span> GroupOrder<span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                    id<span class="token punctuation">,</span>
+                    name<span class="token punctuation">,</span>
+                    orderUrl<span class="token punctuation">,</span>
+                    description<span class="token punctuation">,</span>
+                    creatorName<span class="token operator">:</span> user<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+                    creatorId<span class="token operator">:</span> user<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+                    status<span class="token operator">:</span> GroupOrderStatus<span class="token punctuation">.</span><span class="token constant">OPEN</span><span class="token punctuation">,</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// You'd think this might cause some race condition, but haven't experienced it yet</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>dataStore<span class="token punctuation">.</span><span class="token function">createGroupOrder</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>router<span class="token punctuation">.</span><span class="token function">navigate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'GroupOrder'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+                <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">'You are not authenticated'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>Once I had basic functionality to create groups and add orders to groups I could start adding in some &quot;administration&quot;
+functionality (order statuses, payment statuses,…) and some quick wins for the people ordering
+(remembering the groups they visited, removing orders,…)</p>
+<p>This is what it looked like in the end:</p>
+<p><a href="/public/2016/01/finish-about.png"><img src="/public/2016/01/finish-about.png" alt="Screenshot app about page">{: .image-center }</a>
+<a href="/public/2016/01/finish-order.png"><img src="/public/2016/01/finish-order.png" alt="Screenshot app order page admin options">{: .image-center }</a></p>
+<p>Definitely not a masterpiece of UX, but surely good enough to ship and try out on the meet-up.</p>
+<h3 id="testing-it-out" tabindex="-1">Testing it out</h3>
+<p>I posted the link to my order group on the Slack channel on the day of the meet-up, and people could start adding
+their order during the day.</p>
+<p>It was still hard to copy over the orders to the actual food order service, but at least it the orders and the payments
+were manageable this time.</p>
+<p><strong>Goal accomplished!</strong> The tool did its job!</p>
+<p>(To be honest: 1 order was wrong but that was totally a human error, not the tool's fault).</p>
+<p>I used the SocratesBe meet-up to give a lightning talk about this challenge. It turned out explaining everything in 10
+minutes was even harder than finishing the project in time.</p>
+<p><a href="/public/2016/01/lightning-talk.jpeg"><img src="/public/2016/01/lightning-talk.jpeg" alt="Picture of me presenting the challenge">{: .image-center }</a></p>
+<h2 id="looking-back-on-the-challenge" tabindex="-1">Looking back on the challenge</h2>
+<p>I was able to pull this off in under 8 hours, which I am still pretty impressed with myself.
+Shortcuts have been taken but the challenge was not to build a perfect app. The challenge was to create a
+tool in a short amount of time with services/tools I was not familiar with.</p>
+<p>The security of the app is not great; I did not configure Firebase correctly, now everybody can read and write to my
+instance (people could mark their order as paid without paying). Authorization itself isn't very secure either, before
+doing some data related actions, I check if the logged in user from Meetup matches the owner of a group or an order,
+which could by bypassed pretty quick as well.</p>
+<p>I guess ideally a &quot;real&quot; backend should be used; it would take care of the CORS issues with Meetup, I could use
+<a href="https://tools.ietf.org/html/rfc7519">JWT</a> for authorization and I would not have to expose any of my
+credentials…</p>
+<p>I probably could have easily solved the Meetup redirect issue locally by setting up a host in nginx with
+<code>proxy_pass</code>, which I've actually done before, but I did not think about it at the time.</p>
+<p>The code is available on Github <a href="https://github.com/klaascuvelier/ng2-group-order">ng2-group-order</a>, but keep
+in mind the purpose of this challenge…
+This is not the sort of code I wrote in my day job.</p>
+<p>I was quite hesitant about TypeScript in the beginning, but I really loved writing typed code and taking advantage of
+the decorators!</p>
+<p>It's too soon to form an opinion on Angular 2, but I definitely liked writing this app using it.</p>
+<p>Hope you enjoyed my write-up. Don't hesitate to contact me if you have any questions or remarks!</p>
+<h2 id="also-want-to-get-started-with-angular-2%3F" tabindex="-1">Also want to get started with Angular 2?</h2>
+<p>There are already quite some tutorials available, but definitely check out the ones by
+<a href="http://blog.thoughtram.io/categories/angular-2/">Thoughtram</a>, they are great!</p>
+<p>I've used webpack myself to build my little app, there are more options, but this proves you're not tight to JSPM.
+I used <a href="https://github.com/ocombe/ng2-webpack">ng2-webpack</a> and I was very happy how easy it was to get started (and
+keep using it when adding extra functionality).</p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

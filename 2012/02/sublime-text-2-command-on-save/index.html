@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2012/02/sublime-text-2-command-on-save/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>This is a plugin based on the one I wrote here: <a href="/2011/12/sublime-text-2-rsync-on-save/">sublime-text2-rsync-on-save</a><br>
+The problem with the rsync-on-save plugin, is that it doesn’t support project specific rsync commands, mainly because Sublime Text doesn’t support project specific settings for packages.</p>
+<p>In this plugin I worked around it in a certain way. I created a  plugin which executes a command based on the folder path.<br>
+The path-command mapping is stored in a settings file, so it can be edited from  within Sublime Text 2.</p>
+<p>I put the project on GitHub, so to install it, <a href="https://github.com/klaascuvelier/ST2-CommandOnSave">clone this repository</a> into your packages folder.</p>
+<p>There are some examples of path-command mapping in the settings file, and FYI, this is how my settings file looks:</p>
+<div style="width: 90%; overflow: auto">
+  <pre>{
+  "commands": [
+    "/Users/klaascuvelier/Projects/showpad/cms/::/Users/klaascuvelier/Projects/showpad/cms/commandonsave.sh &",
+    "/Users/klaascuvelier/Projects/showpad/presentation/::/Users/klaascuvelier/Projects/showpad/presentation/commandonsave.sh &",
+    "/Users/klaascuvelier/Projects/showpad/dashboard/::/Users/klaascuvelier/Projects/showpad/dashboard/commandonsave.sh &",
+    "/Users/klaascuvelier/Projects/showpad/support/::/Users/klaascuvelier/Projects/showpad/support/commandonsave.sh &"
+  ]
+}</pre>
+</div>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>
+        Klaas Cuvelier | Software developer & Runner
+    </title>
+    <meta name="description" content="Klaas Cuvelier. Software craftsman and runner" />
+    
+
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2016/09/internationalization-in-angular2/" />
+
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <body class="h-screen">
+        
+
+    <header class="site-header mb-5">
+        <div class="pl-2 py-2 flex flex-row justify-start items-center">
+            <a href="/" class="mr-3">
+                <img class="rounded-full w-7 h-7" src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc?s=84"/>
+            </a>
+            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
+            
+        </div>
+    </header>
+
+
+<div class="page-content">
+  <div class="wrapper">
+    <div class="post">
+  <p>On September 21 <a href="https://twitter.com/vberchet">Victor Berchet</a> gave a presentation on the state of internationalization in Angular 2 at BigCommerce's offices in San Francisco.
+This is a small summary on that presentation.</p>
+<h4 id="tl%3Bdr" tabindex="-1">TL;DR</h4>
+<p>Angular 2 has i18n and l10n features built into its core package. Currently the implementation is ready, but the configuration is quite cumbsersome and there are some
+trade-offs that have been made. From what Victor said I assume some changes are coming (probably mostly configuration related).</p>
+<h1>Internationalization in Angular 2</h1>
+<p>Angular 2 final got released last week, and with its core package it shipped internationalization and localization features, which lets you do translations and localized formatting
+of your application.
+What is not ready however is the documentation for it, but the <a href="https://github.com/angular/angular.io/pull/2340">PR</a> for the documentation is already pending, so it should be available on <a href="https://www.angular.io">Angular.io</a> quite soon.</p>
+<p>You can easily mark DOM elements that need to be internationalized by adding the <code>i18n</code> directive (as an attribute).
+The <code>i18n</code> attribute can be used without a value, or you can add a description and a meaning as value (separated by a pipe), these are just metadata for the person doing the translations.</p>
+<p>Everything you'd expect from i18n is available. The parser won't translate your HTML tags, but will replace them by placeholders in the
+translation dictionary (so if the syntax of a language is different and the HTML tag needs to be in a different place for a certain language, that's possible).
+It is possible to translate element attributes as well, by adding <code>i18n-[the attribute]</code> to your element,
+you can mark a whole group of elements to be translated by wrapping them in a i18n-comment or using the <code>ng-container</code> construct and there is also support for pluralization.
+Angular uses the standardized <a href="http://userguide.icu-project.org/formatparse/messages">ICU format</a> for that.</p>
+<p>Have a look at some of the syntax:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token punctuation">{</span><span class="token operator">%</span> raw <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token comment">// example.html</span>
+<span class="token operator">&lt;</span>span i18n<span class="token operator">></span>to be translated<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+
+<span class="token operator">&lt;</span>span i18n<span class="token operator">=</span><span class="token string">"some description|this is a bird"</span><span class="token operator">></span>Crane<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+<span class="token operator">&lt;</span>span i18n<span class="token operator">=</span><span class="token string">"other description|this is a machine"</span><span class="token operator">></span>Crane<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+
+<span class="token operator">&lt;</span>p<span class="token operator">></span>Hello <span class="token operator">&lt;</span>span <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"some-class"</span><span class="token operator">></span>Angular<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+
+<span class="token operator">&lt;</span>a href<span class="token operator">=</span><span class="token string">"#"</span> title<span class="token operator">=</span><span class="token string">"link to some website"</span> i18n<span class="token operator">-</span>title<span class="token operator">></span>the link<span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> i18n <span class="token operator">--</span><span class="token operator">></span>
+<span class="token operator">&lt;</span>div<span class="token operator">></span>Translate by comment<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span><span class="token operator">/</span>i18n<span class="token operator">--</span><span class="token operator">></span>
+
+<span class="token operator">&lt;</span>ng<span class="token operator">-</span>container i18n<span class="token operator">></span>
+  <span class="token operator">&lt;</span>span<span class="token operator">></span>some text<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+  <span class="token operator">&lt;</span>span<span class="token operator">></span>more text<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ng<span class="token operator">-</span>container<span class="token operator">></span>
+
+<span class="token operator">&lt;</span>div i18n<span class="token operator">></span>
+  <span class="token punctuation">{</span> appleCount<span class="token punctuation">,</span> plural<span class="token punctuation">,</span>
+    <span class="token operator">=</span><span class="token number">0</span>  <span class="token punctuation">{</span> no apples at all <span class="token punctuation">}</span>
+    one <span class="token punctuation">{</span> one apple <span class="token punctuation">}</span>
+    <span class="token operator">=</span><span class="token number">17</span> <span class="token punctuation">{</span> seventeen apples <span class="token punctuation">}</span>
+    other <span class="token punctuation">{</span> some <span class="token function">apples</span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">{</span>appleCount<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token punctuation">{</span><span class="token operator">%</span> endraw <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>When all of your templates have the necessary internationalization tags it's time to generate the
+library with strings using the <code>ng-xi18n</code> binary that comes with Angular.</p>
+<pre class="language-bash"><code class="language-bash"><span class="token punctuation">{</span>% raw %<span class="token punctuation">}</span>
+$ ./node_modules/.bin/ng-xi18n
+<span class="token punctuation">{</span>% endraw %<span class="token punctuation">}</span></code></pre>
+<p><small>I did run into some problems running this command, more on that at the end.</small></p>
+<p>Running this command will generate a <code>messages.xlf</code> file in your application root.
+Currently <code>XMB</code> and <code>XLF</code> formats are supported.</p>
+<p>When all of your message strings have been translated, you can let your application know it can use them by
+adding the translation providers when bootstrapping.</p>
+<pre class="language-bash"><code class="language-bash"><span class="token punctuation">{</span>% raw %<span class="token punctuation">}</span>
+// main.ts
+<span class="token function">import</span> <span class="token punctuation">{</span> TRANSLATIONS, TRANSLATIONS_FORMAT, LOCALE_ID <span class="token punctuation">}</span> from <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token function">import</span> <span class="token punctuation">{</span> TRANSLATION <span class="token punctuation">}</span> from <span class="token string">'./messages.en'</span><span class="token punctuation">;</span>
+
+// <span class="token punctuation">..</span>.
+
+platformBrowserDynamic<span class="token punctuation">(</span><span class="token punctuation">)</span>.bootstrapModule<span class="token punctuation">(</span>
+AppModule,
+<span class="token punctuation">{</span>
+providers: <span class="token punctuation">[</span>
+<span class="token punctuation">{</span> provide: TRANSLATIONS, useValue: TRANSLATION <span class="token punctuation">}</span>,
+<span class="token punctuation">{</span> provide: TRANSLATIONS_FORMAT, useValue: <span class="token string">'xlf'</span> <span class="token punctuation">}</span>,
+<span class="token punctuation">{</span> provide: LOCALE_ID, useValue: <span class="token string">'en'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">{</span>% endraw %<span class="token punctuation">}</span></code></pre>
+<p>The current implementation of internationalization requires you to define the locale you want to use when bootstrapping.
+There are some plans to move this to the angularCompilerOptions (for AoT).</p>
+<p>The obvious advantage here is the speed, in the build phase all of the strings are compiled in.
+The downside is that you'll need to generate a bundle per locale you want to support, and figure out how to know which bundle to serve...</p>
+<p>The Angular team is aware of this and has supporting multiple locales on the roadmap, but they haven't quite figured out yet how they
+will accomplish this.</p>
+<h2 id="localization-in-angular-2" tabindex="-1">Localization in Angular 2</h2>
+<p>Victor also touched the subject of localization a little.
+There are some build in pipes like <code>shortDate</code> and <code>currency</code> which will take in to account the locale you specified.</p>
+<pre class="language-bash"><code class="language-bash"><span class="token punctuation">{</span>% raw %<span class="token punctuation">}</span>
+// test.html
+<span class="token punctuation">{</span><span class="token punctuation">{</span> cartTotal <span class="token operator">|</span> currency <span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token punctuation">{</span> today <span class="token operator">|</span> date:<span class="token string">'shortDate'</span> <span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span>% endraw %<span class="token punctuation">}</span></code></pre>
+<h2 id="issues-i-ran-in-to%3A" tabindex="-1">Issues I ran in to:</h2>
+<h3 id="ng-xi18n-command" tabindex="-1">ng-xi18n command</h3>
+<p>The generation of the <code>xlf</code> file did not go very smooth for me.</p>
+<p>Running the command from the root folder did not use the <code>tsconfig.json</code> file
+from the <code>src</code> folder. It would make sense that I have to run this command from the <code>src</code> folder, as that is the source root and that's the place
+I would want the <code>messages.xlf</code> file to live.</p>
+<p>I tried running <code>../node_modules/.bin/ng-xi18n</code> form the <code>src</code> folder but that did not work out, neither
+did running <code>./node_modules/.bin/ng-xi18n --project src</code>. In the end I copied over the <code>tsconfig.json</code> file to the root which made the command run.
+Currently the <code>messages.xlf</code> file is outside the <code>src</code> folder, but I put the translated file <code>messages.en.xlf</code> in the <code>src</code> folder.</p>
+<h3 id="currency-and-locale" tabindex="-1">currency and locale</h3>
+<p>I was not able to make the currency pipe take in to account the specified locale. The result kept being in US locale.
+This was something Victor actually had as well in his slides.
+Looking at the <a href="https://github.com/angular/angular/blob/master/modules/@angular/common/src/pipes/number_pipe.ts">CurrencyPipe implementation</a>
+it looks like USD is the default currency and it's not really taking into account the locale yet<small></p>
+<h2 id="summary" tabindex="-1">Summary</h2>
+<p>I think the implementation of i18n and l10n in the Angular core looks promising, but it also looks unfinished.
+The lack of multiple locale support and the upcoming configuration changes are a sign of this (and the possible locale bug?).</p>
+<p>I don't think the <code>i18n</code> directive is going to change (a lot), so it is definitely usable at this time, that is if your application only supports<br>
+one locale (or if you want to go through the pain of building and serving multiple bundles).</p>
+<p>If your application needs support for multiple locales already, I'd suggest you use <a href="https://github.com/ocombe/ng2-translate">ng2-translate</a> by <a href="https://twitter.com/ocombe">Olivier Combe</a></p>
+<p>The code I used in my examples is available at <a href="https://github.com/klaascuvelier/ng2-i18n">ng2-i18n on Github</a> and while doing some research I stumbled upon <a href="https://github.com/StephenFluin/i18n-sample">this example</a> as well.</p>
+<p>Victor has shared his <a href="https://docs.google.com/presentation/d/1xWnEa0LhHmMgNUsq4pQ-dLygw5M_dkE3-tYlcO0cPq0/edit#slide=id.g128d8fde34_1_2">slides from the Meetup</a></p>
+
+</div>
+
+
+<footer class="site-footer mt-10">
+    <div class="wrapper">
+        <div class="footer-col-wrapper">
+            <div class="footer-col footer-col-1">
+                <ul class="contact-list">
+                    <li>&copy; Klaas Cuvelier</li>
+                </ul>
+            </div>
+            <div class="footer-col footer-col-2">
+                <ul class="social-media-list">
+                    
+                    
+                </ul>
+            </div>
+            <div class="footer-col footer-col-3">
+                <p class="text"></p>
+            </div>
+        </div>
+    </div>
+</footer>
+  </div>
+</div>
+    </body>
+
+</html>
