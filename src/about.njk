@@ -19,7 +19,7 @@ layout: layouts/default.njk
 <p>In addition to my passion for web development and technology, I also enjoy spending time outdoors, particularly through running and hiking. I have documented some of my experiences on <a href="/running">my running page</a>.</p>
 
 <h2 id="links">Links</h2>
-<ul class="mx-0 mb-20 -mt-5">{% if socials.socials %}
+<ul class="mx-0 mb-20 -mt-5 list-none">{% if socials.socials %}
     {% for social in socials.socials %}
         <li class="mb-1">
             <a href="{{ social.url }}" target="_blank" rel="noopener">{{ social.label }}</a>
