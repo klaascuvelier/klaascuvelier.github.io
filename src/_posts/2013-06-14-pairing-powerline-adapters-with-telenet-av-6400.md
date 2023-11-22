@@ -5,15 +5,14 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5020
 permalink: /2013/06/pairing-powerline-adapters-with-telenet-av-6400/
-categories:
-  - Cuvedev
 tags:
-  - posts
+  - post
+  - tech
   - powerline
   - Telenet
 ---
 
-As I wasn&#8217;t able to find much info about Telenets powerline adapters when I was looking to add some adapters to the existing network, I thought it could be useful to share this
+As I wasn&#8217;t able to find much info about Telenet's powerline adapters when I was looking to add some adapters to the existing network, I thought it could be useful to share this
 
 According to Telenet technicians, you should be able to add almost any brand of adapter to the existing network. Although they didn&#8217;t guarantee it.
 

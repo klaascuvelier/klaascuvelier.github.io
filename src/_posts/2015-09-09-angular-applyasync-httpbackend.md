@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5097
 permalink: /2015/09/angular-applyasync-httpbackend/
-categories:
-  - Development
 tags:
-  - posts
+  - post
+  - tech
 ---
 
 While trying to update our application to use Angular 1.4, we ran into some troubles.  

@@ -5,14 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=224
 permalink: /2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/
-categories:
-  - Boxee
-  - Bugs
-  - Cuvedev
-  - Linux
-  - Ubuntu
 tags:
-  - posts
+  - post
+  - tech
   - asrock
   - Boxee
   - ion

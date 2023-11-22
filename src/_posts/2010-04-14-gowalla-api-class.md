@@ -5,14 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=181
 permalink: /2010/04/gowalla-api-class/
-categories:
-  - api
-  - Cuvedev
-  - Development
-  - gowalla
-  - php
 tags:
-  - posts
+  - post
+  - tech
   - api
   - class
   - gowalla

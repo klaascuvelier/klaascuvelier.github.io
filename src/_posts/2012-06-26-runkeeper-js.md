@@ -5,12 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4872
 permalink: /2012/06/runkeeper-js/
-categories:
-  - Development
-  - IOS
-  - iPhone
 tags:
-  - posts
+  - post
+  - tech
   - data
   - database
   - export

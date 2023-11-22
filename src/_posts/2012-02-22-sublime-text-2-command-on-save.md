@@ -4,10 +4,9 @@ title: "Sublime Text 2 &#8211; Command on Save"
 author: Klaas Cuvelier
 layout: layouts/post.njk
 permalink: /2012/02/sublime-text-2-command-on-save/
-categories:
-  - Cuvedev
 tags:
-  - posts
+  - post
+  - tech
 ---
 
 This is a plugin based on the one I wrote here: [sublime-text2-rsync-on-save][1]  

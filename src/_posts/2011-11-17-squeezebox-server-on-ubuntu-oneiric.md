@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4673
 permalink: /2011/11/squeezebox-server-on-ubuntu-oneiric/
-categories:
-  - Ubuntu
 tags:
-  - posts
+  - post
+  - tech
   - Expat
   - JSON
   - oneiric

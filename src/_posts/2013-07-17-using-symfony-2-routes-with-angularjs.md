@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5022
 permalink: /2013/07/using-symfony-2-routes-with-angularjs/
-categories:
-  - Development
 tags:
-  - posts
+  - post
+  - tech
   - angular
   - js
   - routing

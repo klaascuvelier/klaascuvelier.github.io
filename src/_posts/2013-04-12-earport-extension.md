@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=4954
 permalink: /2013/04/earport-extension/
-categories:
-  - Cuvedev
 tags:
-  - posts
+  - post
+  - tech
 ---
 
 For people who don&#8217;t know <a href="http://www.earport.fm" target="_blank">Earport</a>, it is a service to listen to music together.

@@ -14,7 +14,7 @@ layout: layouts/default.njk
 
 <section class="mt-20">
     <ul class="post-list">
-      {% for post in collections.posts | reverse %}
+      {% for post in collections.tech | reverse %}
          <li class="my-1">
              <h2 class="my-0 text-lg">
                  <a href="{{ post.url | url }}">{{ post.data.title }}</a>

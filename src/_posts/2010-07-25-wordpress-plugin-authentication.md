@@ -5,11 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=901
 permalink: /2010/07/wordpress-plugin-authentication/
-categories:
-  - development
-  - Wordpress
 tags:
-  - posts
+  - post
+  - tech
   - authentication
   - plugin
   - wordpress

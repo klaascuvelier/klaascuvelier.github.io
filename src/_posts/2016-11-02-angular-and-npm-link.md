@@ -4,10 +4,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 permalink: /2016/11/angular-and-npm-link/
 comments: true
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - angular
   - angular2
   - npm

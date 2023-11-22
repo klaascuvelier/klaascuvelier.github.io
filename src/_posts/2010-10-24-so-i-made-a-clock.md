@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=3776
 permalink: /2010/10/so-i-made-a-clock/
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - analog
   - clock
   - digit

@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/2010/04/boxee-stubru-plugin/
 permalink: /2010/04/boxee-stubru-plugin/
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - app
   - Boxee
   - plugin

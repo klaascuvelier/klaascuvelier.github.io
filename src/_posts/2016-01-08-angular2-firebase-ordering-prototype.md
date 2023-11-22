@@ -4,10 +4,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 permalink: /2016/01/angular2-firebase-ordering-prototype/
 comments: true
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - angular2
   - firebase
   - meetup

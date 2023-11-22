@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4704
 permalink: /2011/12/boxee-1-2-2-on-ubuntu-oneiric-minimal-2/
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - boxee
   - oneiric
   - ubuntu

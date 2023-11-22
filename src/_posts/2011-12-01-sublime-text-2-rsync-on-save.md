@@ -5,12 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4681
 permalink: /2011/12/sublime-text-2-rsync-on-save/
-categories:
-  - Development
-  - plugin
-  - Python
 tags:
-  - posts
+  - post
+  - tech
   - background
   - development
   - nfs

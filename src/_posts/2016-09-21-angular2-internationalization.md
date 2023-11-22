@@ -4,10 +4,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 permalink: /2016/09/internationalization-in-angular2/
 comments: true
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - angular2
   - internationalization
   - localization

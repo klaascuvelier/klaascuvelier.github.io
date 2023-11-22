@@ -5,12 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5014
 permalink: /2013/06/sublime-command-on-save/
-categories:
-  - Development
-  - plugin
-  - SublimeText
 tags:
-  - posts
+  - post
+  - tech
 ---
 
 I just finished my Sublime Text 3 plugin: Command on Save.  

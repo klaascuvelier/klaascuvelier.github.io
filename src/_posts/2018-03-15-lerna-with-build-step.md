@@ -3,10 +3,9 @@ title: Setting up a Lerna monorepo with build step
 author: Klaas Cuvelier
 layout: layouts/post.njk
 permalink: /2018/03/lerna-with-build-step/
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - angular
   - npm
   - lerna

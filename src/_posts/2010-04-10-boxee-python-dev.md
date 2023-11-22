@@ -5,10 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=156
 permalink: /2010/04/boxee-python-dev/
-categories:
-  - development
 tags:
-  - posts
+  - post
+  - tech
   - Boxee
   - development
   - dialog

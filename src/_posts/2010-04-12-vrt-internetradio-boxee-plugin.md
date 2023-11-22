@@ -5,11 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=165
 permalink: /2010/04/vrt-internetradio-boxee-plugin/
-categories:
-  - Boxee
-  - Development
 tags:
-  - posts
+  - post
+  - tech
   - Boxee
   - plugin
   - python

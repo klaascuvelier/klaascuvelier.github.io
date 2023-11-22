@@ -5,9 +5,9 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=89
 permalink: /2009/05/ubuntu-jaunty-notifications-in-mint-felicia/
-categories:
 tags:
-  - posts
+  - post
+  - tech
   - felicia
   - linux
   - mint
