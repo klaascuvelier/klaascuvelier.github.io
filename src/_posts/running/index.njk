@@ -23,6 +23,7 @@ title: running
                 </h2>
             </li>
             {% for post in collections.running | reverse %}
+                {% if post.data.permalink != "/running/every-single-street/" %}
                 <li class="my-1">
                     <h2 class="my-0 text-lg">
                         <a href="{{ post.url | url }}">{{ post.data.title }}</a>
@@ -30,6 +31,7 @@ title: running
 
                     <span class="text-sm text-slate-500">{{ post.date | readableDate }}</span>
                 </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </section>
