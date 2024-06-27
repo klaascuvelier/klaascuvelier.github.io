@@ -6,18 +6,18 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=156
 permalink: /2010/04/boxee-python-dev/
 tags:
-  - post
-  - tech
-  - Boxee
-  - development
-  - dialog
-  - error
-  - errors
-  - import
-  - onload
-  - python
-  - setlabel
-  - textbox
+    - post
+    - tech
+    - Boxee
+    - development
+    - dialog
+    - error
+    - errors
+    - import
+    - onload
+    - python
+    - setlabel
+    - textbox
 ---
 
 Boxee may be _&#8220;the best way to enjoy entertainment from the Internet and computer on your TV&#8221;_ (according tor <a href="http://www.boxee.tv" target="_blank">their website</a>), the developers documentation isn&#8217;t all that great. Not everything is well-documented and the (python) API doesn&#8217;t always do what&#8217;s expected, which makes developing own plugins not that easy.  

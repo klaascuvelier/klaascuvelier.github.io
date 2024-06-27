@@ -5,11 +5,11 @@ layout: layouts/post.njk
 permalink: /2016/09/internationalization-in-angular2/
 comments: true
 tags:
-  - post
-  - tech
-  - angular2
-  - internationalization
-  - localization
+    - post
+    - tech
+    - angular2
+    - internationalization
+    - localization
 ---
 
 On September 21 [Victor Berchet](https://twitter.com/vberchet) gave a presentation on the state of internationalization in Angular 2 at BigCommerce's offices in San Francisco.

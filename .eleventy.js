@@ -9,7 +9,6 @@ const htmlmin = require('html-minifier');
 const now = String(Date.now());
 
 module.exports = function (eleventyConfig) {
-
     eleventyConfig.addPlugin(syntaxHighlight);
     eleventyConfig.addPlugin(pluginRss);
 
@@ -48,20 +47,19 @@ module.exports = function (eleventyConfig) {
     // eleventyConfig.setLibrary("md", markdownIt().use(markdownItAnchor)).use(markdownItAttrs)
 
     let markdownItOptions = {
-        html: true // you can include HTML tags
-    }
+        html: true, // you can include HTML tags
+    };
 
     let markdownItAnchorOptions = {
-        level: 2 // minimum level header -- anchors will only be applied to h2 level headers and below but not h1
-    }
+        level: 2, // minimum level header -- anchors will only be applied to h2 level headers and below but not h1
+    };
 
-    eleventyConfig.setLibrary("md", markdownIt(markdownItOptions).use(markdownItAnchor, markdownItAnchorOptions))
-
+    eleventyConfig.setLibrary('md', markdownIt(markdownItOptions).use(markdownItAnchor, markdownItAnchorOptions));
 
     return {
         dir: {
-            input: "src",
-            output: "_site"
-        }
+            input: 'src',
+            output: '_site',
+        },
     };
 };

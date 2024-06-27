@@ -5,11 +5,11 @@ layout: layouts/post.njk
 permalink: /2016/11/angular-and-npm-link/
 comments: true
 tags:
-  - post
-  - tech
-  - angular
-  - angular2
-  - npm
+    - post
+    - tech
+    - angular
+    - angular2
+    - npm
 ---
 
 <p class="post-note">This article applies to Angular 2 and newer versions.</p>

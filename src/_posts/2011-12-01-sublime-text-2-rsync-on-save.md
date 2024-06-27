@@ -1,25 +1,25 @@
 ---
 id: 4681
-title: "Sublime Text 2 &#8211; rsync on save"
+title: 'Sublime Text 2 &#8211; rsync on save'
 author: Klaas Cuvelier
 layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4681
 permalink: /2011/12/sublime-text-2-rsync-on-save/
 tags:
-  - post
-  - tech
-  - background
-  - development
-  - nfs
-  - plugin
-  - python
-  - remote
-  - rsync
-  - server
-  - sublime
-  - subprocess
-  - test
-  - text
+    - post
+    - tech
+    - background
+    - development
+    - nfs
+    - plugin
+    - python
+    - remote
+    - rsync
+    - server
+    - sublime
+    - subprocess
+    - test
+    - text
 ---
 
 As I&#8217;m running an Ubuntu Server in a virtual machine as development test server and I develop on my local environment, I need to keep both repositories in sync.  

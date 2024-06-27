@@ -6,13 +6,13 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=3776
 permalink: /2010/10/so-i-made-a-clock/
 tags:
-  - post
-  - tech
-  - analog
-  - clock
-  - digit
-  - html
-  - javascript
+    - post
+    - tech
+    - analog
+    - clock
+    - digit
+    - html
+    - javascript
 ---
 
 So yes, I made a clock. In JavaScript (and HTML).  

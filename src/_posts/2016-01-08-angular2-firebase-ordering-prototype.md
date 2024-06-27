@@ -5,13 +5,13 @@ layout: layouts/post.njk
 permalink: /2016/01/angular2-firebase-ordering-prototype/
 comments: true
 tags:
-  - post
-  - tech
-  - angular2
-  - firebase
-  - meetup
-  - prototype
-  - typescript
+    - post
+    - tech
+    - angular2
+    - firebase
+    - meetup
+    - prototype
+    - typescript
 ---
 
 ## TL;DR

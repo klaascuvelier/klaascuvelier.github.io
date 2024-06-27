@@ -6,19 +6,19 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=165
 permalink: /2010/04/vrt-internetradio-boxee-plugin/
 tags:
-  - post
-  - tech
-  - Boxee
-  - plugin
-  - python
-  - klara
-  - mnm
-  - Python
-  - radio 1
-  - radio 2
-  - radio vlaanderen
-  - stubru
-  - vrt
+    - post
+    - tech
+    - Boxee
+    - plugin
+    - python
+    - klara
+    - mnm
+    - Python
+    - radio 1
+    - radio 2
+    - radio vlaanderen
+    - stubru
+    - vrt
 ---
 
 So, I finally finished my second Boxee plugin. This time I can call it a _real_ plugin, there are options, lists and dialogs. Hooray!

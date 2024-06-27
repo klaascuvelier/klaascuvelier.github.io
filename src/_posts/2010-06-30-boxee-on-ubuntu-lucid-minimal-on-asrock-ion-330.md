@@ -6,18 +6,18 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=224
 permalink: /2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/
 tags:
-  - post
-  - tech
-  - asrock
-  - Boxee
-  - ion
-  - lucid
-  - minimal
-  - modules
-  - nvidia
-  - nvidia.ko
-  - restricted
-  - ubuntu
+    - post
+    - tech
+    - asrock
+    - Boxee
+    - ion
+    - lucid
+    - minimal
+    - modules
+    - nvidia
+    - nvidia.ko
+    - restricted
+    - ubuntu
 ---
 
 <div>

@@ -6,10 +6,10 @@ layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5020
 permalink: /2013/06/pairing-powerline-adapters-with-telenet-av-6400/
 tags:
-  - post
-  - tech
-  - powerline
-  - Telenet
+    - post
+    - tech
+    - powerline
+    - Telenet
 ---
 
 As I wasn&#8217;t able to find much info about Telenet's powerline adapters when I was looking to add some adapters to the existing network, I thought it could be useful to share this

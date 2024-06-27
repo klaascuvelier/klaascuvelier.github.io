@@ -6,14 +6,14 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4673
 permalink: /2011/11/squeezebox-server-on-ubuntu-oneiric/
 tags:
-  - post
-  - tech
-  - Expat
-  - JSON
-  - oneiric
-  - squeezebox
-  - ubuntu
-  - YAML
+    - post
+    - tech
+    - Expat
+    - JSON
+    - oneiric
+    - squeezebox
+    - ubuntu
+    - YAML
 ---
 
 I had some problems with my squeezebox server installation after upgrading to Oneiric.  

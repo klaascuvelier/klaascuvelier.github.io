@@ -6,13 +6,13 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/2010/04/boxee-stubru-plugin/
 permalink: /2010/04/boxee-stubru-plugin/
 tags:
-  - post
-  - tech
-  - app
-  - Boxee
-  - plugin
-  - python
-  - stubru
+    - post
+    - tech
+    - app
+    - Boxee
+    - plugin
+    - python
+    - stubru
 ---
 
 So &#8230; I finally finished my first Boxee plugin. Funny tough, it&#8217;s non of my previously planned plugins.  

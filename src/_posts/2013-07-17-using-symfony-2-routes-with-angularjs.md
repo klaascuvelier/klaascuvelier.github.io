@@ -6,12 +6,12 @@ layout: layouts/post.njk
 guid: http://www.klaascuvelier.be/?p=5022
 permalink: /2013/07/using-symfony-2-routes-with-angularjs/
 tags:
-  - post
-  - tech
-  - angular
-  - js
-  - routing
-  - symfony
+    - post
+    - tech
+    - angular
+    - js
+    - routing
+    - symfony
 ---
 
 ## About Symfony2 Routes
@@ -32,8 +32,8 @@ Using a name to reference to a specific route is very useful, if you decide late
 There are various reasons why you&#8217;d need URLs in your JavaScript (AngularJS); fetching data, performing actions, &#8230;  
 By hardcoding URLs you lose the flexibility Symfony provided, this is a construction to keep it in the front-end:
 
-- Create a service where all routes are stored in key/value-pairs, which can generate URLs by providing the route name and optional parameters
-- Create a directive to define all available routes in the URL service
+-   Create a service where all routes are stored in key/value-pairs, which can generate URLs by providing the route name and optional parameters
+-   Create a directive to define all available routes in the URL service
 
 ### **The service**
 

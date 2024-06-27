@@ -6,14 +6,14 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=89
 permalink: /2009/05/ubuntu-jaunty-notifications-in-mint-felicia/
 tags:
-  - post
-  - tech
-  - felicia
-  - linux
-  - mint
-  - notification
-  - notify-osd
-  - popup
+    - post
+    - tech
+    - felicia
+    - linux
+    - mint
+    - notification
+    - notify-osd
+    - popup
 ---
 
 As some of you might already have seen, Ubuntu Jaunty Jackalope has a new popup notifier, called &#8216;notify osd&#8217;.  

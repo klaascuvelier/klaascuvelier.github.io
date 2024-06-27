@@ -6,12 +6,12 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=181
 permalink: /2010/04/gowalla-api-class/
 tags:
-  - post
-  - tech
-  - api
-  - class
-  - gowalla
-  - php
+    - post
+    - tech
+    - api
+    - class
+    - gowalla
+    - php
 ---
 
 **Update:** Gowalla has been bought by Facebook and been discontinued.

@@ -6,18 +6,18 @@ layout: layouts/post.njk
 guid: http://www.cuvedev.net/?p=4872
 permalink: /2012/06/runkeeper-js/
 tags:
-  - post
-  - tech
-  - data
-  - database
-  - export
-  - gpx
-  - ios
-  - IOS6
-  - node
-  - Runkeeper
-  - sqlite
-  - trip
+    - post
+    - tech
+    - data
+    - database
+    - export
+    - gpx
+    - ios
+    - IOS6
+    - node
+    - Runkeeper
+    - sqlite
+    - trip
 ---
 
 This is a NodeJS script I wrote to export data (trips) from the <a title="Runkeeper" href="http://www.runkeeper.com/" target="_blank">Runkeeper</a> (iOS)database file.  

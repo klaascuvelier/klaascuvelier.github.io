@@ -5,6 +5,6 @@ module.exports = function () {
             { label: 'X (Twitter)', url: 'https://twitter.com/klaascuvelier' },
             { label: 'BlueSky', url: 'https://bsky.app/profile/klaascuvelier.bsky.social' },
             { label: 'Instagram', url: 'https://instagram.com/klaascuvelier' },
-        ]
+        ],
     };
 };

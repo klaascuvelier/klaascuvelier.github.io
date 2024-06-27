@@ -4,12 +4,12 @@ author: Klaas Cuvelier
 layout: layouts/post.njk
 permalink: /2018/03/lerna-with-build-step/
 tags:
-  - post
-  - tech
-  - angular
-  - npm
-  - lerna
-  - monorepo
+    - post
+    - tech
+    - angular
+    - npm
+    - lerna
+    - monorepo
 ---
 
 ## Situation sketch
@@ -54,7 +54,7 @@ and then publishing the whole folder (with source files instead of compiled file
 
 ```js
 // index.js and index.d.ts
-export * from "./src";
+export * from './src';
 ```
 
 Publishing TypeScript source files was no problem while using Angular <= 4.x, but when Angular version 5 was released, a stricter
@@ -78,37 +78,37 @@ and adding a small `script/prepublish.js` file into every package that needs to 
 ```js
 // ./packages/package-name/scripts/prepublish.js
 
-const path = require("path");
-const prePublish = require("../../../bundling/prepublish");
+const path = require('path');
+const prePublish = require('../../../bundling/prepublish');
 
-prePublish("search", path.join(__dirname, "../"));
+prePublish('search', path.join(__dirname, '../'));
 ```
 
 ```js
 // ./bundling/prepublish.js
 
-const ora = require("ora");
+const ora = require('ora');
 const timeout = 1000 * 60 * 2;
 const buildCommand = `npm run build`;
 
 function prePublish(packageAlias, packagePath) {
-  const spinner = ora({
-    text: `Building "${packageAlias}" library`,
-    spinner: { interval: 0, frames: ["…"] },
-  }).start();
+    const spinner = ora({
+        text: `Building "${packageAlias}" library`,
+        spinner: { interval: 0, frames: ['…'] },
+    }).start();
 
-  try {
-    const result = require("child_process").execSync(buildCommand, {
-      timeout,
-      cwd: packagePath,
-    });
-  } catch (error) {
-    spinner.fail(`Could not finish building "${packageAlias}" library`);
-    console.log(error.stdout.toString());
-    process.exit();
-  }
+    try {
+        const result = require('child_process').execSync(buildCommand, {
+            timeout,
+            cwd: packagePath,
+        });
+    } catch (error) {
+        spinner.fail(`Could not finish building "${packageAlias}" library`);
+        console.log(error.stdout.toString());
+        process.exit();
+    }
 
-  spinner.succeed(`Finished building "${packageAlias}" library`);
+    spinner.succeed(`Finished building "${packageAlias}" library`);
 }
 
 module.exports = prePublish;
@@ -131,26 +131,26 @@ You can do this by specifying the `files` in the `package.json`. This is how a `
 // package.json
 
 {
-  "name": "@showpad/ng-package-name",
-  "version": "x.x.x",
-  "description": "package description",
-  "scripts": {
-    "lint": "tslint -c tslint.json './src/**/*.ts'",
-    "unit": "karma start karma.conf.js",
-    "test": "npm run lint && npm run unit",
-    "build": "gulp build:esm"
-  },
-  "main": "index.js",
-  "files": ["index.js", "index.d.ts", "dist", "README"],
-  "peerDendencies": {
-    // required deps for the package
-  },
-  "devDependencies": {
-    // required deps for development
-  },
-  "publishConfig": {
-    "registry": "url to showpad npm repository"
-  }
+    "name": "@showpad/ng-package-name",
+    "version": "x.x.x",
+    "description": "package description",
+    "scripts": {
+        "lint": "tslint -c tslint.json './src/**/*.ts'",
+        "unit": "karma start karma.conf.js",
+        "test": "npm run lint && npm run unit",
+        "build": "gulp build:esm"
+    },
+    "main": "index.js",
+    "files": ["index.js", "index.d.ts", "dist", "README"],
+    "peerDendencies": {
+        // required deps for the package
+    },
+    "devDependencies": {
+        // required deps for development
+    },
+    "publishConfig": {
+        "registry": "url to showpad npm repository"
+    }
 }
 ```
 
@@ -158,7 +158,7 @@ Of course we also had to update the `index.js` file to point to the `dist` folde
 
 ```js
 // index.js and index.d.ts
-export * from "./dist";
+export * from './dist';
 ```
 
 ## Conclusion
@@ -172,5 +172,5 @@ Hopefully it might help you out as well and feel free to point out any improveme
 
 A special thanks to the people reviewing this post:
 
-- Brecht Billiet [@brechtbilliet](https://twitter.com/brechtbilliet)
-- Thibaut Nguyen [@teebot](https://twitter.com/teebot)
+-   Brecht Billiet [@brechtbilliet](https://twitter.com/brechtbilliet)
+-   Thibaut Nguyen [@teebot](https://twitter.com/teebot)
