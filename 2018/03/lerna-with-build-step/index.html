@@ -74,7 +74,7 @@ a subfolder to be published and there would be quite some duplicated build code.
 (so not using the <code>lerna import</code> function), and adding an <code>index.js</code> and <code>index.d.ts</code> file which export everything from the <code>src</code> folder
 and then publishing the whole folder (with source files instead of compiled files).</p>
 <pre class="language-js"><code class="language-js"><span class="token comment">// index.js and index.d.ts</span>
-<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">"./src"</span><span class="token punctuation">;</span></code></pre>
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">'./src'</span><span class="token punctuation">;</span></code></pre>
 <p>Publishing TypeScript source files was no problem while using Angular &lt;= 4.x, but when Angular version 5 was released, a stricter
 version of tsconfig was introduced, which basically
 <a href="https://github.com/angular/angular-cli/issues/8284#issuecomment-341417325">disallowed having uncompiled files in your node modules</a>.
@@ -90,34 +90,34 @@ scripts.</p>
 and adding a small <code>script/prepublish.js</code> file into every package that needs to be built:</p>
 <pre class="language-js"><code class="language-js"><span class="token comment">// ./packages/package-name/scripts/prepublish.js</span>
 
-<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"path"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> prePublish <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"../../../bundling/prepublish"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> prePublish <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../../../bundling/prepublish'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token function">prePublish</span><span class="token punctuation">(</span><span class="token string">"search"</span><span class="token punctuation">,</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">"../"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<span class="token function">prePublish</span><span class="token punctuation">(</span><span class="token string">'search'</span><span class="token punctuation">,</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'../'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <pre class="language-js"><code class="language-js"><span class="token comment">// ./bundling/prepublish.js</span>
 
-<span class="token keyword">const</span> ora <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"ora"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> ora <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'ora'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> timeout <span class="token operator">=</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> buildCommand <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">npm run build</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
 
 <span class="token keyword">function</span> <span class="token function">prePublish</span><span class="token punctuation">(</span><span class="token parameter">packageAlias<span class="token punctuation">,</span> packagePath</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> spinner <span class="token operator">=</span> <span class="token function">ora</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-    <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
-    <span class="token literal-property property">spinner</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">interval</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token literal-property property">frames</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"…"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> spinner <span class="token operator">=</span> <span class="token function">ora</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+        <span class="token literal-property property">spinner</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">interval</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token literal-property property">frames</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'…'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"child_process"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">execSync</span><span class="token punctuation">(</span>buildCommand<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-      timeout<span class="token punctuation">,</span>
-      <span class="token literal-property property">cwd</span><span class="token operator">:</span> packagePath<span class="token punctuation">,</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    spinner<span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Could not finish building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    process<span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'child_process'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">execSync</span><span class="token punctuation">(</span>buildCommand<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            timeout<span class="token punctuation">,</span>
+            <span class="token literal-property property">cwd</span><span class="token operator">:</span> packagePath<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        spinner<span class="token punctuation">.</span><span class="token function">fail</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Could not finish building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        process<span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-  spinner<span class="token punctuation">.</span><span class="token function">succeed</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Finished building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    spinner<span class="token punctuation">.</span><span class="token function">succeed</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Finished building "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>packageAlias<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">" library</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> prePublish<span class="token punctuation">;</span></code></pre>
@@ -133,30 +133,30 @@ You can do this by specifying the <code>files</code> in the <code>package.json</
 <pre class="language-json"><code class="language-json"><span class="token comment">// package.json</span>
 
 <span class="token punctuation">{</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"@showpad/ng-package-name"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"x.x.x"</span><span class="token punctuation">,</span>
-  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"package description"</span><span class="token punctuation">,</span>
-  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"tslint -c tslint.json './src/**/*.ts'"</span><span class="token punctuation">,</span>
-    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token string">"karma start karma.conf.js"</span><span class="token punctuation">,</span>
-    <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"npm run lint &amp;&amp; npm run unit"</span><span class="token punctuation">,</span>
-    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"gulp build:esm"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"index.js"</span><span class="token punctuation">,</span>
-  <span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"index.js"</span><span class="token punctuation">,</span> <span class="token string">"index.d.ts"</span><span class="token punctuation">,</span> <span class="token string">"dist"</span><span class="token punctuation">,</span> <span class="token string">"README"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"peerDendencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token comment">// required deps for the package</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token comment">// required deps for development</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"publishConfig"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"registry"</span><span class="token operator">:</span> <span class="token string">"url to showpad npm repository"</span>
-  <span class="token punctuation">}</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"@showpad/ng-package-name"</span><span class="token punctuation">,</span>
+    <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"x.x.x"</span><span class="token punctuation">,</span>
+    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"package description"</span><span class="token punctuation">,</span>
+    <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"tslint -c tslint.json './src/**/*.ts'"</span><span class="token punctuation">,</span>
+        <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token string">"karma start karma.conf.js"</span><span class="token punctuation">,</span>
+        <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"npm run lint &amp;&amp; npm run unit"</span><span class="token punctuation">,</span>
+        <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"gulp build:esm"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"index.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"index.js"</span><span class="token punctuation">,</span> <span class="token string">"index.d.ts"</span><span class="token punctuation">,</span> <span class="token string">"dist"</span><span class="token punctuation">,</span> <span class="token string">"README"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"peerDendencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token comment">// required deps for the package</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token comment">// required deps for development</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"publishConfig"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"registry"</span><span class="token operator">:</span> <span class="token string">"url to showpad npm repository"</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
 <p>Of course we also had to update the <code>index.js</code> file to point to the <code>dist</code> folder.</p>
 <pre class="language-js"><code class="language-js"><span class="token comment">// index.js and index.d.ts</span>
-<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">"./dist"</span><span class="token punctuation">;</span></code></pre>
+<span class="token keyword">export</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token string">'./dist'</span><span class="token punctuation">;</span></code></pre>
 <h2 id="conclusion" tabindex="-1">Conclusion</h2>
 <p>While it was not very obvious how to move multiple existing repositories including a build step into a monorepo, we were able to figure it
 out with some digging in the code and quite some trial and error.</p>
