@@ -6,35 +6,32 @@ title: running
 ---
 
 
-<div class="h-screen px-4">
-    <h1>Klaas Runs</h1>
 
-    <section>
-        <p>I picked up running after <em>retiring</em> from a 20-year soccer journey. It took me a while to really start enjoying it, but now I thoroughly do.<br />
-            I mostly enjoy running in mountains and forests, but can also appreciate a good city run, especially combined with some fun elements like chasing the cable car, running every single street, running art, ...</p>
-        <p>I tried to document some things I did, hoping it might inspire to do similar things and enjoy running as much as I do.</p>
-    </section>
+<h1>Klaas Runs</h1>
 
-    <section class="mt-20">
-        <ul class="post-list">
-            <li>
+<section>
+    <p>After playing soccer for about 20 years I turned into a runner. It took me a while to really start enjoying it, but now I thoroughly do.<br />
+        I mostly enjoy running in mountains and forests, but can also appreciate a good city run, especially combined with some fun elements like chasing the cable car, running every single street, running art, ...</p>
+    <p>I tried to document some things I did, hoping it might inspire to do similar things and enjoy running as much as I do.</p>
+</section>
+
+<section class="mt-20">
+    <ul class="post-list">
+        <li>
+            <h2 class="my-0 text-lg">
+            <a href="./every-single-street">Running every single street of Ghent</a>
+            </h2>
+        </li>
+        {% for post in collections.running | reverse %}
+            {% if post.data.permalink != "/running/every-single-street/" %}
+            <li class="my-1">
                 <h2 class="my-0 text-lg">
-                <a href="./every-single-street">Running every single street of Ghent</a>
+                    <a href="{{ post.url | url }}">{{ post.data.title }}</a>
                 </h2>
+
+                <span class="text-sm text-slate-500">{{ post.date | readableDate }}</span>
             </li>
-            {% for post in collections.running | reverse %}
-                {% if post.data.permalink != "/running/every-single-street/" %}
-                <li class="my-1">
-                    <h2 class="my-0 text-lg">
-                        <a href="{{ post.url | url }}">{{ post.data.title }}</a>
-                    </h2>
-
-                    <span class="text-sm text-slate-500">{{ post.date | readableDate }}</span>
-                </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </section>
-
-</div>
-
+            {% endif %}
+        {% endfor %}
+    </ul>
+</section>
