@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-    .change {
-        color: black;
-    }
-}
-
 html {
     height: 100%;
     width: 100%;
@@ -39,12 +33,6 @@ body {
     background-color: #fdfdfd;
     -webkit-text-size-adjust: 100%;
     min-height: 100%;
-}
-
-@media screen and (max-width: 600px) {
-    body {
-        font-size: 15.75px;
-    }
 }
 
 h1,
@@ -157,15 +145,6 @@ pre > code {
     padding-left: 30px;
 }
 
-@media screen and (max-width: 800px) {
-    .wrapper {
-        max-width: -webkit-calc(800px - (30px));
-        max-width: calc(800px - (30px));
-        padding-right: 15px;
-        padding-left: 15px;
-    }
-}
-
 .icon > svg {
     display: inline-block;
     width: 16px;
@@ -228,18 +207,6 @@ pre > code {
     line-height: 1;
 }
 
-@media screen and (max-width: 800px) {
-    .post-title {
-        font-size: 36px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .post-title {
-        font-size: 28px;
-    }
-}
-
 .post-content {
     margin-bottom: 30px;
 }
@@ -248,64 +215,16 @@ pre > code {
     font-size: 32px;
 }
 
-@media screen and (max-width: 800px) {
-    .post-content h1 {
-        font-size: 28px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .post-content h1 {
-        font-size: 22px;
-    }
-}
-
 .post-content h2 {
     font-size: 28px;
-}
-
-@media screen and (max-width: 800px) {
-    .post-content h2 {
-        font-size: 24px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .post-content h2 {
-        font-size: 22px;
-    }
 }
 
 .post-content h3 {
     font-size: 24px;
 }
 
-@media screen and (max-width: 800px) {
-    .post-content h3 {
-        font-size: 22px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .post-content h3 {
-        font-size: 18px;
-    }
-}
-
 .post-content h4 {
     font-size: 20px;
-}
-
-@media screen and (max-width: 800px) {
-    .post-content h4 {
-        font-size: 18px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .post-content h4 {
-        font-size: 16px;
-    }
 }
 
 .highlight {

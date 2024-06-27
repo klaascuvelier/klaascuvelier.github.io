@@ -2,53 +2,51 @@
 layout: layouts/empty.njk
 ---
 
-<div class="h-screen flex flex-row justify-center px-4">
-    <main class="mx-auto">
-        <section class="flex flex-row items-center justify-start mt-20">
-            <img
-                src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc"
-                al="picture of Klaas Cuvelier"
-                class="rounded-full"/>
-            <div class="ml-4 text-xl sm:text-lg">
-                <div class="text-4xl font-semibold">Klaas Cuvelier</div>
-                <div class="text-gray-600">Web Developer &amp; Runner</div>
-            </div>
-        </section>
+<main class="sm:container sm:mx-auto pt-20 mx-10 px-4 text-xl">
+    <section class="flex flex-row items-center justify-start">
+        <img
+            src="https://www.gravatar.com/avatar/21e383b432aa4530d524d1ffb9ad25fc"
+            al="picture of Klaas Cuvelier"
+            class="rounded-full"/>
+        <div class="ml-4">
+            <div class="text-4xl font-semibold">Klaas Cuvelier</div>
+            <div class="text-gray-600">Web Developer &amp; Runner</div>
+        </div>
+    </section>
 
-        <section class="mt-10 px-4 leading-relaxed text-xl sm:text-base">
-            <p class="my-4">
-                <span class="leading-loose">Hi, I am Klaas.</span><br/> I'm a
-                software craftsman and principal engineer at
-                <a href="https://showpad.com" rel="noopener" target="_blank">Showpad</a>.
-            </p>
-            <p class="my-4">
-                I love mountains, trails and <a href="/running">running</a>. I love space and sci-fi books. I am a dad of 3.<br />
-                Occasionally, but not consistently, I write about things.
-            </p>
-        </section>
+    <section class="mt-10 leading-relaxed">
+        <p class="my-4">
+            <span class="leading-loose">Hi, I am Klaas.</span><br/> I'm a
+            software developer and principal engineer at
+            <a href="https://showpad.com" rel="noopener" target="_blank">Showpad</a>.
+        </p>
+        <p class="my-4">
+            I love mountains, trails, <a href="/running">running</a> and space. I love solving problems. I am a dad of 3.<br />
+            Occasionally, but not consistently, I write about things and share them on this website.
+        </p>
+    </section>
 
-        <section class="mt-20 px-4 leading-relaxed text-xl">
-            <ul class="mx-0 mb-20 list-none">
-                <li class="mb-1"><a href="/about">More about me</a></li>
-                <li class="mb-1"><a href="/blog">Writing stuff</a></li>
-                <li><a href="/running">Running things</a></li>
-            </ul>
-        </section>
+    <section class="mt-20 leading-relaxed">
+        <ul class="mx-0 mb-20 list-none">
+            <li class="mb-1"><a href="/about">More about me</a></li>
+            <li class="mb-1"><a href="/blog">Writing stuff</a></li>
+            <li><a href="/running">Running things</a></li>
+        </ul>
+    </section>
+</main>
 
 
-        </main>
-                  {% if homepage.showRecents %}
-            <section class="landing-blog">
-                <h3>My most recent writings</h3>
-                <ul>
-                    {% for post in collections.posts | head(-3) | reverse %}
-                        <li>
-                            <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
-                            <span class="post-meta">{{ post.date | readableDate }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <a href="{{ 'blog' | url }}">See more&hellip;</a>
-            </section>
-        {% endif %}
-    </div>
+{% if homepage.showRecents %}
+    <section class="landing-blog">
+        <h3>My most recent writings</h3>
+        <ul>
+            {% for post in collections.posts | head(-3) | reverse %}
+                <li>
+                    <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
+                    <span class="post-meta">{{ post.date | readableDate }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ 'blog' | url }}">See more&hellip;</a>
+    </section>
+{% endif %}
