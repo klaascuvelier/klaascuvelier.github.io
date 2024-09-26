@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/css/main.css" />
 
     <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
-    <link rel="canonical" href="/2010/04/gowalla-api-class/" />
+    <link rel="canonical" href="/_posts/2024-09-25-learn-or-ship/" />
 
     <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
 
@@ -41,21 +41,15 @@
 
 <div class="sm:container sm:mx-auto py-10 pb-5 px-4">
     <div class="post">
-  <p><strong>Update:</strong> Gowalla has been bought by Facebook and been discontinued.</p>
-<p>I just quickly made a class for accessing the <a href="http://gowalla.com/" target="_blank">Gowalla</a> <a href="http://gowalla.com/api/explorer" target="_blank">API</a> because I needed it myself. I looked for an existing class on the internet but could only find some crappy stuff on Google Code.<br>
-So I decided to make one myself.</p>
-<p><strong>The use</strong> of the class is fairly simple. Include the class file (don’t forget to add you <a href="http://gowalla.com/api/keys" target="_blank">API-key</a>), make an instance and do your calls.<br>
-The class internally uses CURL to do the requests to the server and returns the data as an <a href="http://php.net/manual/en/language.types.array.php" target="_blank">associative array</a>.<br>
-I tried to document the methods enough so it’s easy to use them.</p>
-<p><strong>Example</strong>:</p>
-<pre lang="php"><!--?php
-include('./class.gowalla.php');
-$gowalla = new GowallaAPI();
-$events	 = $gowalla--->getSpotEvents(846403);
-foreach ($events['activity'] as $event)
-{ // do stuff }
-?&gt;</pre>
-<p><a href="/public/2010/04/gowalla.zip">Download it here</a></p>
+  <h2 id="learn-or-ship" tabindex="-1">Learn or ship</h2>
+<p>I've often found myself in the situation where I had to write some code and was stuck at the first question; what language am I going to write this in?</p>
+<p>Writing new code is always an opportunity to try out something fresh — a new programming language, a new framework or library, new infrastructure provider, ...
+Many of my side projects have stalled before completion because I answered that first question incorrectly.</p>
+<p>Actually, answering it is fairly straightforward: What is your project's primary goal? Do you want to ship it or learn something new? It's important not to confuse these objectives.</p>
+<p>If you need to finish the project you're starting, then use what you already know and what will help you achieve that goal. You can always iterate later.
+If finishing the project isn't the primary goal, feel free to explore something new and learn along the way.</p>
+<p>The reverse question is also worth considering: If you want to try something new, what should you write?
+Start with something small and non-critical. You might rewrite a small existing script in that new language or tackle a coding challenge, like <a href="https://adventofcode.com/" target="_blank">Advent of Code</a>.</p>
 
 </div>
 
