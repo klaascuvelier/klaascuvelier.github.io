@@ -5,10 +5,14 @@ const markdownItAnchor = require('markdown-it-anchor');
 const markdownItAttrs = require('markdown-it-attrs');
 const { DateTime } = require('luxon');
 const htmlmin = require('html-minifier');
+const UpgradeHelper = require("@11ty/eleventy-upgrade-help");
 
 const now = String(Date.now());
 
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(UpgradeHelper);
+
+
     eleventyConfig.addPlugin(syntaxHighlight);
     eleventyConfig.addPlugin(pluginRss);
 
