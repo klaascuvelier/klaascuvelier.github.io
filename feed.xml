@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Klaas C.</title>
-  <subtitle>Home page of Klaas Cuvelier. Full stack developer, runner and geek. This is where I share stuff I consider worth sharing.</subtitle>
+  <subtitle>Klaas Cuvelier. Software engineer and runner. I love solving problems and building things.&lt;/subtitle&gt;</subtitle>
   <link href="https://klaascuvelier.io/feed.xml" rel="self"/>
   <link href="https://klaascuvelier.io/"/>
-<updated>Fri, 11 Oct 2024 14:18:06 GMT</updated>
+<updated>Fri, 11 Oct 2024 14:21:14 GMT</updated>
   <id>https://klaascuvelier.io/</id>
   <author>
     <name>Klaas Cuvelier</name>
@@ -15,7 +15,7 @@
   <entry>
     <title>Every Single Street</title>
     <link href="https://klaascuvelier.io/running/every-single-street/"/>
-    <updated>Fri, 11 Oct 2024 14:18:06 GMT</updated>
+    <updated>Fri, 11 Oct 2024 14:21:14 GMT</updated>
     <id>https://klaascuvelier.io/running/every-single-street/</id>
   </entry>
   
