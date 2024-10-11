@@ -4,9 +4,200 @@
   <subtitle>Home page of Klaas Cuvelier. Full stack developer, runner and geek. This is where I share stuff I consider worth sharing.</subtitle>
   <link href="https://klaascuvelier.io/feed.xml" rel="self"/>
   <link href="https://klaascuvelier.io/"/>
+<updated>Fri, 11 Oct 2024 14:18:06 GMT</updated>
   <id>https://klaascuvelier.io/</id>
   <author>
     <name>Klaas Cuvelier</name>
     <email>cuvelierklaas@gmail.com</email>
   </author>
+  
+  
+  <entry>
+    <title>Every Single Street</title>
+    <link href="https://klaascuvelier.io/running/every-single-street/"/>
+    <updated>Fri, 11 Oct 2024 14:18:06 GMT</updated>
+    <id>https://klaascuvelier.io/running/every-single-street/</id>
+  </entry>
+  
+  <entry>
+    <title>Learn or ship</title>
+    <link href="https://klaascuvelier.io/_posts/2024-09-25-learn-or-ship/"/>
+    <updated>Wed, 25 Sep 2024 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/_posts/2024-09-25-learn-or-ship/</id>
+  </entry>
+  
+  <entry>
+    <title>I run faster than a SF Cable Car</title>
+    <link href="https://klaascuvelier.io/_posts/running/2023-11-22-faster-than-the-cable-car/"/>
+    <updated>Wed, 22 Nov 2023 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/_posts/running/2023-11-22-faster-than-the-cable-car/</id>
+  </entry>
+  
+  <entry>
+    <title>Setting up a Lerna monorepo with build step</title>
+    <link href="https://klaascuvelier.io/2018/03/lerna-with-build-step/"/>
+    <updated>Thu, 15 Mar 2018 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2018/03/lerna-with-build-step/</id>
+  </entry>
+  
+  <entry>
+    <title>Angular and npm link</title>
+    <link href="https://klaascuvelier.io/2016/11/angular-and-npm-link/"/>
+    <updated>Wed, 02 Nov 2016 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2016/11/angular-and-npm-link/</id>
+  </entry>
+  
+  <entry>
+    <title>Internationalization in Angular 2</title>
+    <link href="https://klaascuvelier.io/2016/09/internationalization-in-angular2/"/>
+    <updated>Wed, 21 Sep 2016 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2016/09/internationalization-in-angular2/</id>
+  </entry>
+  
+  <entry>
+    <title>Group Ordering app with Angular2 &amp; Firebase</title>
+    <link href="https://klaascuvelier.io/2016/01/angular2-firebase-ordering-prototype/"/>
+    <updated>Fri, 08 Jan 2016 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2016/01/angular2-firebase-ordering-prototype/</id>
+  </entry>
+  
+  <entry>
+    <title>Angular applyAsync + httpBackend</title>
+    <link href="https://klaascuvelier.io/2015/09/angular-applyasync-httpbackend/"/>
+    <updated>Wed, 09 Sep 2015 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2015/09/angular-applyasync-httpbackend/</id>
+  </entry>
+  
+  <entry>
+    <title>Using Symfony 2 routes with AngularJS</title>
+    <link href="https://klaascuvelier.io/2013/07/using-symfony-2-routes-with-angularjs/"/>
+    <updated>Wed, 17 Jul 2013 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2013/07/using-symfony-2-routes-with-angularjs/</id>
+  </entry>
+  
+  <entry>
+    <title>Pairing extra powerline adapters with Telenet AV 6400</title>
+    <link href="https://klaascuvelier.io/2013/06/pairing-powerline-adapters-with-telenet-av-6400/"/>
+    <updated>Fri, 14 Jun 2013 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2013/06/pairing-powerline-adapters-with-telenet-av-6400/</id>
+  </entry>
+  
+  <entry>
+    <title>Sublime Command-on-Save</title>
+    <link href="https://klaascuvelier.io/2013/06/sublime-command-on-save/"/>
+    <updated>Mon, 10 Jun 2013 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2013/06/sublime-command-on-save/</id>
+  </entry>
+  
+  <entry>
+    <title>Earport.fm drag &amp;#8216;n drop extension</title>
+    <link href="https://klaascuvelier.io/2013/04/earport-extension/"/>
+    <updated>Fri, 12 Apr 2013 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2013/04/earport-extension/</id>
+  </entry>
+  
+  <entry>
+    <title>Runkeeper.js</title>
+    <link href="https://klaascuvelier.io/2012/06/runkeeper-js/"/>
+    <updated>Tue, 26 Jun 2012 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2012/06/runkeeper-js/</id>
+  </entry>
+  
+  <entry>
+    <title>Css arrow mixin for LESS</title>
+    <link href="https://klaascuvelier.io/2012/05/css-arrow-mixin-for-less/"/>
+    <updated>Sat, 12 May 2012 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2012/05/css-arrow-mixin-for-less/</id>
+  </entry>
+  
+  <entry>
+    <title>Sublime Text 2 &amp;#8211; Command on Save</title>
+    <link href="https://klaascuvelier.io/2012/02/sublime-text-2-command-on-save/"/>
+    <updated>Wed, 22 Feb 2012 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2012/02/sublime-text-2-command-on-save/</id>
+  </entry>
+  
+  <entry>
+    <title>Boxee 1.2.2 on Ubuntu Oneiric Minimal</title>
+    <link href="https://klaascuvelier.io/2011/12/boxee-1-2-2-on-ubuntu-oneiric-minimal-2/"/>
+    <updated>Wed, 21 Dec 2011 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2011/12/boxee-1-2-2-on-ubuntu-oneiric-minimal-2/</id>
+  </entry>
+  
+  <entry>
+    <title>Sublime Text 2 &amp;#8211; rsync on save</title>
+    <link href="https://klaascuvelier.io/2011/12/sublime-text-2-rsync-on-save/"/>
+    <updated>Thu, 01 Dec 2011 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2011/12/sublime-text-2-rsync-on-save/</id>
+  </entry>
+  
+  <entry>
+    <title>Squeezebox server on Ubuntu Oneiric</title>
+    <link href="https://klaascuvelier.io/2011/11/squeezebox-server-on-ubuntu-oneiric/"/>
+    <updated>Thu, 17 Nov 2011 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2011/11/squeezebox-server-on-ubuntu-oneiric/</id>
+  </entry>
+  
+  <entry>
+    <title>So, I made a clock</title>
+    <link href="https://klaascuvelier.io/2010/10/so-i-made-a-clock/"/>
+    <updated>Sun, 24 Oct 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/10/so-i-made-a-clock/</id>
+  </entry>
+  
+  <entry>
+    <title>WordPress plugin: Authentication</title>
+    <link href="https://klaascuvelier.io/2010/07/wordpress-plugin-authentication/"/>
+    <updated>Sun, 25 Jul 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/07/wordpress-plugin-authentication/</id>
+  </entry>
+  
+  <entry>
+    <title>Boxee on Ubuntu Lucid Minimal on Asrock ION 330</title>
+    <link href="https://klaascuvelier.io/2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/"/>
+    <updated>Wed, 30 Jun 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/</id>
+  </entry>
+  
+  <entry>
+    <title>Gowalla API Class (php)</title>
+    <link href="https://klaascuvelier.io/2010/04/gowalla-api-class/"/>
+    <updated>Wed, 14 Apr 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/04/gowalla-api-class/</id>
+  </entry>
+  
+  <entry>
+    <title>Vrt Internetradio Boxee plugin</title>
+    <link href="https://klaascuvelier.io/2010/04/vrt-internetradio-boxee-plugin/"/>
+    <updated>Mon, 12 Apr 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/04/vrt-internetradio-boxee-plugin/</id>
+  </entry>
+  
+  <entry>
+    <title>Boxee python dev</title>
+    <link href="https://klaascuvelier.io/2010/04/boxee-python-dev/"/>
+    <updated>Sat, 10 Apr 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/04/boxee-python-dev/</id>
+  </entry>
+  
+  <entry>
+    <title>Boxee StuBru Plugin</title>
+    <link href="https://klaascuvelier.io/2010/04/boxee-stubru-plugin/"/>
+    <updated>Mon, 05 Apr 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/04/boxee-stubru-plugin/</id>
+  </entry>
+  
+  <entry>
+    <title>Updates</title>
+    <link href="https://klaascuvelier.io/2010/03/updates/"/>
+    <updated>Wed, 10 Mar 2010 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2010/03/updates/</id>
+  </entry>
+  
+  <entry>
+    <title>Ubuntu Jaunty notifications in Mint (Felicia)</title>
+    <link href="https://klaascuvelier.io/2009/05/ubuntu-jaunty-notifications-in-mint-felicia/"/>
+    <updated>Thu, 07 May 2009 24:00:00 GMT</updated>
+    <id>https://klaascuvelier.io/2009/05/ubuntu-jaunty-notifications-in-mint-felicia/</id>
+  </entry>
 </feed>
