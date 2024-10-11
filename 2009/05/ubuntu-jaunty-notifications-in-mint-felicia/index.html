@@ -2,27 +2,27 @@
 <html>
     
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>
         Klaas Cuvelier
     </title>
-    <meta name="description" content="Klaas Cuvelier. Software engineer and runner" />
+    <meta name="description" content="Klaas Cuvelier. Software engineer and runner">
     
 
-    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/main.css">
 
-    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
-    <link rel="canonical" href="/2009/05/ubuntu-jaunty-notifications-in-mint-felicia/" />
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
+    <link rel="canonical" href="/2009/05/ubuntu-jaunty-notifications-in-mint-felicia/">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>→</text></svg>">
 
 
-    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+    <script defer="" data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 </head>
 
 
@@ -65,7 +65,7 @@ I fixed this by making a softlink:</p>
 </p>
 <p>So, we can start compiling now, as always, first run the ‘autogen’ script followed by the ‘make’ command:</p>
 <p style="font-family: monospace; font-size: 11px">
-  $ cd ~/notify-osd<br /> $ ./autogen.sh<br /> $ ./make
+  $ cd ~/notify-osd<br> $ ./autogen.sh<br> $ ./make
 </p>
 <p>If you have errors, it’s probably a dependencies problem, on both of the mentioned sites above they advised to make install some more packes:</p>
 <p style="font-family: monospace; font-size: 11px">
@@ -75,7 +75,7 @@ I fixed this by making a softlink:</p>
 So, when you don’t have any errors (anymore) it means your build was successful, and so you can start using the new notification pop-ups.<br>
 First of all, you’ll have to end the current notifier and then you’ll be able to start notify-osd like this:</p>
 <p style="font-family: monospace; font-size: 11px">
-  $ killall notification-daemon<br /> $ cd src<br /> $ ./notify-osd
+  $ killall notification-daemon<br> $ cd src<br> $ ./notify-osd
 </p>
 <p>Now to the check out your new notifier, you can run the test script in the same directory (you’ll have to open a new tab because notify-osd is still running):</p>
 <p style="font-family: monospace; font-size: 11px">
@@ -85,21 +85,21 @@ First of all, you’ll have to end the current notifier and then you’ll be abl
 <p>Just like me, you might like this notifier very much, and you’d like to have this running the next time you start up you’re machine.<br>
 As we didn’t make any permanent changes to the system, and the default notifier will be started when you restarted your system, we’ll have to write a little script to fix this:</p>
 <p style="font-family: monospace; font-size: 11px">
-  $ touch ~/notify-osd/startup.sh<br /> $ nano ~/notify-osd/startup.sh
+  $ touch ~/notify-osd/startup.sh<br> $ nano ~/notify-osd/startup.sh
 </p>
 <p>Using the editor (nano) add these lines to the file:</p>
 <p style="font-family: monospace; font-size: 11px">
-  #!/bin/bash<br /> killall notification-daemon<br /> sleep 1<br /> ~/notify-osd/src/notify-osd
+  #!/bin/bash<br> killall notification-daemon<br> sleep 1<br> ~/notify-osd/src/notify-osd
 </p>
 <p style="font-family: monospace; font-size: 11px">
   Now all you have to do is make the script runnable and add the script to you&#8217;re startup scripts in ~/.config/startup:
 </p>
 <p style="font-family: monospace; font-size: 11px">
-  $ sudo chmod a+x ~/notify-osd/startup.sh<br /> $ touch ~/.config/startup/notify-osd.desktop<br /> $ nano ~/.config/startup/notify-osd.desktop
+  $ sudo chmod a+x ~/notify-osd/startup.sh<br> $ touch ~/.config/startup/notify-osd.desktop<br> $ nano ~/.config/startup/notify-osd.desktop
 </p>
 <p>This what you should put in the file (replace [USER] with your username):</p>
 <p style="font-family: monospace; font-size: 11px">
-  Type=Application<br /> Name=notify-osd<br /> Exec=/home/[USER]/.config/autostart/notify-osd.sh<br /> Icon=system-run<br /> Comment=<br /> X-GNOME-Autostart-enabled=tru
+  Type=Application<br> Name=notify-osd<br> Exec=/home/[USER]/.config/autostart/notify-osd.sh<br> Icon=system-run<br> Comment=<br> X-GNOME-Autostart-enabled=tru
 </p>
 <p>This worked out for me, I hope it does for you too!</p>
 
