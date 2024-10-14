@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html class="">
     
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <title>
         Klaas Cuvelier
     </title>
-    <meta name="description" content="Klaas Cuvelier. Software engineer and runner">
+    <meta name="description" content="Klaas Cuvelier. Software engineer and runner" />
     
 
-    <link rel="stylesheet" href="/css/main.5c288a10c0.css">
+    <script>
+        
+        function setTheme(e){"dark"===e?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark"),localStorage.setItem("theme",e)}function toggleTheme(){document.documentElement.classList.contains("dark")?setTheme("light"):setTheme("dark")}function getInitialTheme(){const e=localStorage.getItem("theme");return e||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("theme-toggle");setTheme(getInitialTheme()),e&&e.addEventListener("click",toggleTheme),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",(e=>{setTheme(e.matches?"dark":"light")}))}));
+    </script>
 
-    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
-    <link rel="canonical" href="/">
+    <link rel="stylesheet" href="/css/main.f2ae99de4c.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>→</text></svg>">
 
-
-    <script defer="" data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 
-    <body class="min-h-100 bg-[#fbfcf1]">
+    <body class="min-h-100 text-[#111] bg-[#fbfcf1] dark:bg-[#1f1f16] dark:text-[#e9e9e9]">
+        <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" class="fixed top-2 right-2">🌓</button>
         
 <main class="sm:container sm:mx-auto py-10 pb-5 px-4 text-l">
     <section class="mt-10 leading-relaxed">
@@ -34,12 +39,10 @@
             <span class="leading-loose text-xl">Hi, I am Klaas Cuvelier.</span>
         </p>
         <p class="mt-4">
-            I'm a software engineer and a runner.<br>
+            I'm a software engineer and a runner.<br />
             I love solving problems and building things.
         </p>
-        <p class="mt-6">
-            Occasionally, not consistently, I write about things and share them on this website.
-        </p>
+        <p class="mt-6">Occasionally, not consistently, I write about things and share them on this website.</p>
     </section>
 
     <section class="mt-10 leading-relaxed">
@@ -53,7 +56,5 @@
 
 
 
-
     </body>
-
 </html>

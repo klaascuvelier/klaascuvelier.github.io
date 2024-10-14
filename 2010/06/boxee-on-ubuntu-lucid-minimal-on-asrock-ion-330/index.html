@@ -1,67 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html class="">
     
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <title>
         Klaas Cuvelier
     </title>
-    <meta name="description" content="Klaas Cuvelier. Software engineer and runner">
+    <meta name="description" content="Klaas Cuvelier. Software engineer and runner" />
     
 
-    <link rel="stylesheet" href="/css/main.css">
+    <script>
+        
+        function setTheme(e){"dark"===e?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark"),localStorage.setItem("theme",e)}function toggleTheme(){document.documentElement.classList.contains("dark")?setTheme("light"):setTheme("dark")}function getInitialTheme(){const e=localStorage.getItem("theme");return e||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("theme-toggle");setTheme(getInitialTheme()),e&&e.addEventListener("click",toggleTheme),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",(e=>{setTheme(e.matches?"dark":"light")}))}));
+    </script>
 
-    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
-    <link rel="canonical" href="/2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/">
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link rel="canonical" href="/2010/06/boxee-on-ubuntu-lucid-minimal-on-asrock-ion-330/" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>→</text></svg>">
 
-
-    <script defer="" data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
+    <script defer data-domain="klaascuvelier.io" src="https://plausible.io/js/plausible.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 
-    <body class="min-h-100 bg-[#fbfcf1]">
+    <body class="min-h-100 text-[#111] bg-[#fbfcf1] dark:bg-[#1f1f16] dark:text-[#e9e9e9]">
+        <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" class="fixed top-2 right-2">🌓</button>
         
-
-    <header class="site-header mb-5 mx-2">
-        <div class="pl-2 py-2 flex flex-row justify-start items-center">
-            <a class="text-l text-gray-700 visited:text-gray-700 mr-2" href="/">Klaas Cuvelier</a>
-            
-                <span class="mr-2 text-gray-300">/</span>
-               <a class="text-l !text-gray-700 mr-2" href="/blog/">writing</a>
-            
-        </div>
-    </header>
+<header class="site-header mb-5 mx-2">
+    <div class="pl-2 py-2 flex flex-row justify-start items-center">
+        <a class="text-l text-gray-700 visited:text-gray-700 dark:text-[#e9e9e9] mr-2" href="/">Klaas Cuvelier</a>
+        
+            <span class="mr-2 text-gray-300">/</span>
+            <a class="text-l !text-gray-700 dark:!text-[#e9e9e9]  mr-2" href="/blog/">writing</a>
+        
+    </div>
+</header>
 
 
 <main class="sm:container sm:mx-auto py-10 pb-5 px-4">
     <div class="post">
   <div>
   <p>
-    Yesterday I performed a clean install from <a href="http://archive.ubuntu.com/ubuntu/dists/lucid/main/installer-i386/current/images/netboot/mini.iso">Ubuntu Lucid Lynx Minimal</a> on my Asrock Ion 330.<br> I followed <a href="http://forums.boxee.tv/showthread.php?t=5644">this guide</a> like I did last time (for an earlier version of Ubuntu Minimal) but I encountered some problems.
+    Yesterday I performed a clean install from <a href="http://archive.ubuntu.com/ubuntu/dists/lucid/main/installer-i386/current/images/netboot/mini.iso">Ubuntu Lucid Lynx Minimal</a> on my Asrock Ion 330.<br /> I followed <a href="http://forums.boxee.tv/showthread.php?t=5644">this guide</a> like I did last time (for an earlier version of Ubuntu Minimal) but I encountered some problems.
   </p>
   <p>
     Here&#8217;s how I solved them.
   </p>
   <p>
-    In chapter &#8220;Updating the computer&#8221;, change in the sources.list hardy or intreprid or jaunty by &#8220;lucid&#8221;.<br> No problems in &#8220;Install sound&#8221;.
+    In chapter &#8220;Updating the computer&#8221;, change in the sources.list hardy or intreprid or jaunty by &#8220;lucid&#8221;.<br /> No problems in &#8220;Install sound&#8221;.
   </p>
   <p>
-    The real problems came in &#8220;Installing the graphical environment&#8221;.<br> When I wanted to install the latest driver for my <a href="http://uk.download.nvidia.com/XFree86/Linux-x86/256.35/NVIDIA-Linux-x86-256.35.run">ION graphics card</a> I always got this error:
+    The real problems came in &#8220;Installing the graphical environment&#8221;.<br /> When I wanted to install the latest driver for my <a href="http://uk.download.nvidia.com/XFree86/Linux-x86/256.35/NVIDIA-Linux-x86-256.35.run">ION graphics card</a> I always got this error:
   </p>
   <blockquote>
     <p>
-      ERROR: Unable to load the kernel module &#8216;nvidia.ko&#8217;. This is most likely<br> because the kernel module was built using the wrong kernel source files.<br> Please make sure you have installed the kernel source files for your<br> kernel; on Red Hat Linux systems, for example, be sure you have the<br> &#8216;kernel-source&#8217; rpm installed. If you know the correct kernel source<br> files are installed, you may specify the kernel source path with the<br> &#8216;&#8211;kernel-source-path&#8217; commandline option.
+      ERROR: Unable to load the kernel module &#8216;nvidia.ko&#8217;. This is most likely<br /> because the kernel module was built using the wrong kernel source files.<br /> Please make sure you have installed the kernel source files for your<br /> kernel; on Red Hat Linux systems, for example, be sure you have the<br /> &#8216;kernel-source&#8217; rpm installed. If you know the correct kernel source<br /> files are installed, you may specify the kernel source path with the<br /> &#8216;&#8211;kernel-source-path&#8217; commandline option.
     </p>
   </blockquote>
   <p>
-    It took me a while before I found this solution:<br> Make the file (or edit the file if it already exists)  /etc/default/linux-restricted-modules-common<br> and add this content:
+    It took me a while before I found this solution:<br /> Make the file (or edit the file if it already exists)  /etc/default/linux-restricted-modules-common<br /> and add this content:
   </p>
   <blockquote>
     <p>
@@ -90,5 +94,4 @@
 </main>
 
     </body>
-
 </html>
