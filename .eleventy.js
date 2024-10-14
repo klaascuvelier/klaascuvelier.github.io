@@ -5,14 +5,11 @@ const markdownItAnchor = require('markdown-it-anchor');
 const markdownItAttrs = require('markdown-it-attrs');
 const { DateTime } = require('luxon');
 const htmlmin = require('html-minifier');
-const UpgradeHelper = require("@11ty/eleventy-upgrade-help");
+const { minify } = require("terser");
 
 const now = String(Date.now());
 
 module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(UpgradeHelper);
-
-
     eleventyConfig.addPlugin(syntaxHighlight);
     eleventyConfig.addPlugin(pluginRss);
 
@@ -41,6 +38,17 @@ module.exports = function (eleventyConfig) {
         }
 
         return content;
+    });
+
+    eleventyConfig.addNunjucksAsyncFilter("jsmin", async function (code, callback) {
+      try {
+        const minified = await minify(code);
+        callback(null, minified.code);
+      } catch (err) {
+        console.error("Terser error: ", err);
+        // Fail gracefully.
+        callback(null, code);
+      }
     });
 
     eleventyConfig.addWatchTarget('./_tmp/style.css');

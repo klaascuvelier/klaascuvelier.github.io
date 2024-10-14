@@ -69,10 +69,7 @@ body {
         sans-serif;
     font-size: 16px;
     line-height: 1.7;
-    color: #111;
-    background-color: #fdfdfd;
     -webkit-text-size-adjust: 100%;
-    min-height: 100%;
 }
 
 h1,
@@ -89,6 +86,40 @@ ol,
 dl,
 figure {
     margin-bottom: 15px;
+}
+
+:root {
+    --link-color: #2a7ae2;
+    --link-visited-color: #1756a9;
+    --link-hover-color: #111;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --link-color: #63b3ed;
+        --link-visited-color: #9f7aea;
+        --link-hover-color: #90cdf4;
+    }
+}
+
+html.dark {
+    --link-color: #63b3ed;
+    --link-visited-color: #9f7aea;
+    --link-hover-color: #90cdf4;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--link-visited-color);
+}
+
+a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
 }
 
 img {
@@ -122,20 +153,6 @@ h4,
 h5,
 h6 {
     font-weight: 300;
-}
-
-a {
-    color: #2a7ae2;
-    text-decoration: none;
-}
-
-a:visited {
-    color: #1756a9;
-}
-
-a:hover {
-    color: #111;
-    text-decoration: underline;
 }
 
 blockquote {
