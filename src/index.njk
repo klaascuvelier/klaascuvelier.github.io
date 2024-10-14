@@ -8,12 +8,10 @@ layout: layouts/empty.njk
             <span class="leading-loose text-xl">Hi, I am Klaas Cuvelier.</span>
         </p>
         <p class="mt-4">
-            I'm a software engineer and a runner.<br/>
+            I'm a software engineer and a runner.<br />
             I love solving problems and building things.
         </p>
-        <p class="mt-6">
-            Occasionally, not consistently, I write about things and share them on this website.
-        </p>
+        <p class="mt-6">Occasionally, not consistently, I write about things and share them on this website.</p>
     </section>
 
     <section class="mt-10 leading-relaxed">
@@ -25,18 +23,17 @@ layout: layouts/empty.njk
     </section>
 </main>
 
-
 {% if homepage.showRecents %}
-    <section class="landing-blog">
-        <h3>My most recent writings</h3>
-        <ul>
-            {% for post in collections.posts | head(-3) | reverse %}
-                <li>
-                    <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
-                    <span class="post-meta">{{ post.date | readableDate }}</span>
-                </li>
-            {% endfor %}
-        </ul>
-        <a href="{{ 'blog' | url }}">See more&hellip;</a>
-    </section>
+<section class="landing-blog">
+    <h3>My most recent writings</h3>
+    <ul>
+        {% for post in collections.posts | head(-3) | reverse %}
+        <li>
+            <a class="post-link" href="{{ post.url | url }}">{{ post.data.title }}</a>
+            <span class="post-meta">{{ post.date | readableDate }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ 'blog' | url }}">See more&hellip;</a>
+</section>
 {% endif %}

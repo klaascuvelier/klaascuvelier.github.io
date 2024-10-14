@@ -5,26 +5,28 @@ headerSuffix: writing
 
 <section>
     <h1>Writing</h1>
-    <p>I'm very bad at writing and sharing consistently. But from time to time I do write down some words, things that I find
-    worth sharing, mostly tech related.</p>
     <p>
-    There is no commenting system on this blog, but I'm always happy to hear your thoughts.
-    Feel free to reach out to me on any of <a href="/about#links">the social platforms I am on</a>.
+        I'm very bad at writing and sharing consistently. But from time to time I do write down some words, things that
+        I find worth sharing, mostly tech related.
+    </p>
+    <p>
+        There is no commenting system on this blog, but I'm always happy to hear your thoughts. Feel free to reach out
+        to me on any of <a href="/about#links">the social platforms I am on</a>.
     </p>
 </section>
 
 <section class="mt-20">
     <ul class="post-list">
-      {% for post in collections.tech | reverse %}
-         <li class="my-1">
-             <h2 class="my-0 text-lg">
-                 <a href="{{ post.url | url }}">{{ post.data.title }}</a>
-             </h2>
+        {% for post in collections.tech | reverse %}
+        <li class="my-1">
+            <h2 class="my-0 text-lg">
+                <a href="{{ post.url | url }}">{{ post.data.title }}</a>
+            </h2>
 
             <span class="text-sm text-slate-500">{{ post.date | readableDate }}</span>
         </li>
-      {% endfor %}
+        {% endfor %}
     </ul>
 </section>
 
-<p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | url }}">via RSS</a></p>
+<p class="rss-subscribe">subscribe <a href="{{ '/feed.xml' | url }}">via RSS</a></p>
