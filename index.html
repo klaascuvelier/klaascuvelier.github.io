@@ -17,7 +17,7 @@
         function setTheme(e){"dark"===e?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark"),localStorage.setItem("theme",e)}function toggleTheme(){document.documentElement.classList.contains("dark")?setTheme("light"):setTheme("dark")}function getInitialTheme(){const e=localStorage.getItem("theme");return e||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("theme-toggle");setTheme(getInitialTheme()),e&&e.addEventListener("click",toggleTheme),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",(e=>{setTheme(e.matches?"dark":"light")}))}));
     </script>
 
-    <link rel="stylesheet" href="/css/main.f2ae99de4c.css" />
+    <link rel="stylesheet" href="/css/main.6c462727c3.css" />
 
     <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
     <link rel="canonical" href="/" />
@@ -30,7 +30,7 @@
 </head>
 
 
-    <body class="min-h-100 text-[#111] bg-[#fbfcf1] dark:bg-[#1f1f16] dark:text-[#e9e9e9]">
+    <body class="min-h-100 text-[#111] bg-[#fff4e6] dark:bg-[#1f1f16] dark:text-[#e9e9e9]">
         <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" class="fixed top-2 right-2">🌓</button>
         
 <main class="sm:container sm:mx-auto py-10 pb-5 px-4 text-l">
