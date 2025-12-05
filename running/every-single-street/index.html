@@ -14,7 +14,7 @@
 
     <script>
         
-        function setTheme(e){"dark"===e?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark"),localStorage.setItem("theme",e)}function toggleTheme(){document.documentElement.classList.contains("dark")?setTheme("light"):setTheme("dark")}function getInitialTheme(){const e=localStorage.getItem("theme");return e||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("theme-toggle");setTheme(getInitialTheme()),e&&e.addEventListener("click",toggleTheme),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",(e=>{setTheme(e.matches?"dark":"light")}))}));
+        function setTheme(e){"dark"===e?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark"),localStorage.setItem("theme",e)}function toggleTheme(){document.documentElement.classList.contains("dark")?setTheme("light"):setTheme("dark")}function getInitialTheme(){const e=localStorage.getItem("theme");return e||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("theme-toggle");setTheme(getInitialTheme()),e&&e.addEventListener("click",toggleTheme),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",e=>{setTheme(e.matches?"dark":"light")})});
     </script>
 
     <link rel="stylesheet" href="/css/main.css" />
@@ -30,7 +30,7 @@
 </head>
 
 
-    <body class="min-h-100 text-[#111] bg-[#F2F0E3] dark:bg-[#1f1f16] dark:text-[#e9e9e9]">
+    <body class="min-h-100 text-[#1a1a1a] bg-[#F8F9FA] dark:bg-[#131518] dark:text-[#e8e8e8]">
         <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" class="fixed top-2 right-2">🌓</button>
         
 <header class="site-header mb-5 mx-2">
@@ -47,7 +47,7 @@
 <main class="sm:container sm:mx-auto py-10 pb-5 px-4">
     <div class="post">
   
-<div class="fixed top-12 right-10 rounded-full border-solid border-2 border-gray-100 py-2 pl-4 pr-2 bg-white dark:bg-[#1f1f16]">
+<div class="fixed top-12 right-10 rounded-full border-solid border-2 border-gray-100 py-2 pl-4 pr-2 bg-white dark:bg-[#131518]">
     Progress: 71.22%
 
     <a href="#progress" class="rounded-full border-solid border-2 border-gray-200 px-2 inline-block ml-2">⇣</a>
