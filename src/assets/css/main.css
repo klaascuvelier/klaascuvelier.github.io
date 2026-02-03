@@ -49,6 +49,17 @@ html {
     width: 100%;
 }
 
+/* Text selection styling */
+::selection {
+    background-color: var(--link-color);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--link-color);
+    color: white;
+}
+
 /* fix for safari 100vh issue */
 .h-screen {
     height: 100vh;
@@ -113,6 +124,7 @@ html.dark {
 a {
     color: var(--link-color);
     text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 a:visited {
@@ -122,6 +134,14 @@ a:visited {
 a:hover {
     color: var(--link-hover-color);
     text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+a:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+    border-radius: 2px;
 }
 
 img {
@@ -158,12 +178,18 @@ h6 {
 }
 
 blockquote {
-    color: #828282;
-    border-left: 4px solid #e8e8e8;
-    padding-left: 15px;
-    font-size: 18px;
-    letter-spacing: -1px;
+    color: #636363;
+    border-left: 3px solid var(--link-color);
+    padding-left: 20px;
+    margin-left: 0;
+    font-size: 17px;
+    letter-spacing: -0.5px;
     font-style: italic;
+    opacity: 0.9;
+}
+
+.dark blockquote {
+    color: #a0a0a0;
 }
 
 blockquote > :last-child {
@@ -172,21 +198,33 @@ blockquote > :last-child {
 
 pre,
 code {
-    font-size: 15px;
+    font-size: 14px;
     background-color: transparent;
 }
 
 .highlight {
-    border-radius: 3px;
+    border-radius: 6px;
 }
 
 code {
-    padding: 1px 5px;
+    padding: 2px 6px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.dark code {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 pre {
-    padding: 8px 12px;
-    overflow-x: scroll;
+    padding: 16px 20px;
+    overflow-x: auto;
+    border-radius: 6px;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
 }
 
 pre > code {
@@ -217,6 +255,22 @@ pre > code {
 
 .page-content {
     padding: 30px 0;
+}
+
+/* Subtle page entrance animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+main {
+    animation: fadeIn 0.4s ease-out;
 }
 
 .page-heading {
@@ -256,14 +310,21 @@ pre > code {
 }
 
 .post-header {
-    margin-bottom: 75px;
+    margin-bottom: 60px;
     margin-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dark .post-header {
+    border-bottom-color: #374151;
 }
 
 .post-title {
-    font-size: 42px;
-    letter-spacing: -1px;
-    line-height: 1;
+    font-size: 38px;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    font-weight: 400;
 }
 
 .post-content {

@@ -19,11 +19,11 @@ layout: layouts/default.njk
     through running and hiking. I have documented some of my experiences on <a href="/running">my running page</a>.
 </p>
 
-<h2 id="links" class="text-2lg">Links</h2>
-<ul class="mx-0 mb-20 -mt-5 list-none">
+<h2 id="links" class="text-2lg mt-12">Links</h2>
+<ul class="mx-0 mb-20 list-none space-y-2">
     {% if socials.socials %} {% for social in socials.socials %}
-    <li class="mb-1">
-        <a href="{{ social.url }}" target="_blank" rel="noopener">{{ social.label }}</a>
+    <li>
+        <a class="inline-block py-1" href="{{ social.url }}" target="_blank" rel="noopener">{{ social.label }}</a>
     </li>
     {% endfor %} {% endif %}
 </ul>
