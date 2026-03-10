@@ -4,7 +4,7 @@ const markdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItAttrs = require('markdown-it-attrs');
 const { DateTime } = require('luxon');
-const htmlmin = require('html-minifier');
+const { minify: minifyHtml } = require('html-minifier-terser');
 const { minify } = require("terser");
 
 const now = String(Date.now());
@@ -28,9 +28,9 @@ module.exports = function (eleventyConfig) {
         return array.slice(0, n);
     });
 
-    eleventyConfig.addTransform('htmlmin', function (content, outputPath) {
+    eleventyConfig.addTransform('htmlmin', async function (content, outputPath) {
         if (process.env.ELEVENTY_PRODUCTION && outputPath && outputPath.endsWith('.html')) {
-            return htmlmin.minify(content, {
+            return minifyHtml(content, {
                 useShortDoctype: true,
                 removeComments: true,
                 collapseWhitespace: true,
