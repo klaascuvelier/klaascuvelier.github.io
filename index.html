@@ -17,7 +17,7 @@
         function setTheme(e){"dark"===e?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark"),localStorage.setItem("theme",e)}function toggleTheme(){document.documentElement.classList.contains("dark")?setTheme("light"):setTheme("dark")}function getInitialTheme(){const e=localStorage.getItem("theme");return e||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("theme-toggle");setTheme(getInitialTheme()),e&&e.addEventListener("click",toggleTheme),window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",e=>{setTheme(e.matches?"dark":"light")})});
     </script>
 
-    <link rel="stylesheet" href="/css/main.86d077cc31.css" />
+    <link rel="stylesheet" href="/css/main.54a3f34533.css" />
 
     <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
     <link rel="canonical" href="/" />
